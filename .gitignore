@@ -53,7 +53,6 @@ tasks/.current.md.tmp.*
 .ai/harness/triage/*
 !.ai/harness/triage/.gitkeep
 .codex/*
-!.codex/hooks.json
 .claude/.active-plan
 .claude/.plan-state/
 # END: claude-runtime-temp

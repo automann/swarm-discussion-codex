@@ -1,6 +1,0 @@
-{
-  "private": true,
-  "dependencies": {
-    "local-repo-harness": "latest"
-  }
-}

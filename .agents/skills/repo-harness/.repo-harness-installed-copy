@@ -1,5 +1,0 @@
-kind=repo-harness-installed-copy
-scope=project
-host=codex
-generated_by=repo-harness
-edit_policy=generated-install-state-do-not-edit-for-product-development

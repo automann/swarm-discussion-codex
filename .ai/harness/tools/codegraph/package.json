@@ -1,6 +1,0 @@
-{
-  "private": true,
-  "dependencies": {
-    "@colbymchenry/codegraph": "1.0.1"
-  }
-}
