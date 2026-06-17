@@ -1,0 +1,54 @@
+{
+  "name": "local-repo-harness",
+  "version": "0.5.8",
+  "description": "Independent local-repo-harness package based on repo-harness@0.5.0, with project-scoped install support for repo-local hooks, skills, and agent tooling",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/automann/local-repo-harness.git"
+  },
+  "type": "module",
+  "files": [
+    "agents/",
+    "assets/",
+    "docs/images/",
+    "install.sh",
+    "install.ps1",
+    "scripts/",
+    "src/",
+    "AGENTS.md",
+    "CLAUDE.md",
+    "SKILL.md",
+    "README.md"
+  ],
+  "bin": {
+    "local-repo-harness": "src/cli/index.ts",
+    "local-repo-harness-hook": "src/cli/hook-entry.ts"
+  },
+  "engines": {
+    "bun": ">=1.0.0"
+  },
+  "scripts": {
+    "benchmark:skills": "bun scripts/run-skill-evals.ts",
+    "test": "bun test",
+    "test:coverage": "bun test --coverage",
+    "check:release": "bash scripts/check-npm-release.sh",
+    "check:brain-manifest": "bash scripts/check-brain-manifest.sh",
+    "check:context-files": "bash scripts/check-context-files.sh",
+    "check:deploy-sql": "bash scripts/check-deploy-sql-order.sh",
+    "check:architecture-sync": "bash scripts/check-architecture-sync.sh",
+    "check:task-sync": "bash scripts/check-task-sync.sh",
+    "check:runtime-compat": "bash scripts/check-runtime-compat.sh",
+    "check:task-workflow": "bash scripts/check-task-workflow.sh --strict",
+    "prepublishOnly": "bash scripts/check-npm-release.sh",
+    "sync:brain-docs": "bash scripts/sync-brain-docs.sh --all",
+    "sync:codex-installed": "bash scripts/sync-codex-installed-copies.sh"
+  },
+  "devDependencies": {
+    "@colbymchenry/codegraph": "1.0.1",
+    "@types/bun": "latest"
+  },
+  "dependencies": {
+    "commander": "^14.0.3"
+  }
+}

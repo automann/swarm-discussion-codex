@@ -1,0 +1,20 @@
+{
+  "mcpServers": {
+    "codegraph": {
+      "type": "stdio",
+      "command": "./.ai/harness/bin/codegraph",
+      "args": [
+        "serve",
+        "--mcp",
+        "--path",
+        "."
+      ],
+      "env": {
+        "CODEGRAPH_TELEMETRY": "0",
+        "DO_NOT_TRACK": "1",
+        "CODEGRAPH_INSTALL_DIR": ".ai/harness/codegraph-runtime",
+        "CODEGRAPH_NO_DAEMON": "1"
+      }
+    }
+  }
+}

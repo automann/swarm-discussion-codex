@@ -1,0 +1,59 @@
+# Project-specific
+artifacts/
+coverage/
+node_modules/
+.ai/harness/tools/*/node_modules/
+*.tar.gz
+*.tgz
+# External references
+_ref/
+.codegraph/
+# Local operations state
+_ops/
+# Environment
+.env
+.env.*
+!.env.example
+# OS metadata
+.DS_Store
+
+# BEGIN: claude-runtime-temp (managed by repo-harness)
+.claude/settings.local.json
+.claude/.atomic_pending
+.claude/.session-id
+.claude/.trace.jsonl
+.claude/.session-handoff.md
+.claude/.task-state.json
+.claude/.task-handoff.md
+.claude/.codegraph-state/
+.claude/*.tmp
+.claude/*.bak
+.claude/*.bak.*
+.claude/*.backup-*
+tasks/.current.md.tmp.*
+.ai/harness/checks/latest.json
+.ai/harness/checks/post-bash-latest.json
+.ai/harness/events.jsonl
+.ai/harness/archive/
+.ai/harness/failures/latest.jsonl
+.ai/harness/handoff/current.md
+.ai/harness/handoff/resume.md
+.ai/harness/capability-context/
+.ai/harness/security/*
+!.ai/harness/security/.gitkeep
+.ai/harness/planning/*
+!.ai/harness/planning/.gitkeep
+.ai/harness/architecture/events.jsonl
+.ai/harness/active-plan
+.ai/harness/active-worktree
+.ai/harness/sprint/
+.ai/harness/worktrees/
+.ai/harness/runs/
+.ai/harness/codegraph-runtime/
+.ai/harness/triage/*
+!.ai/harness/triage/.gitkeep
+.codex/*
+!.codex/hooks.json
+.claude/.active-plan
+.claude/.plan-state/
+# END: claude-runtime-temp

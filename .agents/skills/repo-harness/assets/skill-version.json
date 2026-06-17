@@ -1,0 +1,169 @@
+{
+  "version": "0.5.8",
+  "templateVersion": "0.5.8",
+  "skillName": "repo-harness",
+  "contractId": "tasks-first-harness-v1",
+  "retiredAliases": [
+    "repo-harness-skill",
+    "project-initializer"
+  ],
+  "compatibility": {
+    "minClaudeCodeVersion": "1.0.0",
+    "minBunVersion": "1.0.0"
+  },
+  "breakingChanges": [
+    {
+      "version": "2.0.0",
+      "description": "Migrated from governance/ to assets/initializer-question-pack.v1.json"
+    },
+    {
+      "version": "2.3.0",
+      "description": "Added lifecycle hook system and version stamp in generated projects"
+    },
+    {
+      "version": "2.4.0",
+      "description": "Promoted cross-agent task-sync contracts, skill eval assets, and milestone-only progress tracking"
+    },
+    {
+      "version": "3.0.0",
+      "description": "Upgraded generated repos to a shared long-running harness with spec, sprint review, handoff, structured checks, and read-only Claude auto memory intake signals"
+    },
+    {
+      "version": "3.1.0",
+      "description": "Added run_id-linked verification, 5-dimensional harness profiles, and structured failure_class logging with summary tooling"
+    },
+    {
+      "version": "3.2.0",
+      "description": "Introduced a versioned workflow contract manifest, inspection-first routing, and first-class legacy workflow-doc migration"
+    },
+    {
+      "version": "3.2.1",
+      "description": "Added progressive context and harness policy surfaces, plus fixed nested AGENTS placement and custom-plan monorepo drift"
+    },
+    {
+      "version": "3.3.0",
+      "description": "Removed legacy Skill Factory and auto-memory surfaces, and added guidance-only external tooling detection plus migration defaults"
+    },
+    {
+      "version": "3.4.0",
+      "description": "Added Codex-first Waza harness detection, update drift reporting, and verified Codex runtime sync guidance"
+    },
+    {
+      "version": "3.5.0",
+      "description": "Added agentic development routing, selector-hooked functional-block CLAUDE/AGENTS context generation, removed repo-local Claude hook shims, and hardened workflow migration checks"
+    },
+    {
+      "version": "3.6.0",
+      "description": "Added minimal-agentic documentation generation, functional-block LSP profile metadata, conflict-triggered Codex worktree validation policy, and explicit notes/evidence/asset lifecycle artifacts"
+    },
+    {
+      "version": "4.0.0",
+      "description": "Removed docs/PROGRESS.md and root specs from default generated surfaces, moved durable progress to tasks/workstreams, and added _ref/_ops path governance with hook guards"
+    },
+    {
+      "version": "4.0.1",
+      "description": "Added a contract-driven upgrade strategy for legacy workflow reconfiguration and cleanup, plus a global Claude/Codex working-rules reference"
+    },
+    {
+      "version": "4.0.2",
+      "description": "Installs all router entrypoints into generated repos and hardens capability discovery against ignored worktree caches"
+    },
+    {
+      "version": "5.0.0",
+      "description": "Renamed the public skill surface to repo-harness, added action-style command facades, externalized optional long docs to the default brain, and kept reusable-workflow packaging behind advisory hooks plus user-approved autoplan"
+    },
+    {
+      "version": "5.0.1",
+      "description": "Adds the plugin architecture context map, ignores repo-local runtime trace state, and fixes installed-copy sync through symlinked legacy fallback paths"
+    },
+    {
+      "version": "5.0.2",
+      "description": "Excludes ignored repo-local runtime state from installed-copy sync outputs"
+    },
+    {
+      "version": "5.1.0",
+      "description": "Adds filesystem-owned Evidence Contract gates for approved plans and hardens Waza tooling integrity checks across managed skill directories and shared rules"
+    },
+    {
+      "version": "5.1.1",
+      "description": "Refreshes stale reference and architecture docs for the current repo-harness command, hook, migration, eval, plugin, and minimal-documentation contracts"
+    },
+    {
+      "version": "5.1.2",
+      "description": "Adds generated Codex hook adapter support through .codex/hooks.json while keeping .ai/hooks as the shared implementation layer"
+    },
+    {
+      "version": "5.2.0",
+      "description": "Adds passive plan capture, opt-in repo-to-brain document sync, and required CodeGraph readiness for Codex code navigation"
+    },
+    {
+      "version": "5.2.1",
+      "description": "Fixes terse GO approval prompts so post-plan execution cannot bypass the plans workflow gate"
+    },
+    {
+      "version": "5.2.2",
+      "description": "Starts a Draft plan workflow when explicit Waza think or Codex Plan prompts begin, while preserving approval-time execution gates"
+    },
+    {
+      "version": "5.2.3",
+      "description": "Expands anchored approval intent variants so natural post-plan approval wording reaches capture and projection gates without broadening bug-fix implementation wording"
+    },
+    {
+      "version": "0.4.0",
+      "description": "Retires the separate 5.x generated workflow compatibility line; package, skill, and template stamps now share the repo-harness npm release version"
+    },
+    {
+      "version": "0.4.1",
+      "description": "Adds runtime safety fixes for session-scoped CodeGraph routing, central-first hook execution, and the tasks/todos workflow-document migration"
+    },
+    {
+      "version": "0.4.2",
+      "description": "Adds the PRD-to-Sprint planning hierarchy, isolates generated-project helper runtime under .ai/harness/scripts, and installs the subagent return-channel guard"
+    },
+    {
+      "version": "0.4.3",
+      "description": "Adds bundled runtime docs lookup, init-hook bootstrap audit guidance, first-principles edit guard coverage, and slimmer generated reference-doc assets"
+    },
+    {
+      "version": "0.5.0",
+      "description": "Splits user-level runtime refresh from repo adoption, adds package-dispatched helper commands, documents the eight managed hook routes, and prepares the release README surface"
+    },
+    {
+      "version": "0.5.1",
+      "description": "Adds project-scoped install fixes, Bun-only project setup guidance, and npm preflight parity repair for the self-hosted hook runtime"
+    },
+    {
+      "version": "0.5.2",
+      "description": "Manages project-scoped CodeGraph under the harness runtime root and removes package.json requirements from downstream installs"
+    },
+    {
+      "version": "0.5.3",
+      "description": "Adds Bun/Node runtime compatibility cleanup, removes stale repo-harness wrapper fallbacks, and gates releases against incompatible helper invocation patterns"
+    },
+    {
+      "version": "0.5.4",
+      "description": "Adds package-boundary-free project bootstrap for local-repo-harness, installing the CLI under .ai/harness/tools/local-repo-harness for zero-package repos"
+    },
+    {
+      "version": "0.5.5",
+      "description": "Fixes project-managed install reporting by deriving the CLI version from package metadata, resolving helper wrappers through the project CLI, and recognizing project-scoped Waza skills"
+    },
+    {
+      "version": "0.5.6",
+      "description": "Hardens project-scoped helper dispatch, cleans external tooling diagnostics, and makes security scan plus doctor scope-aware"
+    },
+    {
+      "version": "0.5.7",
+      "description": "Makes doctor readiness fully project-scope aware so strict project installs do not require global PATH CLI or global host adapters"
+    },
+    {
+      "version": "0.5.8",
+      "description": "Runs project-local CodeGraph MCP in direct mode to avoid user-level daemon registry residue and hardens temporary JavaScript helper execution"
+    }
+  ],
+  "generatedProjectStamp": {
+    "format": "local-repo-harness@{version}+template@{templateVersion}",
+    "displayName": "local-repo-harness",
+    "location": ".claude/.skill-version"
+  }
+}
