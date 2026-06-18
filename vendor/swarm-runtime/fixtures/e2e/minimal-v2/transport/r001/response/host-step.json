@@ -1,0 +1,41 @@
+{
+  "schemaVersion": 1,
+  "host": "codex",
+  "discussionId": "minimal-v2",
+  "round": 1,
+  "phase": "response",
+  "parentContext": {
+    "briefPath": "context/summary.md",
+    "phase": "response",
+    "agentIds": [
+      "agent-architect",
+      "agent-contrarian"
+    ],
+    "nextHelperCommand": "swarm-rt transport-collect --dir . --round 1 --phase response"
+  },
+  "runtimeCommands": {
+    "contextBuild": "swarm-rt context-build --brief brief.json --out context/summary.md",
+    "promptBuild": "swarm-rt prompt-build --request prompts/r001/response/<agent-id>/request.json --out-dir prompts/r001/response/<agent-id>",
+    "collectMerge": "swarm-rt collect-merge --spawn-order transport/r001/response/spawn-order.json --wait-result transport/r001/response/wait-batches.jsonl",
+    "appendMessage": "swarm-rt append-message --dir . --round 1 --phase response --message <message.json>",
+    "checkpoint": "swarm-rt checkpoint --dir . --round 1 --phase response --state rounds/001.json.partial",
+    "finalizeRound": "swarm-rt finalize-round --dir . --round 1 --state rounds/001.json",
+    "trace": "swarm-rt trace --dir .",
+    "evidence": "swarm-rt evidence --dir . --output artifacts/evidence.json"
+  },
+  "transport": {
+    "spawnPrimitive": "multi_agent_v1.spawn_agent",
+    "waitPrimitive": "multi_agent_v1.wait_agent",
+    "resultKey": "agent_id",
+    "partialBatches": true,
+    "rawHostLogs": {
+      "required": false
+    }
+  },
+  "artifacts": {
+    "spawnOrderPath": "transport/r001/response/spawn-order.json",
+    "waitBatchesPath": "transport/r001/response/wait-batches.jsonl",
+    "collectResultPath": "transport/r001/response/collect-result.json",
+    "hostStepPath": "transport/r001/response/host-step.json"
+  }
+}

@@ -1,0 +1,222 @@
+{
+  "artifacts": {
+    "paths": [
+      "fixtures/e2e/minimal-v2/artifacts/evidence.json",
+      "fixtures/e2e/minimal-v2/artifacts/synthesis.md",
+      "fixtures/e2e/minimal-v2/artifacts/trace.json",
+      "fixtures/e2e/minimal-v2/capabilities/artifacts/read-001.json",
+      "fixtures/e2e/minimal-v2/capabilities/profile.json",
+      "fixtures/e2e/minimal-v2/capabilities/tool-evidence.jsonl",
+      "fixtures/e2e/minimal-v2/context/summary.md",
+      "fixtures/e2e/minimal-v2/events.jsonl",
+      "fixtures/e2e/minimal-v2/manifest.json",
+      "fixtures/e2e/minimal-v2/progress.md",
+      "fixtures/e2e/minimal-v2/prompts/r001/response/architect/prompt-build.json",
+      "fixtures/e2e/minimal-v2/prompts/r001/response/architect/prompt.txt",
+      "fixtures/e2e/minimal-v2/prompts/r001/response/architect/request.json",
+      "fixtures/e2e/minimal-v2/prompts/r001/response/contrarian/prompt-build.json",
+      "fixtures/e2e/minimal-v2/prompts/r001/response/contrarian/prompt.txt",
+      "fixtures/e2e/minimal-v2/prompts/r001/response/contrarian/request.json",
+      "fixtures/e2e/minimal-v2/rounds/001.json",
+      "fixtures/e2e/minimal-v2/transport/r001/response/collect-result.json",
+      "fixtures/e2e/minimal-v2/transport/r001/response/host-step.json",
+      "fixtures/e2e/minimal-v2/transport/r001/response/spawn-order.json",
+      "fixtures/e2e/minimal-v2/transport/r001/response/wait-batches.jsonl"
+    ],
+    "root": "fixtures/e2e/minimal-v2",
+    "totalBytes": 22714
+  },
+  "capabilities": {
+    "effective": {
+      "allowedTools": [
+        "read",
+        "glob",
+        "grep"
+      ],
+      "broadTools": [],
+      "canCiteToolDerivedEvidence": true,
+      "citationRule": "tool evidence must be logged, validated, and allowed by the active profile",
+      "default": false,
+      "id": "expert-readonly",
+      "ordinaryExpert": true,
+      "readonlyTools": [
+        "glob",
+        "grep",
+        "read"
+      ],
+      "role": "ordinary-expert",
+      "toolEvidencePolicy": {
+        "requiresLoggedToolCall": true,
+        "requiresValidation": true
+      }
+    },
+    "errors": [],
+    "ok": true,
+    "paths": [
+      "fixtures/e2e/minimal-v2/capabilities/artifacts/read-001.json",
+      "fixtures/e2e/minimal-v2/capabilities/profile.json",
+      "fixtures/e2e/minimal-v2/capabilities/tool-evidence.jsonl"
+    ],
+    "profile": {
+      "allowedTools": [
+        "read",
+        "glob",
+        "grep"
+      ],
+      "broadTools": [],
+      "default": false,
+      "id": "expert-readonly",
+      "ordinaryExpert": true,
+      "readonlyTools": [
+        "glob",
+        "grep",
+        "read"
+      ],
+      "role": "ordinary-expert",
+      "toolEvidencePolicy": {
+        "requiresLoggedToolCall": true,
+        "requiresValidation": true
+      }
+    },
+    "profilePath": "fixtures/e2e/minimal-v2/capabilities/profile.json",
+    "source": "discussion",
+    "toolEvidence": {
+      "accepted": [
+        {
+          "agentId": "agent-architect",
+          "artifactPath": "artifacts/read-001.json",
+          "summary": "Read the minimal v2 context summary.",
+          "tool": "read"
+        }
+      ],
+      "acceptedCount": 1,
+      "citable": true,
+      "errors": [],
+      "ok": true,
+      "recordCount": 1
+    },
+    "toolEvidencePath": "fixtures/e2e/minimal-v2/capabilities/tool-evidence.jsonl"
+  },
+  "discussion": {
+    "id": "minimal-v2",
+    "mode": "lightweight",
+    "schemaVersion": 2,
+    "status": "completed",
+    "title": "Minimal v2 discussion loop"
+  },
+  "discussionDir": "fixtures/e2e/minimal-v2",
+  "events": {
+    "count": 2,
+    "counts": {
+      "checkpoint_written": 1,
+      "round_finalized": 1
+    },
+    "errors": [],
+    "firstTs": "2026-06-09T00:00:00Z",
+    "last": {
+      "data": {
+        "messageCount": 3,
+        "path": "rounds/001.json",
+        "round": 1
+      },
+      "seq": 2,
+      "ts": "2026-06-09T00:00:01Z",
+      "type": "round_finalized"
+    },
+    "lastTs": "2026-06-09T00:00:01Z",
+    "spanSeconds": 1
+  },
+  "health": "on-track",
+  "kind": "swarm.discussion_trace",
+  "nextAction": {
+    "command": null,
+    "kind": "none",
+    "reason": "discussion completed"
+  },
+  "ok": true,
+  "prompts": {
+    "count": 2,
+    "errors": [],
+    "paths": [
+      "fixtures/e2e/minimal-v2/prompts/r001/response/architect/prompt-build.json",
+      "fixtures/e2e/minimal-v2/prompts/r001/response/contrarian/prompt-build.json"
+    ],
+    "personas": {
+      "architect": 1,
+      "contrarian": 1
+    },
+    "phases": {
+      "response": 2
+    },
+    "promptBuildCount": 2,
+    "promptCharCounted": 0,
+    "promptCharMax": 0,
+    "promptCharTotal": 0,
+    "visibility": {
+      "full": 3
+    }
+  },
+  "quality": {
+    "qualityScore": 0.88,
+    "recommendation": "Treat the artifact tree as the proof of the smallest complete v2 loop.",
+    "synthesisPresent": true
+  },
+  "resume": {
+    "maxId": "r1-msg-003",
+    "messageCount": 3,
+    "nextAction": "start_next_round",
+    "nextMessageId": "r1-msg-004",
+    "ok": true,
+    "phase": "complete",
+    "round": 1,
+    "source": "final",
+    "statePath": "fixtures/e2e/minimal-v2/rounds/001.json"
+  },
+  "rounds": {
+    "finalCount": 1,
+    "partialCount": 0,
+    "rounds": [
+      {
+        "messageCount": 3,
+        "path": "fixtures/e2e/minimal-v2/rounds/001.json",
+        "round": 1,
+        "source": "final",
+        "validationOk": true
+      }
+    ]
+  },
+  "transport": {
+    "collectResultCount": 1,
+    "collectResults": [
+      {
+        "complete": true,
+        "errorCount": 0,
+        "missingAgentIds": [],
+        "ok": true,
+        "path": "fixtures/e2e/minimal-v2/transport/r001/response/collect-result.json",
+        "resultCount": 2,
+        "timedOut": false
+      }
+    ],
+    "complete": true,
+    "errors": [],
+    "paths": [
+      "fixtures/e2e/minimal-v2/transport/r001/response/spawn-order.json",
+      "fixtures/e2e/minimal-v2/transport/r001/response/wait-batches.jsonl",
+      "fixtures/e2e/minimal-v2/transport/r001/response/collect-result.json"
+    ],
+    "spawnOrderCount": 1,
+    "waitBatchCount": 1
+  },
+  "validation": {
+    "errors": [],
+    "ok": true,
+    "summary": {
+      "discussionId": "minimal-v2",
+      "roundCount": 1,
+      "status": "completed",
+      "validatedRounds": 1
+    },
+    "warnings": []
+  }
+}

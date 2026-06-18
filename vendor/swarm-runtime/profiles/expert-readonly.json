@@ -1,0 +1,19 @@
+{
+  "schemaVersion": 1,
+  "kind": "swarm.capability_profile",
+  "id": "expert-readonly",
+  "title": "Ordinary expert, readonly tools",
+  "role": "ordinary-expert",
+  "default": false,
+  "status": "experimental",
+  "allowedTools": ["read", "glob", "grep"],
+  "toolEvidencePolicy": {
+    "requiresLoggedToolCall": true,
+    "requiresValidation": true,
+    "citation": "allowed only when a tool-evidence JSONL record is validated"
+  },
+  "notes": [
+    "This profile is not enabled by default.",
+    "It is a future executor candidate for audited repository inspection only."
+  ]
+}
