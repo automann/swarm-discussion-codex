@@ -69,6 +69,27 @@ def _host_step_reports(discussion_dir: Path) -> tuple[list[dict[str, Any]], list
     return reports, errors
 
 
+def _trace_stable(trace: dict[str, Any]) -> dict[str, Any]:
+    """Location-independent fields that a committed trace.json must still match."""
+    return {
+        "health": trace.get("health"),
+        "nextAction": trace.get("nextAction"),
+        "artifactTotalBytes": (trace.get("artifacts") or {}).get("totalBytes"),
+    }
+
+
+def _evidence_stable(evidence: dict[str, Any]) -> dict[str, Any]:
+    """Location-independent fields that a committed evidence.json must still match."""
+    trace = evidence.get("trace") or {}
+    return {
+        "discussion": evidence.get("discussion"),
+        "outcome": evidence.get("outcome"),
+        "artifactTotalBytes": (evidence.get("metrics") or {}).get("artifactTotalBytes"),
+        "health": trace.get("health"),
+        "nextAction": trace.get("nextAction"),
+    }
+
+
 def validate_minimal_loop(discussion_dir: Path) -> dict[str, Any]:
     """Validate that a fixture proves the smallest complete v2 runtime loop."""
 
@@ -156,6 +177,32 @@ def validate_minimal_loop(discussion_dir: Path) -> dict[str, Any]:
                         missing_keys,
                     )
                 )
+            elif _evidence_stable(stored_evidence) != _evidence_stable(evidence):
+                errors.append(
+                    _issue(
+                        "stale_evidence_artifact",
+                        str(evidence_path),
+                        "committed evidence.json disagrees with a fresh rebuild on stable fields",
+                        {"stored": _evidence_stable(stored_evidence), "rebuilt": _evidence_stable(evidence)},
+                    )
+                )
+
+    trace_path = required_artifacts["trace"]
+    if trace_path.exists():
+        stored_trace, trace_error = _load_json(trace_path)
+        if trace_error:
+            errors.append(trace_error)
+        elif not isinstance(stored_trace, dict):
+            errors.append(_issue("invalid_trace_artifact", str(trace_path), "trace artifact must be an object"))
+        elif _trace_stable(stored_trace) != _trace_stable(trace):
+            errors.append(
+                _issue(
+                    "stale_trace_artifact",
+                    str(trace_path),
+                    "committed trace.json disagrees with a fresh rebuild on stable fields",
+                    {"stored": _trace_stable(stored_trace), "rebuilt": _trace_stable(trace)},
+                )
+            )
 
     next_action = trace.get("nextAction", {})
     if trace.get("health") != "on-track" or next_action.get("kind") != "none":

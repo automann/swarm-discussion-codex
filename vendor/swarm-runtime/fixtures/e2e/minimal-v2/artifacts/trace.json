@@ -1,9 +1,7 @@
 {
   "artifacts": {
     "paths": [
-      "fixtures/e2e/minimal-v2/artifacts/evidence.json",
       "fixtures/e2e/minimal-v2/artifacts/synthesis.md",
-      "fixtures/e2e/minimal-v2/artifacts/trace.json",
       "fixtures/e2e/minimal-v2/capabilities/artifacts/read-001.json",
       "fixtures/e2e/minimal-v2/capabilities/profile.json",
       "fixtures/e2e/minimal-v2/capabilities/tool-evidence.jsonl",
@@ -24,7 +22,7 @@
       "fixtures/e2e/minimal-v2/transport/r001/response/wait-batches.jsonl"
     ],
     "root": "fixtures/e2e/minimal-v2",
-    "totalBytes": 22714
+    "totalBytes": 10562
   },
   "capabilities": {
     "effective": {

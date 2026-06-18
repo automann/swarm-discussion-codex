@@ -1,9 +1,7 @@
 {
   "artifacts": {
     "paths": [
-      "fixtures/e2e/minimal-v2/artifacts/evidence.json",
       "fixtures/e2e/minimal-v2/artifacts/synthesis.md",
-      "fixtures/e2e/minimal-v2/artifacts/trace.json",
       "fixtures/e2e/minimal-v2/capabilities/artifacts/read-001.json",
       "fixtures/e2e/minimal-v2/capabilities/profile.json",
       "fixtures/e2e/minimal-v2/capabilities/tool-evidence.jsonl",
@@ -24,7 +22,7 @@
       "fixtures/e2e/minimal-v2/transport/r001/response/wait-batches.jsonl"
     ],
     "root": "fixtures/e2e/minimal-v2",
-    "totalBytes": 22916
+    "totalBytes": 10562
   },
   "capabilities": {
     "effective": {
@@ -102,11 +100,11 @@
     "status": "completed",
     "title": "Minimal v2 discussion loop"
   },
-  "generatedAt": "2026-06-13T10:44:20Z",
+  "generatedAt": "2026-06-18T18:57:54Z",
   "kind": "swarm.discussion_evidence",
   "metrics": {
-    "artifactCount": 21,
-    "artifactTotalBytes": 22916,
+    "artifactCount": 19,
+    "artifactTotalBytes": 10562,
     "citableToolEvidenceCount": 1,
     "collectResultCount": 1,
     "eventCount": 2,

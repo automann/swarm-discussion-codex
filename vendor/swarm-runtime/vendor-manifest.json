@@ -1,9 +1,9 @@
 {
   "fileCount": 54,
   "files": {
-    "fixtures/e2e/minimal-v2/artifacts/evidence.json": "28580111d57dbb4ac5f9e2fc6050372b5da6f9d48248cafb4b0b93a2c1d8336a",
+    "fixtures/e2e/minimal-v2/artifacts/evidence.json": "e2df3cb39c4781813176a4a762e74ad76777a37331c13854de5e0df8d9cd9fb1",
     "fixtures/e2e/minimal-v2/artifacts/synthesis.md": "df9d094e6c69648a3bdc105090bf6f8d092b626678cd8a8669a915a28442105a",
-    "fixtures/e2e/minimal-v2/artifacts/trace.json": "0b74ba01626a230b6e916d4e406fdc2a56a67265c7d9d99321f10b5a46f04e1f",
+    "fixtures/e2e/minimal-v2/artifacts/trace.json": "47354a864352a28d5ee5a0830fa33aec752dedf1adc44d323c0ecdcd80a21473",
     "fixtures/e2e/minimal-v2/capabilities/artifacts/read-001.json": "6a800cce2b578d2cd8e0969798de689f8e01503aa37be6f59c8a1bf6cb0ff6ed",
     "fixtures/e2e/minimal-v2/capabilities/profile.json": "2fabf68527ed3746c727f514164f8ce0507c53e324ff78e97d66eebae5c8354a",
     "fixtures/e2e/minimal-v2/capabilities/tool-evidence.jsonl": "266507473e032f7c88eee30e44c3d66347566b29c729e760fc9556b3ade97b58",
@@ -34,15 +34,15 @@
     "protocol/templates/persona-generator.md": "6ec3f63a9fef61a0b57555c10ef3a7fbe92601dd0f2fc380eb539e3b98335af4",
     "protocol/windowing.md": "df88b788ad25e0949a5c19e50febee55df43cd889f778c72b2831bc0a9c7da65",
     "runtime-contract.json": "fb28b77046c49efff8ea3ad799434428f4c79a95170fa12294a8f7642b409b1f",
-    "runtime/swarm/__init__.py": "2ae649c4f366d8430014b3bdaf9cc047013d8fa570011ddf1b81153b6340bfde",
+    "runtime/swarm/__init__.py": "4ef04ac9e42bd788ac6aa456636c2240c6c6d28253583f269c80a897cce863be",
     "runtime/swarm/_shared.py": "fcf6140a0262b2a855e5537d375f81af0e5730308aabc60d00ae2dc4c3f81718",
     "runtime/swarm/adapter.py": "8123454e55a81eded59d5619ffb2fcfd5d5767961a2229dfbd4c3cc467c92e8d",
-    "runtime/swarm/audit.py": "50ee327baad54260dca58cb53e72171c8081b439cb3572ce3a3afa05404a7831",
+    "runtime/swarm/audit.py": "faef4d59ca1027421cacf148c78afb54c3d06273dc40d4e73cb9618358468cd5",
     "runtime/swarm/capabilities.py": "1de39deae14b3e5ce2113a6d56777e70901804e20e821d6a543933586883dae2",
     "runtime/swarm/collect.py": "ac12ef3a8741185b8573184f9b642e32cb5789b93248bdfdea05415a31d1d91d",
     "runtime/swarm/context.py": "408033b0fd1c85d4f388537816d18a6b3ce46fcdb3f1a1b310e5d675715be671",
     "runtime/swarm/contract.py": "9a8e0e4d809cba8ae7957f7a779a3e7436561d81e85cf07b18286feebc388259",
-    "runtime/swarm/loop.py": "4d4972762f2f1187c6792c3a68ef39d3af86651e3ba7a070a40d510b76ca6c3c",
+    "runtime/swarm/loop.py": "27c90988b376efe2261f1ef6a868ceabc7f5924214cf50f493278ac2b45a116f",
     "runtime/swarm/prompt.py": "45340a8f39bdd15ce5d80362b3b447a0609616fec7cea57c7f92d78d5f0b5693",
     "runtime/swarm/smoke.py": "035b088bf1594078d12dc0818fed1218f7f35da6a729177ae4e5aacb22dbdac4",
     "runtime/swarm/transport.py": "7d75d17fd6307c11f1b1756833debbb7e84488065d4d47bed5f57a6c875c6260",
@@ -57,6 +57,6 @@
     "schemas/tool-evidence.schema.json": "4e0b230f09194aa845059e7ba6044ee8afe3bdc8b2ee5818c13b656076f0cf84"
   },
   "kind": "swarm.vendor_manifest",
-  "runtimeSha": "7b02561fb245a99ca91f9744fa287bd4487260f1",
+  "runtimeSha": "fb7f869d82fe3ba69dc9bfec148f8d833d687e8a",
   "schemaVersion": 1
 }

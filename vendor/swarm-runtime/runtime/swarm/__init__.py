@@ -6,10 +6,12 @@ __version__ = "0.0.0"
 
 
 def planned_commands() -> list[str]:
-    """Return the planned runtime command surface.
+    """Return the canonical runtime command surface.
 
-    Only a small subset exists in the skeleton. Keeping the target command list
-    executable makes drift obvious as implementation begins.
+    Source of truth for the CLI command set: it must match the argparse
+    subcommands in ``swarm_rt.build_parser()`` exactly, and the stable commands
+    in ``runtime-contract.json`` must be a subset of it. A drift test pins all
+    three together (see ``tests/test_skeleton_contract.py``).
     """
     return [
         "health",
@@ -17,7 +19,6 @@ def planned_commands() -> list[str]:
         "runtime-contract",
         "init",
         "context-build",
-        "persona-plan",
         "prompt-build",
         "collect-merge",
         "transport-init",

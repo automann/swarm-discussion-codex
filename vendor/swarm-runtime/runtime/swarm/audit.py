@@ -331,14 +331,28 @@ def _capability_summary(discussion_dir: Path) -> dict[str, Any]:
     }
 
 
+# Audit projections are derived FROM the discussion and rewritten by
+# build_trace / build_evidence. Excluding them from the artifact inventory keeps
+# build_trace/build_evidence idempotent and the byte total stable: otherwise the
+# summary would depend on the size of (and the prior existence of) trace.json /
+# evidence.json — a self-referential, generation-order-dependent total.
+_AUDIT_PROJECTIONS = frozenset({"artifacts/trace.json", "artifacts/evidence.json"})
+
+
 def _artifact_paths(discussion_dir: Path) -> list[str]:
     if not discussion_dir.exists():
         return []
     ignored_parts = {"tmp"}
     paths = []
     for path in sorted(discussion_dir.rglob("*")):
-        if path.is_file() and not any(part in ignored_parts for part in path.relative_to(discussion_dir).parts):
-            paths.append(str(path))
+        if not path.is_file():
+            continue
+        relative = path.relative_to(discussion_dir)
+        if any(part in ignored_parts for part in relative.parts):
+            continue
+        if relative.as_posix() in _AUDIT_PROJECTIONS:
+            continue
+        paths.append(str(path))
     return paths
 
 
