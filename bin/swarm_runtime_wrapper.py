@@ -9,6 +9,7 @@ delegates runtime commands while preserving runtime exit codes.
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import os
 import shlex
@@ -25,6 +26,7 @@ RUNTIME_CONTRACT = "runtime-contract"
 VALIDATE_LOOP = "validate-loop"
 VENDOR_SUBDIR = ("vendor", "swarm-runtime")
 BUNDLED_CLI = (*VENDOR_SUBDIR, "runtime", "swarm_rt.py")
+VENDOR_MANIFEST = (*VENDOR_SUBDIR, "vendor-manifest.json")
 FIXTURE_REL = (*VENDOR_SUBDIR, "fixtures", "e2e", "minimal-v2")
 PRIMITIVE_COMMANDS = [
     "context-build",
@@ -47,6 +49,19 @@ PRIMITIVE_COMMANDS = [
 ]
 
 
+class WrapperError(Exception):
+    def __init__(self, code: str, message: str, **details: Any) -> None:
+        super().__init__(message)
+        self.code = code
+        self.message = message
+        self.details = details
+
+    def as_error(self) -> dict[str, Any]:
+        error: dict[str, Any] = {"code": self.code, "message": self.message}
+        error.update({key: value for key, value in self.details.items() if value is not None})
+        return error
+
+
 def emit(payload: dict[str, Any]) -> None:
     print(json.dumps(payload, indent=2, sort_keys=True))
 
@@ -59,10 +74,17 @@ def display_command(command: list[str]) -> str:
     return " ".join(shlex.quote(part) for part in command)
 
 
-def command_from_string(value: str) -> list[str]:
-    parts = shlex.split(value)
+def command_from_string(value: str, source: str) -> list[str]:
+    try:
+        parts = shlex.split(value)
+    except ValueError as exc:
+        raise WrapperError(
+            "runtime_command_parse_error",
+            f"{source} runtime command could not be parsed: {exc}",
+            source=source,
+        ) from exc
     if not parts:
-        raise ValueError("empty runtime command")
+        raise WrapperError("runtime_command_empty", f"{source} runtime command is empty", source=source)
     first = Path(parts[0]).expanduser()
     if first.suffix == ".py" and first.exists():
         return [sys.executable, str(first), *parts[1:]]
@@ -72,21 +94,35 @@ def command_from_string(value: str) -> list[str]:
 
 
 def runtime_candidates(explicit: str | None) -> list[dict[str, Any]]:
-    candidates: list[dict[str, Any]] = []
-    if explicit:
-        candidates.append({"source": "--runtime", "command": command_from_string(explicit)})
+    if explicit is not None:
+        return [
+            {
+                "source": "--runtime",
+                "command": command_from_string(explicit, "--runtime"),
+                "strict": True,
+                "errorCode": "runtime_override_invalid",
+            }
+        ]
 
     env_value = os.environ.get(ENV_RUNTIME)
     if env_value:
-        candidates.append({"source": ENV_RUNTIME, "command": command_from_string(env_value)})
+        return [
+            {
+                "source": ENV_RUNTIME,
+                "command": command_from_string(env_value, ENV_RUNTIME),
+                "strict": True,
+                "errorCode": "runtime_env_invalid",
+            }
+        ]
 
+    candidates: list[dict[str, Any]] = []
     bundled = plugin_root().joinpath(*BUNDLED_CLI)
     if bundled.exists():
-        candidates.append({"source": "vendored", "command": [sys.executable, str(bundled)]})
+        candidates.append({"source": "vendored", "command": [sys.executable, str(bundled)], "strict": False})
 
     path_runtime = shutil.which("swarm-rt")
     if path_runtime:
-        candidates.append({"source": "PATH", "command": [path_runtime]})
+        candidates.append({"source": "PATH", "command": [path_runtime], "strict": False})
 
     seen: set[tuple[str, ...]] = set()
     unique: list[dict[str, Any]] = []
@@ -128,20 +164,34 @@ def run(command: list[str], args: list[str]) -> dict[str, Any]:
     }
 
 
-def contract_ok(payload: Any) -> bool:
+def contract_errors(payload: Any) -> list[str]:
+    errors: list[str] = []
     if not isinstance(payload, dict) or payload.get("ok") is not True:
-        return False
+        return ["runtime-contract did not return an ok JSON object"]
     contract = payload.get("contract")
     if not isinstance(contract, dict):
-        return False
+        return ["contract must be a JSON object"]
     runtime = contract.get("runtime")
     if not isinstance(runtime, dict) or runtime.get("compatibility") != COMPATIBILITY:
-        return False
+        errors.append(f"contract.runtime.compatibility must be {COMPATIBILITY}")
     commands = contract.get("commands")
     if not isinstance(commands, dict):
-        return False
-    required = {ADAPTER_SMOKE, VALIDATE_LOOP, *PRIMITIVE_COMMANDS}
-    return required <= set(commands)
+        errors.append("contract.commands must be a JSON object")
+    else:
+        required = {ADAPTER_SMOKE, VALIDATE_LOOP, *PRIMITIVE_COMMANDS}
+        missing = sorted(required - set(commands))
+        if missing:
+            errors.append(f"contract.commands missing required commands: {', '.join(missing)}")
+    validation = payload.get("validation")
+    if not isinstance(validation, dict):
+        errors.append("validation must be a JSON object")
+    elif validation.get("ok") is not True:
+        errors.append("validation.ok must be true")
+    return errors
+
+
+def contract_ok(payload: Any) -> bool:
+    return not contract_errors(payload)
 
 
 def contract_summary(payload: dict[str, Any]) -> dict[str, Any]:
@@ -156,14 +206,31 @@ def plugin_fixture_dir() -> Path:
     return plugin_root().joinpath(*FIXTURE_REL)
 
 
+def vendor_manifest_path() -> Path:
+    return plugin_root().joinpath(*VENDOR_MANIFEST)
+
+
+def _path_status(rel_path: str, sprint_row: str) -> dict[str, Any]:
+    exists = plugin_root().joinpath(rel_path).exists()
+    return {
+        "path": rel_path,
+        "exists": exists,
+        "status": "present" if exists else "planned",
+        "sprintRow": sprint_row,
+    }
+
+
 def host_diagnostics() -> dict[str, Any]:
     """Report Codex host facts without probing or managing threads."""
     return {
         "host": "codex",
         "topology": "thread-coordinator",
         "wrapperManagesThreads": False,
-        "threadLifecycleOwner": "skills/swarm-discussion/SKILL.md",
-        "coordinatorContract": "agents/swarm-coordinator.toml",
+        "threadLifecycleOwner": _path_status("skills/swarm-discussion/SKILL.md", "parent-skill-thread-lifecycle"),
+        "coordinatorContract": _path_status(
+            "agents/swarm-coordinator.toml",
+            "coordinator-and-expert-agent-contracts",
+        ),
         "nestedSubagentTopology": {
             "supported": None,
             "usedByV1": False,
@@ -172,21 +239,121 @@ def host_diagnostics() -> dict[str, Any]:
     }
 
 
+def verify_vendor_manifest() -> dict[str, Any]:
+    manifest_path = vendor_manifest_path()
+    runtime_root = plugin_root().joinpath(*VENDOR_SUBDIR)
+    errors: list[dict[str, Any]] = []
+
+    if not manifest_path.exists():
+        return {"ok": False, "path": str(manifest_path), "fileCount": 0, "errors": [{"code": "missing_manifest"}]}
+
+    try:
+        with manifest_path.open("r", encoding="utf-8") as handle:
+            manifest = json.load(handle)
+    except (OSError, json.JSONDecodeError) as exc:
+        return {
+            "ok": False,
+            "path": str(manifest_path),
+            "fileCount": 0,
+            "errors": [{"code": "invalid_manifest_json", "message": str(exc)}],
+        }
+
+    if not isinstance(manifest, dict):
+        return {
+            "ok": False,
+            "path": str(manifest_path),
+            "fileCount": 0,
+            "errors": [{"code": "invalid_manifest", "message": "manifest must be a JSON object"}],
+        }
+
+    if manifest.get("kind") != "swarm.vendor_manifest":
+        errors.append({"code": "invalid_manifest_kind", "value": manifest.get("kind")})
+
+    files = manifest.get("files")
+    if not isinstance(files, dict):
+        errors.append({"code": "invalid_manifest_files", "message": "files must be a JSON object"})
+        files = {}
+
+    for rel_path, expected_sha in sorted(files.items()):
+        if not isinstance(rel_path, str) or not isinstance(expected_sha, str):
+            errors.append({"code": "invalid_manifest_entry", "path": str(rel_path)})
+            continue
+        path = Path(rel_path)
+        if path.is_absolute() or ".." in path.parts:
+            errors.append({"code": "unsafe_manifest_path", "path": rel_path})
+            continue
+        file_path = runtime_root / path
+        if not file_path.is_file():
+            errors.append({"code": "missing_vendored_file", "path": rel_path})
+            continue
+        actual_sha = hashlib.sha256(file_path.read_bytes()).hexdigest()
+        if actual_sha != expected_sha:
+            errors.append(
+                {
+                    "code": "vendored_file_drift",
+                    "path": rel_path,
+                    "expected": expected_sha,
+                    "actual": actual_sha,
+                }
+            )
+
+    return {
+        "ok": not errors,
+        "path": str(manifest_path),
+        "runtimeSha": manifest.get("runtimeSha"),
+        "fileCount": len(files),
+        "errors": errors,
+    }
+
+
 def resolve_runtime(explicit: str | None) -> dict[str, Any]:
     attempts: list[dict[str, Any]] = []
-    for candidate in runtime_candidates(explicit):
+    try:
+        candidates = runtime_candidates(explicit)
+    except WrapperError as exc:
+        return {"ok": False, "errors": [exc.as_error()], "attempts": attempts}
+
+    for candidate in candidates:
+        manifest: dict[str, Any] | None = None
+        if candidate["source"] == "vendored":
+            manifest = verify_vendor_manifest()
+            if not manifest["ok"]:
+                attempts.append(
+                    {
+                        "source": candidate["source"],
+                        "command": display_command(candidate["command"]),
+                        "returncode": None,
+                        "contractOk": False,
+                        "contractErrors": ["vendor manifest verification failed"],
+                        "vendorManifestOk": False,
+                        "stderr": "",
+                    }
+                )
+                return {
+                    "ok": False,
+                    "errors": [
+                        {
+                            "code": "vendor_manifest_invalid",
+                            "message": "vendored runtime manifest verification failed",
+                        }
+                    ],
+                    "attempts": attempts,
+                    "vendorManifest": manifest,
+                }
         result = run(candidate["command"], [RUNTIME_CONTRACT, "--full"])
         payload = result["json"]
+        errors = contract_errors(payload)
         attempts.append(
             {
                 "source": candidate["source"],
                 "command": display_command(candidate["command"]),
                 "returncode": result["returncode"],
-                "contractOk": contract_ok(payload),
+                "contractOk": not errors,
+                "contractErrors": errors,
                 "stderr": result["stderr"].strip(),
             }
         )
-        if result["ok"] and contract_ok(payload):
+        if result["ok"] and not errors:
             return {
                 "ok": True,
                 "runtime": {
@@ -195,6 +362,20 @@ def resolve_runtime(explicit: str | None) -> dict[str, Any]:
                     "display": display_command(candidate["command"]),
                 },
                 "contract": payload,
+                "attempts": attempts,
+                "vendorManifest": manifest,
+            }
+        if candidate.get("strict"):
+            return {
+                "ok": False,
+                "errors": [
+                    {
+                        "code": candidate["errorCode"],
+                        "message": f"{candidate['source']} did not provide a valid {COMPATIBILITY} runtime.",
+                        "source": candidate["source"],
+                        "contractErrors": errors,
+                    }
+                ],
                 "attempts": attempts,
             }
 
@@ -228,13 +409,15 @@ def cmd_doctor(args: argparse.Namespace) -> int:
         "hostDiagnostics": host_diagnostics(),
         "attempts": resolved["attempts"],
     }
+    if "vendorManifest" in resolved and resolved["vendorManifest"] is not None:
+        payload["vendorManifest"] = resolved["vendorManifest"]
     if resolved["ok"]:
         payload["runtime"] = {
             "source": resolved["runtime"]["source"],
             "command": resolved["runtime"]["display"],
         }
         payload["contractSummary"] = contract_summary(resolved["contract"])
-        if args.smoke_fixture:
+        if args.smoke_fixture and ok:
             fixture_dir = plugin_fixture_dir()
             smoke = run(resolved["runtime"]["command"], [ADAPTER_SMOKE, "--dir", str(fixture_dir)])
             smoke_json = smoke["json"] if isinstance(smoke["json"], dict) else {}
@@ -248,6 +431,12 @@ def cmd_doctor(args: argparse.Namespace) -> int:
             }
             ok = ok and smoke["ok"]
             payload["ok"] = ok
+        elif args.smoke_fixture:
+            payload["fixtureSmoke"] = {
+                "ok": False,
+                "skipped": True,
+                "reason": "runtime or vendored manifest check failed before fixture smoke",
+            }
     else:
         payload["errors"] = resolved["errors"]
     emit(payload)
@@ -261,7 +450,10 @@ def _runtime_exit(result: dict[str, Any]) -> int:
 def _delegate(args: argparse.Namespace, runtime_args: list[str]) -> int:
     resolved = resolve_runtime(args.runtime)
     if not resolved["ok"]:
-        emit({"ok": False, "errors": resolved["errors"], "attempts": resolved["attempts"]})
+        payload = {"ok": False, "errors": resolved["errors"], "attempts": resolved["attempts"]}
+        if "vendorManifest" in resolved:
+            payload["vendorManifest"] = resolved["vendorManifest"]
+        emit(payload)
         return 1
     result = run(resolved["runtime"]["command"], runtime_args)
     emit(
@@ -285,7 +477,26 @@ def _delegate(args: argparse.Namespace, runtime_args: list[str]) -> int:
 def cmd_runtime_contract(args: argparse.Namespace) -> int:
     resolved = resolve_runtime(args.runtime)
     if not resolved["ok"]:
-        emit({"ok": False, "errors": resolved["errors"], "attempts": resolved["attempts"]})
+        payload = {"ok": False, "errors": resolved["errors"], "attempts": resolved["attempts"]}
+        if "vendorManifest" in resolved:
+            payload["vendorManifest"] = resolved["vendorManifest"]
+        emit(payload)
+        return 1
+    contract = resolved["contract"].get("contract")
+    validation = resolved["contract"].get("validation")
+    if not isinstance(contract, dict) or not isinstance(validation, dict):
+        emit(
+            {
+                "ok": False,
+                "errors": [
+                    {
+                        "code": "runtime_contract_invalid",
+                        "message": "validated runtime contract payload is incomplete",
+                    }
+                ],
+                "attempts": resolved["attempts"],
+            }
+        )
         return 1
     emit(
         {
@@ -295,8 +506,8 @@ def cmd_runtime_contract(args: argparse.Namespace) -> int:
                 "source": resolved["runtime"]["source"],
                 "command": resolved["runtime"]["display"],
             },
-            "contract": resolved["contract"]["contract"],
-            "validation": resolved["contract"]["validation"],
+            "contract": contract,
+            "validation": validation,
         }
     )
     return 0
@@ -321,6 +532,7 @@ def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
         prog="swarm-runtime-wrapper",
         description="Resolve and delegate to the vendored v2 swarm runtime CLI.",
+        epilog="Delegated runtime commands: " + ", ".join(PRIMITIVE_COMMANDS),
     )
     parser.add_argument("--runtime", help=f"Runtime command override. Also supported through {ENV_RUNTIME}.")
     sub = parser.add_subparsers(dest="command", required=True)
@@ -340,11 +552,6 @@ def build_parser() -> argparse.ArgumentParser:
     loop = sub.add_parser(VALIDATE_LOOP, help="Run runtime validate-loop through the wrapper")
     loop.add_argument("dir", type=Path, help="Discussion directory")
     loop.set_defaults(func=cmd_validate_loop)
-
-    for command in PRIMITIVE_COMMANDS:
-        primitive = sub.add_parser(command, help=f"Delegate runtime {command}")
-        primitive.add_argument("runtime_args", nargs=argparse.REMAINDER)
-        primitive.set_defaults(func=cmd_runtime_primitive, runtime_command=command)
 
     return parser
 
@@ -381,4 +588,25 @@ def main(argv: list[str] | None = None) -> int:
 
 
 if __name__ == "__main__":
-    raise SystemExit(main())
+    try:
+        raise SystemExit(main())
+    except WrapperError as exc:
+        emit({"ok": False, "errors": [exc.as_error()], "attempts": []})
+        raise SystemExit(1) from None
+    except BrokenPipeError:
+        raise SystemExit(1) from None
+    except Exception as exc:
+        emit(
+            {
+                "ok": False,
+                "errors": [
+                    {
+                        "code": "wrapper_internal_error",
+                        "message": str(exc),
+                        "exceptionType": type(exc).__name__,
+                    }
+                ],
+                "attempts": [],
+            }
+        )
+        raise SystemExit(1) from None
