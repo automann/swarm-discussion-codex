@@ -46,9 +46,8 @@ Coordinator responsibilities:
   before claiming success.
 
 Final response contract:
-- Return only a compact index for the parent: ok, discussionId, discussionDir,
-  synthesis or failure summary, trace path, evidence path, and local gate
-  summaries.
+- Return only a compact index for the parent: ok, discussionDir, synthesis or
+  failure summary, trace path, evidence path, and local gate summaries.
 - Do not paste raw transport batches, full expert transcripts, or full runtime
   artifacts into the parent-facing final response.
 - If runtime validation fails, return ok=false with the last good phase,
