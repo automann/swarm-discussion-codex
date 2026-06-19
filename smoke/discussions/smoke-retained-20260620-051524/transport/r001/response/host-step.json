@@ -1,0 +1,41 @@
+{
+  "artifacts": {
+    "collectResultPath": "transport/r001/response/collect-result.json",
+    "hostStepPath": "transport/r001/response/host-step.json",
+    "spawnOrderPath": "transport/r001/response/spawn-order.json",
+    "waitBatchesPath": "transport/r001/response/wait-batches.jsonl"
+  },
+  "discussionId": "smoke-retained-20260620-051524",
+  "host": "codex",
+  "parentContext": {
+    "agentIds": [
+      "019ee1be-3c31-7840-b018-096dacafa5bb",
+      "019ee1be-3efd-7241-a5a6-a699e695b8cd"
+    ],
+    "briefPath": "context/summary.md",
+    "nextHelperCommand": "python3 vendor/swarm-runtime/runtime/swarm_rt.py transport-collect --dir . --round 1 --phase response",
+    "phase": "response"
+  },
+  "phase": "response",
+  "round": 1,
+  "runtimeCommands": {
+    "appendMessage": "python3 vendor/swarm-runtime/runtime/swarm_rt.py append-message --dir . --round 1 --phase response --message <message.json>",
+    "checkpoint": "python3 vendor/swarm-runtime/runtime/swarm_rt.py checkpoint --dir . --round 1 --phase response --state rounds/001.json.partial",
+    "collectMerge": "python3 vendor/swarm-runtime/runtime/swarm_rt.py collect-merge --spawn-order transport/r001/response/spawn-order.json --wait-result transport/r001/response/wait-batches.jsonl",
+    "contextBuild": "python3 vendor/swarm-runtime/runtime/swarm_rt.py context-build --brief brief.json --out context/summary.md",
+    "evidence": "python3 vendor/swarm-runtime/runtime/swarm_rt.py evidence --dir . --output artifacts/evidence.json",
+    "finalizeRound": "python3 vendor/swarm-runtime/runtime/swarm_rt.py finalize-round --dir . --round 1 --state rounds/001.json",
+    "promptBuild": "python3 vendor/swarm-runtime/runtime/swarm_rt.py prompt-build --request prompts/r001/response/<agent-id>/request.json --out-dir prompts/r001/response/<agent-id>",
+    "trace": "python3 vendor/swarm-runtime/runtime/swarm_rt.py trace --dir ."
+  },
+  "schemaVersion": 1,
+  "transport": {
+    "partialBatches": true,
+    "rawHostLogs": {
+      "required": false
+    },
+    "resultKey": "agent_id",
+    "spawnPrimitive": "multi_agent_v1.spawn_agent",
+    "waitPrimitive": "multi_agent_v1.wait_agent"
+  }
+}
