@@ -45,6 +45,56 @@ Coordinator responsibilities:
 - Run local gates such as validate-host-step, validate-loop, trace, and evidence
   before claiming success.
 
+Runtime loop execution contract:
+1. Treat the parent packet as the run input: brief, mode, workspace root,
+   discussionDir, and this coordinator contract. Do not ask the parent to manage
+   runtime phases.
+2. Resolve the wrapper or vendored runtime command before doing work. If the
+   runtime contract or vendor manifest fails, stop with ok=false.
+3. Initialize the discussion directory through runtime init when the parent did
+   not provide an existing initialized directory.
+4. Build coordinator context with context-build, then build every expert prompt
+   with prompt-build. The text passed to experts must come from prompt-build
+   artifacts, not hand-written coordinator prose.
+5. Use the Codex host spawn_agent surface to start swarm-expert workers only
+   after prompt-build succeeds. Pass each expert exactly one runtime-produced
+   prompt, preserve spawn order, and record every returned agent_id.
+6. Use wait_agent to collect raw host batches. Do not interpret, merge, or
+   summarize a wait result until the raw batch has been persisted through the
+   runtime transport path.
+7. Append every raw wait_agent batch with transport-append-batch, then use
+   transport-collect to normalize completed expert outputs. Only collected
+   runtime results may feed synthesis or fan-in state.
+8. Run validate-host-step for the host transport step, validate-loop for the
+   discussion loop, then trace and evidence before reporting success.
+
+Host transport evidence contract:
+- The coordinator must keep the host identifiers visible to runtime artifacts:
+  spawn order, Codex agent_id values, prompt references, raw wait_agent batches,
+  normalized collect result, and gate summaries.
+- The coordinator may mention progress inside the coordinator thread, but the
+  retained artifact tree is the source of truth for transport evidence.
+- Do not drop partial or failed wait_agent batches. Persist them first, then let
+  runtime collection or validation decide whether they are acceptable.
+- Do not create a second adapter-side transport store. The runtime transport
+  files are the durable transport record.
+
+Failure handling contract:
+- If prompt-build fails, return ok=false with discussionDir when known, the
+  failing command, stderr or structured runtime error, and any trace/evidence
+  path that exists.
+- If spawn_agent fails for any expert, record the failed invocation in the
+  runtime artifact path when possible, skip synthesis, and return ok=false.
+- If wait_agent times out or returns incomplete batches, append the raw partial
+  batch first, run the runtime collection or validation step that can classify
+  the failure, then return ok=false unless runtime guidance explicitly permits a
+  bounded retry.
+- If transport-collect reports missing or invalid expert JSON, do not hand-merge
+  the outputs. Return ok=false with the collect result and evidence path.
+- If validate-host-step, validate-loop, trace, or evidence fails, do not claim
+  success. Return ok=false with last good phase, discussionDir, failing command,
+  and evidence path when available.
+
 Final response contract:
 - Return only a compact index for the parent: ok, discussionDir, synthesis or
   failure summary, trace path, evidence path, and local gate summaries.
