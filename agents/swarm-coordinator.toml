@@ -45,6 +45,23 @@ Coordinator responsibilities:
 - Run local gates such as validate-host-step, validate-loop, trace, and evidence
   before claiming success.
 
+Artifact path and validation gate contract:
+- Normal user discussions use `.swarm/discussions/<id>` under the current
+  workspace unless the parent provides an already initialized discussionDir.
+- Release or certification smoke discussions use `smoke/discussions/<id>` only
+  when the parent packet explicitly says the mode is release smoke or provides
+  that smoke discussionDir.
+- Treat `.swarm/discussions` and `smoke/discussions` as root intentions; the
+  concrete id may be allocated by runtime init, but the resolved directory must
+  remain under the selected root.
+- The required release-readiness gates are runtime-contract, vendor-manifest,
+  adapter-smoke, validate-loop, and validate-discussion. Do not report a smoke
+  as retained or certified unless those gates have run against the retained
+  artifact tree.
+- This row's contract is only path and gate declaration. Do not create
+  `smoke/discussions/<id>` unless the parent explicitly requested a release
+  smoke run.
+
 Runtime loop execution contract:
 1. Treat the parent packet as the run input: brief, mode, workspace root,
    discussionDir, and this coordinator contract. Do not ask the parent to manage

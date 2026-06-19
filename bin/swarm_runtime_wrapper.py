@@ -24,6 +24,15 @@ COMPATIBILITY = "swarm-runtime-v2-alpha"
 ADAPTER_SMOKE = "adapter-smoke"
 RUNTIME_CONTRACT = "runtime-contract"
 VALIDATE_LOOP = "validate-loop"
+NORMAL_DISCUSSION_ROOT = ".swarm/discussions"
+SMOKE_DISCUSSION_ROOT = "smoke/discussions"
+REQUIRED_CERTIFICATION_GATES = [
+    RUNTIME_CONTRACT,
+    "vendor-manifest",
+    ADAPTER_SMOKE,
+    VALIDATE_LOOP,
+    "validate-discussion",
+]
 VENDOR_SUBDIR = ("vendor", "swarm-runtime")
 BUNDLED_CLI = (*VENDOR_SUBDIR, "runtime", "swarm_rt.py")
 VENDOR_MANIFEST = (*VENDOR_SUBDIR, "vendor-manifest.json")
@@ -220,6 +229,20 @@ def _path_status(rel_path: str, sprint_row: str) -> dict[str, Any]:
     }
 
 
+def artifact_paths() -> dict[str, Any]:
+    """Report adapter artifact roots; the wrapper never creates them."""
+    return {
+        "normalDiscussionRoot": NORMAL_DISCUSSION_ROOT,
+        "normalDiscussionPattern": f"{NORMAL_DISCUSSION_ROOT}/<id>",
+        "smokeDiscussionRoot": SMOKE_DISCUSSION_ROOT,
+        "smokeDiscussionPattern": f"{SMOKE_DISCUSSION_ROOT}/<id>",
+        "requiredCertificationGates": REQUIRED_CERTIFICATION_GATES,
+        "wrapperCreatesDiscussionDirs": False,
+        "normalOwner": "coordinator-runtime-init",
+        "smokeOwner": "release-smoke-coordinator-run",
+    }
+
+
 def host_diagnostics() -> dict[str, Any]:
     """Report Codex host facts without probing or managing threads."""
     return {
@@ -406,6 +429,7 @@ def cmd_doctor(args: argparse.Namespace) -> int:
             "pluginRoot": str(plugin_root()),
             "fixtureDir": str(plugin_fixture_dir()),
         },
+        "artifactPaths": artifact_paths(),
         "hostDiagnostics": host_diagnostics(),
         "attempts": resolved["attempts"],
     }

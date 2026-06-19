@@ -24,9 +24,12 @@ execution to the coordinator contract at `agents/swarm-coordinator.toml`.
    - Use the current repository checkout as the execution context.
    - Treat normal discussion output as a coordinator-owned artifact tree under
      `.swarm/discussions/<id>`.
+   - Treat release/certification smoke output as a coordinator-owned artifact
+     tree under `smoke/discussions/<id>` only when the user or release workflow
+     explicitly requests smoke certification.
    - Pass the intended `discussionDir` to the coordinator when the user or host
      already selected one; otherwise let the coordinator allocate the concrete
-     id and return it.
+     id under the selected normal or smoke root and return it.
 3. Create or wake exactly one independent coordinator thread for the discussion.
    - Use the Codex thread-management tool surface available in the host.
    - Apply the coordinator contract by referencing or embedding
@@ -54,6 +57,7 @@ Task: run one swarm discussion as the dedicated coordinator.
 Workspace root: <absolute path to the current checkout>
 Brief: <user brief, including any constraints or acceptance criteria>
 Mode: normal discussion unless the user explicitly requests release smoke
+Artifact root: .swarm/discussions/<id> for normal discussions; smoke/discussions/<id> for explicitly requested release smoke
 discussionDir: <existing or requested discussion directory, or "allocate">
 Coordinator contract: agents/swarm-coordinator.toml
 Return shape: ok, discussionDir, synthesis or failure summary, trace path,
@@ -82,6 +86,9 @@ coordinator thread.
 - The parent thread must not spawn expert personas directly.
 - The parent thread must not write discussion artifacts, WAL state, trace, or
   evidence files.
+- The parent thread must not create `.swarm/discussions/<id>` or
+  `smoke/discussions/<id>` itself; it passes path intent and reports only paths
+  returned by the coordinator.
 - The parent thread must not run runtime transport, merge, validation, or prompt
   construction commands.
 - The parent thread must not treat raw Codex messages as the source of truth.

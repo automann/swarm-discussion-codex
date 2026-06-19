@@ -197,6 +197,19 @@ for key, path in {
     assert isinstance(item["exists"], bool)
     assert item["status"] == ("present" if item["exists"] else "planned")
     assert item["sprintRow"]
+artifact_paths = data["artifactPaths"]
+assert artifact_paths["normalDiscussionRoot"] == ".swarm/discussions"
+assert artifact_paths["normalDiscussionPattern"] == ".swarm/discussions/<id>"
+assert artifact_paths["smokeDiscussionRoot"] == "smoke/discussions"
+assert artifact_paths["smokeDiscussionPattern"] == "smoke/discussions/<id>"
+assert artifact_paths["requiredCertificationGates"] == [
+    "runtime-contract",
+    "vendor-manifest",
+    "adapter-smoke",
+    "validate-loop",
+    "validate-discussion",
+]
+assert artifact_paths["wrapperCreatesDiscussionDirs"] is False
 PY
 
 echo "checking clean doctor smoke fixture"
