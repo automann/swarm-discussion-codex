@@ -79,6 +79,29 @@ def read_payload(stdout: str) -> Any:
         return None
 
 
+def scrub_for_summary(value: Any, repo_root: Path, executable: str) -> Any:
+    if isinstance(value, dict):
+        return {key: scrub_for_summary(item, repo_root, executable) for key, item in value.items()}
+    if isinstance(value, list):
+        return [scrub_for_summary(item, repo_root, executable) for item in value]
+    if isinstance(value, str):
+        root = repo_root.as_posix()
+        text = "python3" if value == executable else value
+        text = text.replace(f"{root}/", "")
+        if text == root:
+            text = "."
+        return text
+    return value
+
+
+def stable_gate_record(gate: dict[str, Any], repo_root: Path, executable: str) -> dict[str, Any]:
+    return scrub_for_summary(
+        {key: value for key, value in gate.items() if key not in {"stdout", "stderr", "payload"}},
+        repo_root,
+        executable,
+    )
+
+
 def run_json_gate(name: str, command: list[str], cwd: Path) -> dict[str, Any]:
     env = dict(os.environ)
     env["PYTHONDONTWRITEBYTECODE"] = "1"
@@ -410,10 +433,8 @@ def main() -> int:
             repo_root,
         )
         pre_gate_refresh = {
-            "trace": {key: value for key, value in trace_gate.items() if key not in {"stdout", "stderr", "payload"}},
-            "evidence": {
-                key: value for key, value in evidence_rebuild_gate.items() if key not in {"stdout", "stderr", "payload"}
-            },
+            "trace": stable_gate_record(trace_gate, repo_root, sys.executable),
+            "evidence": stable_gate_record(evidence_rebuild_gate, repo_root, sys.executable),
         }
 
     gates: dict[str, Any] = {}
@@ -432,19 +453,15 @@ def main() -> int:
         "schemaVersion": 1,
         "kind": "swarm.codex_adapter_certification",
         "ok": all_ok,
-        "discussion": str(discussion),
+        "discussion": relative_to(discussion, repo_root),
         "discussionRelative": relative_to(discussion, repo_root),
-        "vendored": str(vendored),
-        "runtime": str(runtime),
+        "vendored": relative_to(vendored, repo_root),
+        "runtime": relative_to(runtime, repo_root),
         "requiredGates": required_gate_status,
-        "adapterEvidence": evidence_gate,
+        "adapterEvidence": scrub_for_summary(evidence_gate, repo_root, sys.executable),
         "preGateRefresh": pre_gate_refresh,
         "gates": {
-            name: {
-                key: value
-                for key, value in gate.items()
-                if key not in {"stdout", "stderr", "payload"}
-            }
+            name: stable_gate_record(gate, repo_root, sys.executable)
             for name, gate in gates.items()
         },
     }
@@ -480,17 +497,11 @@ def main() -> int:
         )
         output_summary = dict(summary)
         output_summary["postCertificationRefresh"] = {
-            "trace": {key: value for key, value in trace_gate.items() if key not in {"stdout", "stderr", "payload"}},
-            "evidence": {
-                key: value for key, value in evidence_rebuild_gate.items() if key not in {"stdout", "stderr", "payload"}
-            },
-            "adapter-smoke": {
-                key: value for key, value in post_adapter_smoke.items() if key not in {"stdout", "stderr", "payload"}
-            },
-            "validate-loop": {key: value for key, value in post_loop.items() if key not in {"stdout", "stderr", "payload"}},
-            "validate-discussion": {
-                key: value for key, value in post_discussion.items() if key not in {"stdout", "stderr", "payload"}
-            },
+            "trace": stable_gate_record(trace_gate, repo_root, sys.executable),
+            "evidence": stable_gate_record(evidence_rebuild_gate, repo_root, sys.executable),
+            "adapter-smoke": stable_gate_record(post_adapter_smoke, repo_root, sys.executable),
+            "validate-loop": stable_gate_record(post_loop, repo_root, sys.executable),
+            "validate-discussion": stable_gate_record(post_discussion, repo_root, sys.executable),
         }
         exit_ok = (
             summary["ok"]
