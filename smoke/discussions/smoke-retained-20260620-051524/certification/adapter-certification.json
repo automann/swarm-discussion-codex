@@ -1,6 +1,6 @@
 {
   "adapterEvidence": {
-    "discussion": "/Users/syfq/dev/harness/swarm-discussion-codex-wt-retained-smoke-certification/smoke/discussions/smoke-retained-20260620-051524",
+    "discussion": "/Users/syfq/dev/harness/swarm-discussion-codex/smoke/discussions/smoke-retained-20260620-051524",
     "errors": [],
     "name": "retained-smoke-evidence",
     "ok": true,
@@ -20,16 +20,16 @@
       ]
     }
   },
-  "discussion": "/Users/syfq/dev/harness/swarm-discussion-codex-wt-retained-smoke-certification/smoke/discussions/smoke-retained-20260620-051524",
+  "discussion": "/Users/syfq/dev/harness/swarm-discussion-codex/smoke/discussions/smoke-retained-20260620-051524",
   "discussionRelative": "smoke/discussions/smoke-retained-20260620-051524",
   "gates": {
     "adapter-smoke": {
       "command": [
-        "/Applications/Xcode.app/Contents/Developer/usr/bin/python3",
-        "/Users/syfq/dev/harness/swarm-discussion-codex-wt-retained-smoke-certification/vendor/swarm-runtime/runtime/swarm_rt.py",
+        "/opt/homebrew/opt/python@3.13/bin/python3.13",
+        "/Users/syfq/dev/harness/swarm-discussion-codex/vendor/swarm-runtime/runtime/swarm_rt.py",
         "adapter-smoke",
         "--dir",
-        "/Users/syfq/dev/harness/swarm-discussion-codex-wt-retained-smoke-certification/smoke/discussions/smoke-retained-20260620-051524",
+        "/Users/syfq/dev/harness/swarm-discussion-codex/smoke/discussions/smoke-retained-20260620-051524",
         "--full"
       ],
       "errors": [],
@@ -39,8 +39,8 @@
     },
     "runtime-contract": {
       "command": [
-        "/Applications/Xcode.app/Contents/Developer/usr/bin/python3",
-        "/Users/syfq/dev/harness/swarm-discussion-codex-wt-retained-smoke-certification/vendor/swarm-runtime/runtime/swarm_rt.py",
+        "/opt/homebrew/opt/python@3.13/bin/python3.13",
+        "/Users/syfq/dev/harness/swarm-discussion-codex/vendor/swarm-runtime/runtime/swarm_rt.py",
         "runtime-contract",
         "--full"
       ],
@@ -51,10 +51,10 @@
     },
     "validate-discussion": {
       "command": [
-        "/Applications/Xcode.app/Contents/Developer/usr/bin/python3",
-        "/Users/syfq/dev/harness/swarm-discussion-codex-wt-retained-smoke-certification/vendor/swarm-runtime/runtime/swarm_rt.py",
+        "/opt/homebrew/opt/python@3.13/bin/python3.13",
+        "/Users/syfq/dev/harness/swarm-discussion-codex/vendor/swarm-runtime/runtime/swarm_rt.py",
         "validate-discussion",
-        "/Users/syfq/dev/harness/swarm-discussion-codex-wt-retained-smoke-certification/smoke/discussions/smoke-retained-20260620-051524",
+        "/Users/syfq/dev/harness/swarm-discussion-codex/smoke/discussions/smoke-retained-20260620-051524",
         "--full"
       ],
       "errors": [],
@@ -64,10 +64,10 @@
     },
     "validate-loop": {
       "command": [
-        "/Applications/Xcode.app/Contents/Developer/usr/bin/python3",
-        "/Users/syfq/dev/harness/swarm-discussion-codex-wt-retained-smoke-certification/vendor/swarm-runtime/runtime/swarm_rt.py",
+        "/opt/homebrew/opt/python@3.13/bin/python3.13",
+        "/Users/syfq/dev/harness/swarm-discussion-codex/vendor/swarm-runtime/runtime/swarm_rt.py",
         "validate-loop",
-        "/Users/syfq/dev/harness/swarm-discussion-codex-wt-retained-smoke-certification/smoke/discussions/smoke-retained-20260620-051524",
+        "/Users/syfq/dev/harness/swarm-discussion-codex/smoke/discussions/smoke-retained-20260620-051524",
         "--full"
       ],
       "errors": [],
@@ -80,7 +80,7 @@
       "fileCount": 54,
       "name": "vendor-manifest",
       "ok": true,
-      "path": "/Users/syfq/dev/harness/swarm-discussion-codex-wt-retained-smoke-certification/vendor/swarm-runtime/vendor-manifest.json",
+      "path": "/Users/syfq/dev/harness/swarm-discussion-codex/vendor/swarm-runtime/vendor-manifest.json",
       "runtimeSha": "fb7f869d82fe3ba69dc9bfec148f8d833d687e8a"
     }
   },
@@ -89,13 +89,13 @@
   "preGateRefresh": {
     "evidence": {
       "command": [
-        "/Applications/Xcode.app/Contents/Developer/usr/bin/python3",
-        "/Users/syfq/dev/harness/swarm-discussion-codex-wt-retained-smoke-certification/vendor/swarm-runtime/runtime/swarm_rt.py",
+        "/opt/homebrew/opt/python@3.13/bin/python3.13",
+        "/Users/syfq/dev/harness/swarm-discussion-codex/vendor/swarm-runtime/runtime/swarm_rt.py",
         "evidence",
         "--dir",
-        "/Users/syfq/dev/harness/swarm-discussion-codex-wt-retained-smoke-certification/smoke/discussions/smoke-retained-20260620-051524",
+        "/Users/syfq/dev/harness/swarm-discussion-codex/smoke/discussions/smoke-retained-20260620-051524",
         "--output",
-        "/Users/syfq/dev/harness/swarm-discussion-codex-wt-retained-smoke-certification/smoke/discussions/smoke-retained-20260620-051524/artifacts/evidence.json",
+        "/Users/syfq/dev/harness/swarm-discussion-codex/smoke/discussions/smoke-retained-20260620-051524/artifacts/evidence.json",
         "--full"
       ],
       "errors": [],
@@ -105,13 +105,13 @@
     },
     "trace": {
       "command": [
-        "/Applications/Xcode.app/Contents/Developer/usr/bin/python3",
-        "/Users/syfq/dev/harness/swarm-discussion-codex-wt-retained-smoke-certification/vendor/swarm-runtime/runtime/swarm_rt.py",
+        "/opt/homebrew/opt/python@3.13/bin/python3.13",
+        "/Users/syfq/dev/harness/swarm-discussion-codex/vendor/swarm-runtime/runtime/swarm_rt.py",
         "trace",
         "--dir",
-        "/Users/syfq/dev/harness/swarm-discussion-codex-wt-retained-smoke-certification/smoke/discussions/smoke-retained-20260620-051524",
+        "/Users/syfq/dev/harness/swarm-discussion-codex/smoke/discussions/smoke-retained-20260620-051524",
         "--output",
-        "/Users/syfq/dev/harness/swarm-discussion-codex-wt-retained-smoke-certification/smoke/discussions/smoke-retained-20260620-051524/artifacts/trace.json",
+        "/Users/syfq/dev/harness/swarm-discussion-codex/smoke/discussions/smoke-retained-20260620-051524/artifacts/trace.json",
         "--full"
       ],
       "errors": [],
@@ -127,7 +127,7 @@
     "validate-loop": true,
     "vendor-manifest": true
   },
-  "runtime": "/Users/syfq/dev/harness/swarm-discussion-codex-wt-retained-smoke-certification/vendor/swarm-runtime/runtime/swarm_rt.py",
+  "runtime": "/Users/syfq/dev/harness/swarm-discussion-codex/vendor/swarm-runtime/runtime/swarm_rt.py",
   "schemaVersion": 1,
-  "vendored": "/Users/syfq/dev/harness/swarm-discussion-codex-wt-retained-smoke-certification/vendor/swarm-runtime"
+  "vendored": "/Users/syfq/dev/harness/swarm-discussion-codex/vendor/swarm-runtime"
 }
