@@ -1,0 +1,15 @@
+{
+  "createdAt": "2026-06-20T18:16:12Z",
+  "id": "smoke-retained-20260621-021426",
+  "mode": "release-smoke",
+  "schemaVersion": 1,
+  "status": "completed",
+  "title": "Codex retained adapter release-smoke certification",
+  "currentRound": 1,
+  "currentPhase": "synthesis",
+  "personas": [
+    "certifier",
+    "skeptic"
+  ],
+  "completedAt": "2026-06-20T18:20:19.857Z"
+}

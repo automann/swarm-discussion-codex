@@ -1,0 +1,108 @@
+{
+  "argumentGraph": [
+    {
+      "from": "r1-msg-002",
+      "relation": "supports",
+      "to": "r1-msg-001"
+    },
+    {
+      "from": "r1-msg-003",
+      "relation": "questions",
+      "to": "r1-msg-001"
+    }
+  ],
+  "messages": [
+    {
+      "content": {
+        "summary": "Release certification should be debated around retained proof: real Codex expert host ids, runtime prompt-build artifacts, preserved raw host read batches, normalized transport collection, finalized WAL, trace, evidence, adapter-smoke, validate-loop, validate-discussion, and certify_adapter gates."
+      },
+      "from": "moderator",
+      "id": "r1-msg-001",
+      "references": [],
+      "role": "fixed",
+      "type": "moderator_opening"
+    },
+    {
+      "content": {
+        "hostAgentId": "019ee640-fdac-7eb1-97c0-c94295b956c9",
+        "result": {
+          "confidence": 0.93,
+          "openQuestion": "The main unresolved detail is the minimal manifest schema needed to bind every retained artifact to certification output without overburdening developers.",
+          "position": "Certification should require retained artifacts proving real Codex host thread/expert transport and every runtime-owned gate before the adapter is marked release-certified."
+        },
+        "summary": "Do not certify the retained Codex adapter release unless real host transport and all runtime-produced artifacts and validation gates are retained and replayable."
+      },
+      "from": "certifier",
+      "id": "r1-msg-002",
+      "references": [
+        {
+          "relation": "supports",
+          "targetId": "r1-msg-001"
+        }
+      ],
+      "type": "response"
+    },
+    {
+      "content": {
+        "hostAgentId": "019ee641-2afb-7fe0-b6cc-a324a65638eb",
+        "result": {
+          "confidence": 0.82,
+          "openQuestion": "Whether validate-loop is uniquely necessary as a certification blocker depends on whether it proves polling completeness and guards against partial host read collection.",
+          "position": "The full retained chain in r1-msg-001 is justified for release certification, but the gate should distinguish between certification-critical evidence and supporting diagnostics."
+        },
+        "summary": "Do not certify on simulated or locally reconstructed transport; keep the retained real-host provenance chain as the release-smoke bar while making the P0 evidence explicit."
+      },
+      "from": "skeptic",
+      "id": "r1-msg-003",
+      "references": [
+        {
+          "relation": "questions",
+          "targetId": "r1-msg-001"
+        }
+      ],
+      "type": "response"
+    }
+  ],
+  "metadata": {
+    "collectResultCount": 1,
+    "hostAgentIds": [
+      "019ee640-fdac-7eb1-97c0-c94295b956c9",
+      "019ee641-2afb-7fe0-b6cc-a324a65638eb"
+    ],
+    "messageCount": 3,
+    "participants": [
+      "moderator",
+      "certifier",
+      "skeptic"
+    ],
+    "promptBuildCount": 2,
+    "referenceCount": 2
+  },
+  "mode": "release-smoke",
+  "personaContextLog": {
+    "certifier": {
+      "r1-msg-001": "full"
+    },
+    "skeptic": {
+      "r1-msg-001": "full"
+    }
+  },
+  "phase": "complete",
+  "positionShifts": [],
+  "round": 1,
+  "roundId": 1,
+  "synthesis": {
+    "activeDisagreements": [
+      "The skeptic would separate P0 certification blockers from P1 diagnostics and questions whether validate-loop is uniquely necessary if another gate proves polling completeness."
+    ],
+    "agreements": [
+      "Both experts agree that release certification must not rely on simulated or locally reconstructed transport.",
+      "Both experts require runtime prompt-build artifacts, retained real Codex host ids, preserved raw host read batches, normalized transport collection, finalized WAL, trace/evidence, adapter-smoke, validate-discussion, and certify_adapter evidence before a certified release claim."
+    ],
+    "qualityScore": 0.91,
+    "recommendation": "Treat the Codex adapter release as certified only when retained artifacts prove real Codex expert thread transport and all runtime-owned gates pass.",
+    "recommendationRationale": "The certifier argues that retained replayable artifacts turn certification from assertion into proof. The skeptic accepts the retained real-host chain as necessary for release-smoke certification because the core false positive is certifying mocked transport."
+  },
+  "timestamp": "2026-06-20T18:19:59.825Z",
+  "topic": "Codex retained adapter release-smoke certification"
+}

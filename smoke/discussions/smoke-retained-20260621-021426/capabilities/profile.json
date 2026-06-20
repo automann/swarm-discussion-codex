@@ -1,0 +1,19 @@
+{
+  "schemaVersion": 1,
+  "kind": "swarm.capability_profile",
+  "id": "expert-no-tools",
+  "title": "Ordinary expert, no tools",
+  "role": "ordinary-expert",
+  "default": false,
+  "status": "experimental",
+  "allowedTools": [],
+  "toolEvidencePolicy": {
+    "requiresLoggedToolCall": true,
+    "requiresValidation": true,
+    "citation": "No tool-derived evidence may be cited because this retained smoke uses no-tools expert personas."
+  },
+  "notes": [
+    "Created for smoke-retained-20260621-021426.",
+    "Experts were ordinary Codex threads constrained by prompt to avoid tools and return JSON only."
+  ]
+}

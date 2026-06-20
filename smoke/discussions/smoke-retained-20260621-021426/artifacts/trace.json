@@ -1,0 +1,197 @@
+{
+  "artifacts": {
+    "paths": [
+      "smoke/discussions/smoke-retained-20260621-021426/artifacts/synthesis.md",
+      "smoke/discussions/smoke-retained-20260621-021426/capabilities/profile.json",
+      "smoke/discussions/smoke-retained-20260621-021426/certification/adapter-certification.json",
+      "smoke/discussions/smoke-retained-20260621-021426/context/summary.md",
+      "smoke/discussions/smoke-retained-20260621-021426/events.jsonl",
+      "smoke/discussions/smoke-retained-20260621-021426/manifest.json",
+      "smoke/discussions/smoke-retained-20260621-021426/personas/certifier.json",
+      "smoke/discussions/smoke-retained-20260621-021426/personas/skeptic.json",
+      "smoke/discussions/smoke-retained-20260621-021426/progress.md",
+      "smoke/discussions/smoke-retained-20260621-021426/prompts/r001/response/certifier/prompt-build.json",
+      "smoke/discussions/smoke-retained-20260621-021426/prompts/r001/response/certifier/prompt.txt",
+      "smoke/discussions/smoke-retained-20260621-021426/prompts/r001/response/certifier/request.json",
+      "smoke/discussions/smoke-retained-20260621-021426/prompts/r001/response/skeptic/prompt-build.json",
+      "smoke/discussions/smoke-retained-20260621-021426/prompts/r001/response/skeptic/prompt.txt",
+      "smoke/discussions/smoke-retained-20260621-021426/prompts/r001/response/skeptic/request.json",
+      "smoke/discussions/smoke-retained-20260621-021426/rounds/001.json",
+      "smoke/discussions/smoke-retained-20260621-021426/transport/r001/response/collect-result.json",
+      "smoke/discussions/smoke-retained-20260621-021426/transport/r001/response/host-step.json",
+      "smoke/discussions/smoke-retained-20260621-021426/transport/r001/response/spawn-order.json",
+      "smoke/discussions/smoke-retained-20260621-021426/transport/r001/response/wait-batches.jsonl"
+    ],
+    "root": "smoke/discussions/smoke-retained-20260621-021426",
+    "totalBytes": 51432
+  },
+  "capabilities": {
+    "effective": {
+      "allowedTools": [],
+      "broadTools": [],
+      "canCiteToolDerivedEvidence": false,
+      "citationRule": "tool evidence must be logged, validated, and allowed by the active profile",
+      "default": false,
+      "id": "expert-no-tools",
+      "ordinaryExpert": true,
+      "readonlyTools": [],
+      "role": "ordinary-expert",
+      "toolEvidencePolicy": {
+        "requiresLoggedToolCall": true,
+        "requiresValidation": true
+      }
+    },
+    "errors": [],
+    "ok": true,
+    "paths": [
+      "smoke/discussions/smoke-retained-20260621-021426/capabilities/profile.json"
+    ],
+    "profile": {
+      "allowedTools": [],
+      "broadTools": [],
+      "default": false,
+      "id": "expert-no-tools",
+      "ordinaryExpert": true,
+      "readonlyTools": [],
+      "role": "ordinary-expert",
+      "toolEvidencePolicy": {
+        "requiresLoggedToolCall": true,
+        "requiresValidation": true
+      }
+    },
+    "profilePath": "smoke/discussions/smoke-retained-20260621-021426/capabilities/profile.json",
+    "source": "discussion",
+    "toolEvidence": {
+      "accepted": [],
+      "acceptedCount": 0,
+      "citable": false,
+      "errors": [],
+      "recordCount": 0
+    },
+    "toolEvidencePath": null
+  },
+  "discussion": {
+    "id": "smoke-retained-20260621-021426",
+    "mode": "release-smoke",
+    "schemaVersion": 1,
+    "status": "completed",
+    "title": "Codex retained adapter release-smoke certification"
+  },
+  "discussionDir": "smoke/discussions/smoke-retained-20260621-021426",
+  "events": {
+    "count": 9,
+    "counts": {
+      "checkpoint_written": 4,
+      "discussion_initialized": 1,
+      "message_appended": 3,
+      "round_finalized": 1
+    },
+    "errors": [],
+    "firstTs": "2026-06-20T18:16:12Z",
+    "last": {
+      "data": {
+        "messageCount": 3,
+        "path": "smoke/discussions/smoke-retained-20260621-021426/rounds/001.json",
+        "round": 1
+      },
+      "seq": 9,
+      "ts": "2026-06-20T18:19:59Z",
+      "type": "round_finalized"
+    },
+    "lastTs": "2026-06-20T18:19:59Z",
+    "spanSeconds": 227
+  },
+  "health": "on-track",
+  "kind": "swarm.discussion_trace",
+  "nextAction": {
+    "command": null,
+    "kind": "none",
+    "reason": "discussion completed"
+  },
+  "ok": true,
+  "prompts": {
+    "count": 2,
+    "errors": [],
+    "paths": [
+      "smoke/discussions/smoke-retained-20260621-021426/prompts/r001/response/certifier/prompt-build.json",
+      "smoke/discussions/smoke-retained-20260621-021426/prompts/r001/response/skeptic/prompt-build.json"
+    ],
+    "personas": {
+      "certifier": 1,
+      "skeptic": 1
+    },
+    "phases": {
+      "response": 2
+    },
+    "promptBuildCount": 2,
+    "promptCharCounted": 2,
+    "promptCharMax": 3452,
+    "promptCharTotal": 6734,
+    "visibility": {
+      "full": 2
+    }
+  },
+  "quality": {
+    "qualityScore": 0.91,
+    "recommendation": "Treat the Codex adapter release as certified only when retained artifacts prove real Codex expert thread transport and all runtime-owned gates pass.",
+    "synthesisPresent": true
+  },
+  "resume": {
+    "maxId": "r1-msg-003",
+    "messageCount": 3,
+    "nextAction": "start_next_round",
+    "nextMessageId": "r1-msg-004",
+    "ok": true,
+    "phase": "complete",
+    "round": 1,
+    "source": "final",
+    "statePath": "smoke/discussions/smoke-retained-20260621-021426/rounds/001.json"
+  },
+  "rounds": {
+    "finalCount": 1,
+    "partialCount": 0,
+    "rounds": [
+      {
+        "messageCount": 3,
+        "path": "smoke/discussions/smoke-retained-20260621-021426/rounds/001.json",
+        "round": 1,
+        "source": "final",
+        "validationOk": true
+      }
+    ]
+  },
+  "transport": {
+    "collectResultCount": 1,
+    "collectResults": [
+      {
+        "complete": true,
+        "errorCount": 0,
+        "missingAgentIds": [],
+        "ok": true,
+        "path": "smoke/discussions/smoke-retained-20260621-021426/transport/r001/response/collect-result.json",
+        "resultCount": 2,
+        "timedOut": false
+      }
+    ],
+    "complete": true,
+    "errors": [],
+    "paths": [
+      "smoke/discussions/smoke-retained-20260621-021426/transport/r001/response/spawn-order.json",
+      "smoke/discussions/smoke-retained-20260621-021426/transport/r001/response/wait-batches.jsonl",
+      "smoke/discussions/smoke-retained-20260621-021426/transport/r001/response/collect-result.json"
+    ],
+    "spawnOrderCount": 1,
+    "waitBatchCount": 1
+  },
+  "validation": {
+    "errors": [],
+    "ok": true,
+    "summary": {
+      "discussionId": "smoke-retained-20260621-021426",
+      "roundCount": 1,
+      "status": "completed",
+      "validatedRounds": 1
+    },
+    "warnings": []
+  }
+}

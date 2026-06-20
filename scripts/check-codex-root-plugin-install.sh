@@ -75,7 +75,6 @@ forbidden_prefixes = [
     ".agents/",
     "plugins/",
     "conformance/",
-    "smoke/discussions/",
 ]
 
 forbidden_exact = {
@@ -89,10 +88,49 @@ forbidden_exact = {
 def forbidden_reason(path: str):
     if path in forbidden_exact:
         return "historical file"
+    if path.startswith("smoke/") and not path.startswith("smoke/discussions/"):
+        return "forbidden prefix smoke/"
+    if path.startswith("smoke/discussions/") and "/tmp/" in path:
+        return "transient smoke scratch path"
     for prefix in forbidden_prefixes:
         if path.startswith(prefix):
             return f"forbidden prefix {prefix}"
     return None
+
+
+def validate_retained_smoke_discussions(tracked_set: set[str]) -> list[str]:
+    roots = sorted(
+        {
+            "/".join(path.split("/", 3)[:3])
+            for path in tracked_set
+            if path.startswith("smoke/discussions/")
+        }
+    )
+    errors = []
+    required_exact = [
+        "manifest.json",
+        "rounds/001.json",
+        "artifacts/trace.json",
+        "artifacts/evidence.json",
+        "certification/adapter-certification.json",
+    ]
+    required_transport_suffixes = [
+        "/wait-batches.jsonl",
+        "/host-step.json",
+        "/collect-result.json",
+    ]
+    for root in roots:
+        for rel in required_exact:
+            path = f"{root}/{rel}"
+            if path not in tracked_set:
+                errors.append(f"{root} missing {rel}")
+        for suffix in required_transport_suffixes:
+            if not any(
+                path.startswith(f"{root}/transport/") and path.endswith(suffix)
+                for path in tracked_set
+            ):
+                errors.append(f"{root} missing transport artifact {suffix}")
+    return errors
 
 
 if self_test:
@@ -112,8 +150,9 @@ tracked_set = set(tracked)
 missing = [path for path in required_paths if path not in tracked_set]
 violations = [(path, forbidden_reason(path)) for path in tracked if forbidden_reason(path)]
 violations = [(path, reason) for path, reason in violations if reason]
+smoke_errors = validate_retained_smoke_discussions(tracked_set)
 
-if missing or violations:
+if missing or violations or smoke_errors:
     if missing:
         print("missing required tracked public paths:", file=sys.stderr)
         for path in missing:
@@ -122,6 +161,10 @@ if missing or violations:
         print("forbidden tracked public paths:", file=sys.stderr)
         for path, reason in violations:
             print(f"  - {path} ({reason})", file=sys.stderr)
+    if smoke_errors:
+        print("invalid retained smoke discussion paths:", file=sys.stderr)
+        for error in smoke_errors:
+            print(f"  - {error}", file=sys.stderr)
     raise SystemExit(1)
 
 for rel in tracked:
@@ -304,7 +347,6 @@ for rel in \
   ".agents" \
   "plugins" \
   "conformance" \
-  "smoke/discussions" \
   "scripts/check-codex-marketplace-install.sh" \
   "docs/researches/codex-coordinator-thread-archive-policy.md" \
   "docs/researches/codex-installed-agent-namespacing.md" \

@@ -1,0 +1,34 @@
+{
+  "certified": true,
+  "checks": [
+    {
+      "errors": [],
+      "name": "runtime-contract",
+      "passed": true
+    },
+    {
+      "errors": [],
+      "name": "vendor-manifest",
+      "passed": true,
+      "runtimeSha": "fb7f869d82fe3ba69dc9bfec148f8d833d687e8a"
+    },
+    {
+      "errors": [],
+      "name": "adapter-smoke",
+      "passed": true
+    },
+    {
+      "errors": [],
+      "name": "validate-loop",
+      "passed": true
+    },
+    {
+      "errors": [],
+      "name": "validate-discussion",
+      "passed": true
+    }
+  ],
+  "discussionDir": "/Users/syfq/dev/harness/swarm-discussion-codex-wt-retained-real-codex-discussion-certification/smoke/discussions/smoke-retained-20260621-021426",
+  "ok": true,
+  "runtime": "/Users/syfq/dev/harness/swarm-discussion-codex-wt-retained-real-codex-discussion-certification/vendor/swarm-runtime/runtime/swarm_rt.py"
+}
