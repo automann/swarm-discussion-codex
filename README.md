@@ -1,6 +1,6 @@
 # swarm-discussion-codex
 
-Codex host adapter and repo marketplace for the `swarm-discussion` runtime
+Codex host adapter and root plugin repo for the `swarm-discussion` runtime
 family.
 
 The adapter keeps the parent Codex thread thin. The parent skill collects a
@@ -9,64 +9,61 @@ final synthesis plus artifact paths. The coordinator thread owns runtime
 execution, expert fan-out, transport capture, validation, and retained
 discussion artifacts through the vendored `swarm-discussion-runtime`.
 
-## Install From This Repo
+## Distribution
 
-Add this checkout or GitHub clone as a Codex plugin marketplace:
+This repository is the Codex plugin root. The plugin manifest lives at
+`.codex-plugin/plugin.json`, and all paths declared by the manifest are
+relative to this repository root.
 
-```bash
-codex plugin marketplace add <path-or-url-to-this-repo>
-```
-
-Then install the plugin from the marketplace:
-
-```bash
-codex plugin add swarm-discussion --marketplace swarm-discussion-codex
-```
-
-The repo marketplace catalog lives at `.agents/plugins/marketplace.json`. It
-publishes one local plugin entry named `swarm-discussion` whose source path is
-`./plugins/swarm-discussion`.
+End-user discovery should be mediated by the top-level `swarm-discussion`
+aggregator after it adds a Codex entry that points at this repository as a root
+plugin source. Until that aggregator entry exists, release operators should use
+the root install smoke below to prove the tracked public tree installs cleanly
+from an isolated Codex home.
 
 ## Repository Shape
 
-This repository has two layers:
+The tracked public tree is the installable plugin payload:
 
 | Layer | Path | Purpose |
 |---|---|---|
-| Marketplace catalog | `.agents/plugins/marketplace.json` | Lets Codex discover the installable plugin from this repo. |
-| Installable plugin payload | `plugins/swarm-discussion/` | The slim payload copied into the Codex plugin cache. |
-| Maintainer source and evidence | repository root | Runtime certification smoke, conformance, plans, tasks, and research retained for maintainers. |
+| Plugin manifest | `.codex-plugin/plugin.json` | Declares the `swarm-discussion` Codex plugin and its component paths. |
+| Coordinator and expert contracts | `agents/` | Defines the host-visible coordinator and leaf expert prompts. |
+| Parent skill | `skills/swarm-discussion/` | Owns parent-thread entrypoint behavior and coordinator handoff. |
+| Runtime wrapper | `bin/swarm_runtime_wrapper.py` | Locates the vendored runtime and exposes diagnostic/runtime commands. |
+| Vendored runtime | `vendor/swarm-runtime/` | Provides prompt building, transport capture, WAL mutation, validation, and smoke fixtures. |
+| Public smoke | `scripts/check-codex-root-plugin-install.sh` | Proves the tracked public tree installs as a root Codex plugin. |
 
-The installable payload intentionally contains only the plugin-root surfaces
-needed by Codex:
+Local development checkouts may also contain ignored repo-harness, planning,
+research, and operator files. Those local-only files are not part of the public
+plugin verdict; the public install shape is judged from the tracked files.
 
-```text
-plugins/swarm-discussion/.codex-plugin/plugin.json
-plugins/swarm-discussion/agents/
-plugins/swarm-discussion/skills/
-plugins/swarm-discussion/bin/
-plugins/swarm-discussion/vendor/swarm-runtime/
-```
+## Runtime Boundary
 
-Root-only maintainer material such as `smoke/`, `conformance/`, `docs/`,
-`plans/`, `tasks/`, and `.ai/` is not part of the installed plugin payload.
+The Codex adapter is a host shell around the runtime. Codex thread tools create
+and observe the coordinator thread; the runtime remains the authority for
+context construction, prompt construction, transport collection, WAL updates,
+validation, and retained artifact structure. Wrapper diagnostics can report
+host capabilities, but they do not replace the runtime certification gates.
 
 ## Verification
 
-Run the local marketplace install smoke from the repository root:
+Run the root plugin install smoke from the repository root:
 
 ```bash
-bash scripts/check-codex-marketplace-install.sh
+bash scripts/check-codex-root-plugin-install.sh
 ```
 
-The smoke uses an isolated temporary `CODEX_HOME`, adds this repository as a
-Codex marketplace, installs `swarm-discussion`, checks the installed cache root,
-and runs:
+The smoke uses `git ls-files` to snapshot the tracked public tree, installs
+that snapshot through an isolated temporary `CODEX_HOME`, verifies the
+versioned plugin cache root, and runs installed-root wrapper doctor.
+
+You can also run the wrapper doctor directly during local development:
 
 ```bash
-python3 <installed-plugin-root>/bin/swarm_runtime_wrapper.py doctor --smoke-fixture
+python3 bin/swarm_runtime_wrapper.py doctor --smoke-fixture
 ```
 
-This tracked smoke script is the public verification entrypoint for the
-marketplace package shape. Maintainer-only workflow context may exist in local
-checkouts, but it is not required to install or verify the plugin payload.
+The top-level aggregator update is intentionally separate from this adapter
+repo. This repository must first prove that its tracked root plugin payload is
+stable, then the aggregator can add a release-pinned Codex source entry.
