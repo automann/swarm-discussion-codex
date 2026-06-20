@@ -23,7 +23,7 @@
       "smoke/discussions/smoke-retained-20260621-021426/transport/r001/response/wait-batches.jsonl"
     ],
     "root": "smoke/discussions/smoke-retained-20260621-021426",
-    "totalBytes": 51432
+    "totalBytes": 51242
   },
   "capabilities": {
     "effective": {
@@ -76,11 +76,11 @@
     "status": "completed",
     "title": "Codex retained adapter release-smoke certification"
   },
-  "generatedAt": "2026-06-20T18:23:24Z",
+  "generatedAt": "2026-06-20T19:10:12Z",
   "kind": "swarm.discussion_evidence",
   "metrics": {
     "artifactCount": 20,
-    "artifactTotalBytes": 51432,
+    "artifactTotalBytes": 51242,
     "citableToolEvidenceCount": 0,
     "collectResultCount": 1,
     "eventCount": 9,

@@ -28,7 +28,7 @@
       "passed": true
     }
   ],
-  "discussionDir": "/Users/syfq/dev/harness/swarm-discussion-codex-wt-retained-real-codex-discussion-certification/smoke/discussions/smoke-retained-20260621-021426",
+  "discussionDir": "smoke/discussions/smoke-retained-20260621-021426",
   "ok": true,
-  "runtime": "/Users/syfq/dev/harness/swarm-discussion-codex-wt-retained-real-codex-discussion-certification/vendor/swarm-runtime/runtime/swarm_rt.py"
+  "runtime": "vendor/swarm-runtime/runtime/swarm_rt.py"
 }
