@@ -1,6 +1,6 @@
 {
   "name": "swarm-discussion",
-  "version": "0.1.0",
+  "version": "0.2.2",
   "description": "Codex-hosted swarm discussion adapter.",
   "skills": "./skills/"
 }

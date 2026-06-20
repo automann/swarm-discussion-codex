@@ -46,6 +46,23 @@ context construction, prompt construction, transport collection, WAL updates,
 validation, and retained artifact structure. Wrapper diagnostics can report
 host capabilities, but they do not replace the runtime certification gates.
 
+## Release Provenance
+
+Current certified adapter metadata:
+
+| Field | Value |
+|---|---|
+| Plugin version | `0.2.2` |
+| Runtime sha | `fb7f869d82fe3ba69dc9bfec148f8d833d687e8a` |
+| Runtime compatibility | `swarm-runtime-v2-alpha` |
+| Retained certification discussion | `smoke/discussions/smoke-retained-20260621-021426` |
+| Certification verdict | `certified: true` |
+| Certification completed | `2026-06-20T18:20:19.857Z` |
+
+The `v0.2.2` release tag and aggregator source pin are separate release
+follow-through steps. This repository records the runtime pin and retained
+discussion evidence first so the tag can bind to an auditable certified commit.
+
 ## Verification
 
 Run the root plugin install smoke from the repository root:
