@@ -58,10 +58,12 @@ Current certified adapter metadata:
 | Retained certification discussion | `smoke/discussions/smoke-retained-20260621-021426` |
 | Certification verdict | `certified: true` |
 | Certification completed | `2026-06-20T18:20:19.857Z` |
+| Release tag | `v0.2.2` |
 
-The `v0.2.2` release tag and aggregator source pin are separate release
-follow-through steps. This repository records the runtime pin and retained
-discussion evidence first so the tag can bind to an auditable certified commit.
+The top-level aggregator source pin is a separate repository follow-through
+step. This repository records the certified runtime pin, retained discussion
+evidence, and release tag so the aggregator can pin an auditable adapter
+release.
 
 ## Verification
 
