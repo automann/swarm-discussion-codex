@@ -1,0 +1,12 @@
+{
+  "id": "minimal-v2",
+  "title": "Minimal v2 discussion loop",
+  "mode": "lightweight",
+  "schemaVersion": 2,
+  "status": "completed",
+  "currentRound": 1,
+  "personas": [
+    "architect",
+    "contrarian"
+  ]
+}

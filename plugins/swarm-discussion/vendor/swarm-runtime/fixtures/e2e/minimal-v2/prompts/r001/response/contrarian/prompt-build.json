@@ -1,0 +1,27 @@
+{
+  "schemaVersion": 1,
+  "phase": "response",
+  "roundId": 1,
+  "topic": "Minimal v2 discussion loop",
+  "persona": {
+    "id": "contrarian",
+    "name": "Contrarian"
+  },
+  "prompt": "Contrarian response prompt for minimal-v2. Challenge host/runtime boundary and cite visible IDs.",
+  "promptSha256": "c5b519998e254452cb18ebaa51e00ea62c6879202e1560f1403a851ad6c4e090",
+  "visibility": {
+    "r1-msg-001": "full"
+  },
+  "injectedIds": [
+    "r1-msg-001"
+  ],
+  "inputs": {
+    "messageCount": 1,
+    "contextSummarySha256": "6477dac0b57a3430dced2916ee43bf5adb9471d966e2fb39c20a98d666c8277a",
+    "visibilityBudget": 4096
+  },
+  "outputContract": {
+    "format": "json",
+    "requiresReferences": true
+  }
+}

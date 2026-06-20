@@ -1,0 +1,73 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Swarm Discussion Evidence",
+  "type": "object",
+  "required": [
+    "schemaVersion",
+    "kind",
+    "discussion",
+    "outcome",
+    "metrics",
+    "validation",
+    "transport",
+    "prompts",
+    "capabilities",
+    "wal",
+    "quality",
+    "trace",
+    "artifacts",
+    "rawHostLogs"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "type": "integer",
+      "const": 1
+    },
+    "kind": {
+      "type": "string",
+      "const": "swarm.discussion_evidence"
+    },
+    "discussion": {
+      "type": "object"
+    },
+    "outcome": {
+      "type": "object"
+    },
+    "metrics": {
+      "type": "object",
+      "properties": {
+        "promptCharTotal": { "type": "integer", "minimum": 0 },
+        "promptCharMax": { "type": "integer", "minimum": 0 },
+        "artifactTotalBytes": { "type": "integer", "minimum": 0 },
+        "eventSpanSeconds": { "type": ["integer", "null"] }
+      }
+    },
+    "validation": {
+      "type": "object"
+    },
+    "transport": {
+      "type": "object"
+    },
+    "prompts": {
+      "type": "object"
+    },
+    "capabilities": {
+      "type": "object"
+    },
+    "wal": {
+      "type": "object"
+    },
+    "quality": {
+      "type": "object"
+    },
+    "trace": {
+      "type": "object"
+    },
+    "artifacts": {
+      "type": "object"
+    },
+    "rawHostLogs": {
+      "type": "object"
+    }
+  }
+}

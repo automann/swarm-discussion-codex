@@ -1,0 +1,1 @@
+{"schemaVersion":1,"kind":"swarm.tool_evidence","agentId":"agent-architect","profileId":"expert-readonly","tool":"read","artifactPath":"artifacts/read-001.json","summary":"Read the minimal v2 context summary.","validated":true,"validation":{"ok":true,"validator":"swarm-rt capability-doctor","checkedAt":"2026-06-09T00:00:00Z"}}

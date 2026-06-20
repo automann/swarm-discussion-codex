@@ -1,0 +1,20 @@
+{
+  "name": "swarm-discussion-codex",
+  "plugins": [
+    {
+      "name": "swarm-discussion",
+      "source": {
+        "source": "local",
+        "path": "./plugins/swarm-discussion"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Developer Tools",
+      "interface": {
+        "displayName": "Swarm Discussion"
+      }
+    }
+  ]
+}

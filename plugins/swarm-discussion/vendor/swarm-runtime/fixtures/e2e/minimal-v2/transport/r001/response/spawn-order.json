@@ -1,0 +1,10 @@
+[
+  {
+    "agentId": "agent-architect",
+    "persona": "architect"
+  },
+  {
+    "agentId": "agent-contrarian",
+    "persona": "contrarian"
+  }
+]

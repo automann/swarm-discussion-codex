@@ -1,0 +1,335 @@
+{
+  "schemaVersion": 1,
+  "kind": "swarm.runtime_contract",
+  "contractId": "swarm-runtime-v2-alpha",
+  "runtime": {
+    "name": "swarm-discussion-runtime",
+    "version": "0.0.0",
+    "compatibility": "swarm-runtime-v2-alpha"
+  },
+  "commands": {
+    "runtime-contract": {
+      "owner": "runtime",
+      "stability": "contract",
+      "adapterFacing": true,
+      "mutatesState": false,
+      "responsibilities": ["contract-report"],
+      "produces": []
+    },
+    "context-build": {
+      "owner": "runtime",
+      "stability": "contract",
+      "adapterFacing": false,
+      "mutatesState": false,
+      "responsibilities": ["context-summary"],
+      "produces": ["context/summary.md"]
+    },
+    "prompt-build": {
+      "owner": "runtime",
+      "stability": "contract",
+      "adapterFacing": false,
+      "mutatesState": false,
+      "responsibilities": ["prompt-build"],
+      "produces": ["prompts/r<round>/<phase>/<agent>/prompt-build.json", "prompts/r<round>/<phase>/<agent>/prompt.txt"]
+    },
+    "collect-merge": {
+      "owner": "runtime",
+      "stability": "contract",
+      "adapterFacing": true,
+      "mutatesState": false,
+      "responsibilities": ["fan-in-merge"],
+      "produces": []
+    },
+    "transport-init": {
+      "owner": "runtime",
+      "stability": "contract",
+      "adapterFacing": true,
+      "mutatesState": true,
+      "responsibilities": ["transport-step-initialization", "spawn-order-persistence", "host-step-persistence"],
+      "produces": [
+        "transport/r<round>/<phase>/host-step.json",
+        "transport/r<round>/<phase>/spawn-order.json",
+        "transport/r<round>/<phase>/wait-batches.jsonl"
+      ]
+    },
+    "transport-append-batch": {
+      "owner": "runtime",
+      "stability": "contract",
+      "adapterFacing": true,
+      "mutatesState": true,
+      "responsibilities": ["wait-batch-persistence"],
+      "produces": ["transport/r<round>/<phase>/wait-batches.jsonl"]
+    },
+    "transport-collect": {
+      "owner": "runtime",
+      "stability": "contract",
+      "adapterFacing": true,
+      "mutatesState": true,
+      "responsibilities": ["fan-in-merge", "collect-result-persistence"],
+      "produces": ["transport/r<round>/<phase>/collect-result.json"]
+    },
+    "append-message": {
+      "owner": "runtime",
+      "stability": "contract",
+      "adapterFacing": false,
+      "mutatesState": true,
+      "responsibilities": ["wal-mutation", "message-id-minting"],
+      "produces": ["rounds/<round>.json.partial", "events.jsonl", "progress.md"]
+    },
+    "checkpoint": {
+      "owner": "runtime",
+      "stability": "contract",
+      "adapterFacing": false,
+      "mutatesState": true,
+      "responsibilities": ["wal-checkpoint"],
+      "produces": ["rounds/<round>.json.partial", "events.jsonl", "progress.md"]
+    },
+    "finalize-round": {
+      "owner": "runtime",
+      "stability": "contract",
+      "adapterFacing": false,
+      "mutatesState": true,
+      "responsibilities": ["wal-finalization", "round-validation"],
+      "produces": ["rounds/<round>.json", "events.jsonl"]
+    },
+    "resume-plan": {
+      "owner": "runtime",
+      "stability": "contract",
+      "adapterFacing": false,
+      "mutatesState": false,
+      "responsibilities": ["wal-resume-plan"],
+      "produces": []
+    },
+    "init": {
+      "owner": "runtime",
+      "stability": "contract",
+      "adapterFacing": true,
+      "mutatesState": true,
+      "responsibilities": ["discussion-scaffold"],
+      "produces": ["manifest.json", "events.jsonl"]
+    },
+    "validate-round": {
+      "owner": "runtime",
+      "stability": "contract",
+      "adapterFacing": false,
+      "mutatesState": false,
+      "responsibilities": ["round-validation"],
+      "produces": []
+    },
+    "validate-discussion": {
+      "owner": "runtime",
+      "stability": "contract",
+      "adapterFacing": false,
+      "mutatesState": false,
+      "responsibilities": ["discussion-validation"],
+      "produces": []
+    },
+    "trace": {
+      "owner": "runtime",
+      "stability": "contract",
+      "adapterFacing": true,
+      "mutatesState": false,
+      "responsibilities": ["trace-projection"],
+      "produces": ["artifacts/trace.json"]
+    },
+    "evidence": {
+      "owner": "runtime",
+      "stability": "contract",
+      "adapterFacing": true,
+      "mutatesState": false,
+      "responsibilities": ["evidence-projection"],
+      "produces": ["artifacts/evidence.json"]
+    },
+    "validate-host-step": {
+      "owner": "runtime",
+      "stability": "contract",
+      "adapterFacing": true,
+      "mutatesState": false,
+      "responsibilities": ["host-step-validation"],
+      "produces": []
+    },
+    "capability-doctor": {
+      "owner": "runtime",
+      "stability": "contract",
+      "adapterFacing": true,
+      "mutatesState": false,
+      "responsibilities": ["capability-policy-report"],
+      "produces": []
+    },
+    "validate-loop": {
+      "owner": "runtime",
+      "stability": "contract",
+      "adapterFacing": true,
+      "mutatesState": false,
+      "responsibilities": ["loop-validation"],
+      "produces": []
+    },
+    "adapter-smoke": {
+      "owner": "runtime",
+      "stability": "contract",
+      "adapterFacing": true,
+      "mutatesState": false,
+      "responsibilities": ["adapter-artifact-smoke", "fan-in-replay"],
+      "produces": []
+    }
+  },
+  "adapterFacingCommands": [
+    "runtime-contract",
+    "collect-merge",
+    "transport-init",
+    "transport-append-batch",
+    "transport-collect",
+    "trace",
+    "evidence",
+    "validate-host-step",
+    "capability-doctor",
+    "validate-loop",
+    "adapter-smoke",
+    "init"
+  ],
+  "integrationGates": [
+    "validate-host-step",
+    "adapter-smoke",
+    "validate-loop"
+  ],
+  "boundaries": {
+    "skillPrompt": {
+      "responsibilities": [
+        "collect-user-brief",
+        "select-discussion-mode",
+        "invoke-runtime-command",
+        "present-evidence-summary"
+      ],
+      "forbidden": [
+        "construct-prompts",
+        "demux-wait-results",
+        "mint-message-ids",
+        "mutate-wal-state",
+        "cite-unvalidated-tool-evidence",
+        "carry-full-discussion-history"
+      ]
+    },
+    "hostAdapter": {
+      "responsibilities": [
+        "spawn-host-agents",
+        "wait-host-agents",
+        "call-transport-init",
+        "call-transport-append-batch",
+        "call-transport-collect",
+        "call-runtime-gates"
+      ],
+      "forbidden": [
+        "construct-prompts",
+        "demux-wait-results",
+        "mint-message-ids",
+        "mutate-wal-state",
+        "decide-audit-health"
+      ]
+    },
+    "runtime": {
+      "responsibilities": [
+        "contract-report",
+        "context-summary",
+        "prompt-build",
+        "fan-in-merge",
+        "transport-artifact-writing",
+        "message-id-minting",
+        "wal-mutation",
+        "wal-checkpoint",
+        "wal-finalization",
+        "artifact-validation",
+        "trace-projection",
+        "evidence-projection",
+        "capability-policy-report",
+        "adapter-artifact-smoke",
+        "loop-validation"
+      ],
+      "forbidden": [
+        "spawn-host-agents",
+        "wait-host-agents",
+        "parent-conversation-orchestration",
+        "plugin-installation",
+        "marketplace-management"
+      ]
+    }
+  },
+  "stableArtifacts": [
+    {
+      "path": "context/summary.md",
+      "producer": "context-build",
+      "consumers": ["prompt-build", "trace", "evidence"]
+    },
+    {
+      "path": "prompts/r<round>/<phase>/<agent>/prompt-build.json",
+      "producer": "prompt-build",
+      "consumers": ["hostAdapter", "trace", "evidence"]
+    },
+    {
+      "path": "prompts/r<round>/<phase>/<agent>/prompt.txt",
+      "producer": "prompt-build",
+      "consumers": ["hostAdapter"]
+    },
+    {
+      "path": "transport/r<round>/<phase>/host-step.json",
+      "producer": "transport-init",
+      "consumers": ["transport-collect", "validate-host-step", "adapter-smoke", "validate-loop"]
+    },
+    {
+      "path": "transport/r<round>/<phase>/spawn-order.json",
+      "producer": "transport-init",
+      "consumers": ["collect-merge", "transport-collect", "adapter-smoke", "trace", "evidence"]
+    },
+    {
+      "path": "transport/r<round>/<phase>/wait-batches.jsonl",
+      "producer": "transport-append-batch",
+      "consumers": ["collect-merge", "transport-collect", "adapter-smoke", "trace", "evidence"]
+    },
+    {
+      "path": "transport/r<round>/<phase>/collect-result.json",
+      "producer": "transport-collect",
+      "consumers": ["adapter-smoke", "trace", "evidence", "validate-loop"]
+    },
+    {
+      "path": "rounds/<round>.json",
+      "producer": "finalize-round",
+      "consumers": ["validate-round", "validate-discussion", "trace", "evidence", "validate-loop"]
+    },
+    {
+      "path": "rounds/<round>.json.partial",
+      "producer": "checkpoint",
+      "consumers": ["resume-plan", "trace"]
+    },
+    {
+      "path": "events.jsonl",
+      "producer": "append-message|checkpoint|finalize-round",
+      "consumers": ["trace", "evidence", "validate-loop"]
+    },
+    {
+      "path": "capabilities/profile.json",
+      "producer": "hostAdapter|runtime default",
+      "consumers": ["capability-doctor", "trace", "evidence"]
+    },
+    {
+      "path": "capabilities/tool-evidence.jsonl",
+      "producer": "readonly executor candidate",
+      "consumers": ["capability-doctor", "trace", "evidence"]
+    },
+    {
+      "path": "artifacts/trace.json",
+      "producer": "trace",
+      "consumers": ["human-review", "validate-loop"]
+    },
+    {
+      "path": "artifacts/evidence.json",
+      "producer": "evidence",
+      "consumers": ["human-review", "validate-loop"]
+    }
+  ],
+  "forbiddenRuntimeResponsibilities": [
+    "spawn-host-agents",
+    "wait-host-agents",
+    "parent-conversation-orchestration",
+    "plugin-installation",
+    "marketplace-management"
+  ]
+}
