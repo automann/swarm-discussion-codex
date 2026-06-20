@@ -1,1 +1,0 @@
-Contrarian response prompt for minimal-v2. Challenge host/runtime boundary and cite visible IDs.

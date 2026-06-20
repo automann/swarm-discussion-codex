@@ -1,1 +1,0 @@
-Architect response prompt for minimal-v2. Cite r1-msg-001 and r1-msg-002. Keep host adapters thin.

@@ -1,1 +1,0 @@
-{"schemaVersion":1,"kind":"swarm.tool_evidence","profileId":"expert-readonly","agentId":"coordinator","tool":"read","validated":true,"artifactPath":"tool-contract-inspection.json","validation":{"ok":true},"summary":"Read coordinator contract and runtime command/profile surfaces before executing the retained release-smoke run."}

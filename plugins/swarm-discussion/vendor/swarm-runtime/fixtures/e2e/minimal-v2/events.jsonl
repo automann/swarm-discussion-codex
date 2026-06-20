@@ -1,2 +1,0 @@
-{"data":{"round":1,"phase":"response","messageCount":3,"path":"rounds/001.json.partial"},"seq":1,"ts":"2026-06-09T00:00:00Z","type":"checkpoint_written"}
-{"data":{"round":1,"messageCount":3,"path":"rounds/001.json"},"seq":2,"ts":"2026-06-09T00:00:01Z","type":"round_finalized"}
