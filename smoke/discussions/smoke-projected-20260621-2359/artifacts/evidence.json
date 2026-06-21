@@ -1,0 +1,209 @@
+{
+  "artifacts": {
+    "paths": [
+      "smoke/discussions/smoke-projected-20260621-2359/artifacts/runtime-contract.json",
+      "smoke/discussions/smoke-projected-20260621-2359/artifacts/synthesis.md",
+      "smoke/discussions/smoke-projected-20260621-2359/artifacts/vendor-manifest.sha256",
+      "smoke/discussions/smoke-projected-20260621-2359/brief.json",
+      "smoke/discussions/smoke-projected-20260621-2359/context/summary.md",
+      "smoke/discussions/smoke-projected-20260621-2359/events.jsonl",
+      "smoke/discussions/smoke-projected-20260621-2359/manifest.json",
+      "smoke/discussions/smoke-projected-20260621-2359/messages/message-001.json",
+      "smoke/discussions/smoke-projected-20260621-2359/messages/message-002.json",
+      "smoke/discussions/smoke-projected-20260621-2359/messages/message-003.json",
+      "smoke/discussions/smoke-projected-20260621-2359/progress.md",
+      "smoke/discussions/smoke-projected-20260621-2359/projection-manifest.json",
+      "smoke/discussions/smoke-projected-20260621-2359/prompts/r001/response/certifier/prompt-build.json",
+      "smoke/discussions/smoke-projected-20260621-2359/prompts/r001/response/certifier/prompt.txt",
+      "smoke/discussions/smoke-projected-20260621-2359/prompts/r001/response/certifier/request.json",
+      "smoke/discussions/smoke-projected-20260621-2359/prompts/r001/response/skeptic/prompt-build.json",
+      "smoke/discussions/smoke-projected-20260621-2359/prompts/r001/response/skeptic/prompt.txt",
+      "smoke/discussions/smoke-projected-20260621-2359/prompts/r001/response/skeptic/request.json",
+      "smoke/discussions/smoke-projected-20260621-2359/rounds/001.json",
+      "smoke/discussions/smoke-projected-20260621-2359/rounds/001.state.json",
+      "smoke/discussions/smoke-projected-20260621-2359/transport/r001/response/collect-result.json",
+      "smoke/discussions/smoke-projected-20260621-2359/transport/r001/response/host-step.json",
+      "smoke/discussions/smoke-projected-20260621-2359/transport/r001/response/spawn-order.input.json",
+      "smoke/discussions/smoke-projected-20260621-2359/transport/r001/response/spawn-order.json",
+      "smoke/discussions/smoke-projected-20260621-2359/transport/r001/response/wait-batches.jsonl",
+      "smoke/discussions/smoke-projected-20260621-2359/transport/r001/response/wait-result-001.json"
+    ],
+    "root": "smoke/discussions/smoke-projected-20260621-2359",
+    "totalBytes": 81724
+  },
+  "capabilities": {
+    "effective": {
+      "allowedTools": [],
+      "broadTools": [],
+      "canCiteToolDerivedEvidence": false,
+      "citationRule": "tool evidence must be logged, validated, and allowed by the active profile",
+      "default": true,
+      "id": "expert-basic",
+      "ordinaryExpert": true,
+      "readonlyTools": [],
+      "role": "ordinary-expert",
+      "toolEvidencePolicy": {
+        "requiresLoggedToolCall": true,
+        "requiresValidation": true
+      }
+    },
+    "ok": true,
+    "paths": [
+      "/Users/syfq/dev/harness/swarm-discussion-codex-wt-real-projected-codex-smoke-and-certification/vendor/swarm-runtime/profiles/expert-basic.json"
+    ],
+    "profile": {
+      "allowedTools": [],
+      "broadTools": [],
+      "default": true,
+      "id": "expert-basic",
+      "ordinaryExpert": true,
+      "readonlyTools": [],
+      "role": "ordinary-expert",
+      "toolEvidencePolicy": {
+        "requiresLoggedToolCall": true,
+        "requiresValidation": true
+      }
+    },
+    "profilePath": "/Users/syfq/dev/harness/swarm-discussion-codex-wt-real-projected-codex-smoke-and-certification/vendor/swarm-runtime/profiles/expert-basic.json",
+    "source": "default",
+    "toolEvidence": {
+      "accepted": [],
+      "acceptedCount": 0,
+      "citable": false,
+      "errorCount": 0,
+      "recordCount": 0
+    },
+    "toolEvidencePath": null
+  },
+  "discussion": {
+    "id": "smoke-projected-20260621-2359",
+    "mode": "release-smoke",
+    "schemaVersion": 1,
+    "status": "completed",
+    "title": "Codex projected adapter release-smoke certification"
+  },
+  "generatedAt": "2026-06-21T16:09:17Z",
+  "kind": "swarm.discussion_evidence",
+  "metrics": {
+    "artifactCount": 26,
+    "artifactTotalBytes": 81724,
+    "citableToolEvidenceCount": 0,
+    "collectResultCount": 1,
+    "eventCount": 9,
+    "eventSpanSeconds": 247,
+    "finalRoundCount": 1,
+    "partialRoundCount": 0,
+    "promptBuildCount": 2,
+    "promptCharMax": 2673,
+    "promptCharTotal": 5327,
+    "toolEvidenceRecordCount": 0,
+    "validationErrorCount": 0
+  },
+  "ok": true,
+  "outcome": {
+    "determinedBy": "discussion",
+    "nextAction": {
+      "command": null,
+      "kind": "none",
+      "reason": "discussion completed"
+    },
+    "reason": "discussion completed",
+    "result": "completed"
+  },
+  "prompts": {
+    "personas": {
+      "certifier": 1,
+      "skeptic": 1
+    },
+    "phases": {
+      "response": 2
+    },
+    "promptBuildCount": 2,
+    "visibility": {
+      "full": 2
+    }
+  },
+  "quality": {
+    "qualityScore": 0.9,
+    "recommendation": "Conditionally certify only if this retained artifact tree passes projection-aware gates and preserves the raw real-host transport chain.",
+    "synthesisPresent": true
+  },
+  "rawHostLogs": {
+    "paths": [],
+    "present": false,
+    "required": false
+  },
+  "schemaVersion": 1,
+  "trace": {
+    "health": "on-track",
+    "nextAction": {
+      "command": null,
+      "kind": "none",
+      "reason": "discussion completed"
+    }
+  },
+  "transport": {
+    "collectResultCount": 1,
+    "collectResults": [
+      {
+        "complete": true,
+        "errorCount": 0,
+        "missingAgentIds": [],
+        "ok": true,
+        "path": "smoke/discussions/smoke-projected-20260621-2359/transport/r001/response/collect-result.json",
+        "resultCount": 2,
+        "timedOut": false
+      }
+    ],
+    "complete": true,
+    "spawnOrderCount": 1,
+    "waitBatchCount": 1
+  },
+  "validation": {
+    "errorCount": 0,
+    "ok": true,
+    "summary": {
+      "discussionId": "smoke-projected-20260621-2359",
+      "roundCount": 1,
+      "status": "completed",
+      "validatedRounds": 1
+    },
+    "warningCount": 0
+  },
+  "wal": {
+    "events": {
+      "count": 9,
+      "counts": {
+        "checkpoint_written": 4,
+        "discussion_initialized": 1,
+        "message_appended": 3,
+        "round_finalized": 1
+      },
+      "lastType": "round_finalized"
+    },
+    "resume": {
+      "maxId": "r1-msg-003",
+      "messageCount": 3,
+      "nextAction": "start_next_round",
+      "nextMessageId": "r1-msg-004",
+      "ok": true,
+      "phase": "complete",
+      "round": 1,
+      "source": "final",
+      "statePath": "smoke/discussions/smoke-projected-20260621-2359/rounds/001.json"
+    },
+    "rounds": {
+      "finalCount": 1,
+      "partialCount": 0,
+      "rounds": [
+        {
+          "messageCount": 3,
+          "path": "smoke/discussions/smoke-projected-20260621-2359/rounds/001.json",
+          "round": 1,
+          "source": "final",
+          "validationOk": true
+        }
+      ]
+    }
+  }
+}

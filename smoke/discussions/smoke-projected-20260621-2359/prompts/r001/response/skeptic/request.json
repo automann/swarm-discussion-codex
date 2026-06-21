@@ -1,0 +1,37 @@
+{
+  "phase": "response",
+  "roundId": 1,
+  "topic": "Codex v0.3 adapter release-smoke certification",
+  "contextSummaryPath": "../../../../context/summary.md",
+  "visibilityBudget": 4096,
+  "persona": {
+    "id": "skeptic",
+    "name": "Skeptic",
+    "expertise": [
+      "release risk",
+      "test strategy",
+      "workflow ergonomics",
+      "projection loopholes"
+    ],
+    "thinkingStyle": "adversarial but pragmatic",
+    "bias": "question whether the projected custom-agent gate has enough retained host proof",
+    "replyTendency": "stress-test assumptions and identify loopholes",
+    "stakes": "A weak gate can certify simulated transport; an over-heavy gate can block release without adding meaningful proof.",
+    "blindSpots": [
+      "may initially underweight provenance guarantees"
+    ]
+  },
+  "messages": [
+    {
+      "id": "r1-msg-001",
+      "from": "moderator",
+      "type": "moderator_opening",
+      "role": "fixed",
+      "content": {
+        "summary": "Release certification should be debated around retained v0.3 projected proof: exact projected custom-agent names and hashes, real Codex host ids, runtime prompt-build artifacts, preserved raw wait batches, normalized transport collection, finalized WAL, trace, evidence, validate-host-step, validate-loop, validate-discussion, and any P0 blockers before release."
+      },
+      "references": []
+    }
+  ],
+  "instruction": "You are a no-tools leaf expert. Do not use tools, browse, read files, run commands, spawn agents, manage threads, call runtime helpers, or mutate artifacts. Return ONLY one JSON object, with no markdown or prose outside JSON. Required keys: position, reasoning, proposals, references, counterpoints, questions, positionShift, currentPosition, previousPosition, shiftReason, shiftTriggerIds, confidence, openQuestion, summary. Stress-test whether retained projected custom-agent evidence is enough to avoid certifying simulated transport, then identify the minimum required evidence and any P0 blockers before release. Cite only visible message id r1-msg-001 in references and shiftTriggerIds."
+}

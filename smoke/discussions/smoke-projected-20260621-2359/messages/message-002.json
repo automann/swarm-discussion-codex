@@ -1,0 +1,27 @@
+{
+  "from": "certifier",
+  "type": "response",
+  "content": {
+    "hostAgentId": "019eeaed-0918-7e72-8ac6-53727263ea32",
+    "agentDescriptor": {
+      "agentType": "swarm-20260621-2359-certifier",
+      "invocationForm": "explicit_spawn",
+      "projectedName": "swarm-20260621-2359-certifier",
+      "projectedPath": ".codex/agents/swarm-20260621-2359-certifier.toml",
+      "projectedSha256": "dcaf3e5f0cf2ae017a0f667ac8f281ccdd726f6ecb1a0486cf306be5a259e0fd",
+      "promptRef": "prompts/r001/response/certifier/prompt.txt"
+    },
+    "result": {
+      "position": "Do not certify yet on the visible record. Certification should be conditional on replayable retained projected Codex custom-agent transport proof, and the current slice only defines the evidence standard rather than demonstrating that the retained artifacts satisfy it.",
+      "confidence": 0.78,
+      "openQuestion": "Whether the retained artifact bundle actually contains the required projected names, hashes, raw waits, normalized collection, WAL, trace, evidence, and validator pass outputs."
+    },
+    "summary": "No P0 blocker is proven by the visible slice, but sufficiency is also not proven. Missing or non-replayable retained projected transport evidence would be a P0 blocker before v0.3 certification."
+  },
+  "references": [
+    {
+      "relation": "supports",
+      "targetId": "r1-msg-001"
+    }
+  ]
+}

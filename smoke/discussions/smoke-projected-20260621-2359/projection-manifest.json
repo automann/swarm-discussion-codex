@@ -1,0 +1,19 @@
+{
+  "createdPaths": [
+    {
+      "path": ".codex/agents/swarm-20260621-2359-certifier.toml",
+      "sha256": "dcaf3e5f0cf2ae017a0f667ac8f281ccdd726f6ecb1a0486cf306be5a259e0fd"
+    },
+    {
+      "path": ".codex/agents/swarm-20260621-2359-skeptic.toml",
+      "sha256": "8f767cb0b0a6c09094642740f6c1fcb11e2f290f7cab1cbcc2a59bad8e98ab37"
+    }
+  ],
+  "deletionStatus": "clean",
+  "remainingPaths": [],
+  "removedPaths": [
+    ".codex/agents/swarm-20260621-2359-certifier.toml",
+    ".codex/agents/swarm-20260621-2359-skeptic.toml"
+  ],
+  "runId": "20260621-2359"
+}

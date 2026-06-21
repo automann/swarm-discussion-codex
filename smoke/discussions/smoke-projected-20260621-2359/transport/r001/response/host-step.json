@@ -1,0 +1,46 @@
+{
+  "artifacts": {
+    "collectResultPath": "transport/r001/response/collect-result.json",
+    "hostStepPath": "transport/r001/response/host-step.json",
+    "spawnOrderPath": "transport/r001/response/spawn-order.json",
+    "waitBatchesPath": "transport/r001/response/wait-batches.jsonl"
+  },
+  "discussionId": "smoke-projected-20260621-2359",
+  "host": "codex",
+  "parentContext": {
+    "agentIds": [
+      "019eeaed-0918-7e72-8ac6-53727263ea32",
+      "019eeaed-3fba-7fa0-9f5e-781a444eb448"
+    ],
+    "briefPath": "context/summary.md",
+    "nextHelperCommand": "PYTHONDONTWRITEBYTECODE=1 python3 vendor/swarm-runtime/runtime/swarm_rt.py transport-collect --dir . --round 1 --phase response",
+    "phase": "response"
+  },
+  "phase": "response",
+  "round": 1,
+  "runtimeCommands": {
+    "appendMessage": "PYTHONDONTWRITEBYTECODE=1 python3 vendor/swarm-runtime/runtime/swarm_rt.py append-message --dir . --round 1 --phase response --message <message.json>",
+    "checkpoint": "PYTHONDONTWRITEBYTECODE=1 python3 vendor/swarm-runtime/runtime/swarm_rt.py checkpoint --dir . --round 1 --phase response --state rounds/001.json.partial",
+    "collectMerge": "PYTHONDONTWRITEBYTECODE=1 python3 vendor/swarm-runtime/runtime/swarm_rt.py collect-merge --spawn-order transport/r001/response/spawn-order.json --wait-result transport/r001/response/wait-batches.jsonl",
+    "contextBuild": "PYTHONDONTWRITEBYTECODE=1 python3 vendor/swarm-runtime/runtime/swarm_rt.py context-build --brief brief.json --out context/summary.md",
+    "evidence": "PYTHONDONTWRITEBYTECODE=1 python3 vendor/swarm-runtime/runtime/swarm_rt.py evidence --dir . --output artifacts/evidence.json",
+    "finalizeRound": "PYTHONDONTWRITEBYTECODE=1 python3 vendor/swarm-runtime/runtime/swarm_rt.py finalize-round --dir . --round 1 --state rounds/001.json",
+    "promptBuild": "PYTHONDONTWRITEBYTECODE=1 python3 vendor/swarm-runtime/runtime/swarm_rt.py prompt-build --request prompts/r001/response/<agent-id>/request.json --out-dir prompts/r001/response/<agent-id>",
+    "trace": "PYTHONDONTWRITEBYTECODE=1 python3 vendor/swarm-runtime/runtime/swarm_rt.py trace --dir ."
+  },
+  "schemaVersion": 1,
+  "transport": {
+    "customAgentProjection": {
+      "agentSourceDir": ".codex/agents",
+      "count": 2,
+      "projected": true
+    },
+    "partialBatches": true,
+    "rawHostLogs": {
+      "required": false
+    },
+    "resultKey": "agent_id",
+    "spawnPrimitive": "multi_agent_v1.spawn_agent",
+    "waitPrimitive": "multi_agent_v1.wait_agent"
+  }
+}

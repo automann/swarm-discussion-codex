@@ -1,0 +1,32 @@
+{
+  "topic": "Codex v0.3 adapter release-smoke certification: decide whether the retained projected custom-agent transport evidence is sufficient to certify the adapter, and identify any P0 blockers before release.",
+  "objective": "Decide whether retained projected custom-agent transport evidence is sufficient to certify the Codex v0.3 adapter release smoke, and identify any P0 blockers before release.",
+  "mode": "release-smoke",
+  "discussionId": "smoke-projected-20260621-2359",
+  "runId": "20260621-2359",
+  "workspaceRoot": "/Users/syfq/dev/harness/swarm-discussion-codex-wt-real-projected-codex-smoke-and-certification",
+  "discussionDir": "smoke/discussions/smoke-projected-20260621-2359",
+  "projectionManifest": "smoke/discussions/smoke-projected-20260621-2359/projection-manifest.json",
+  "certificationQuestion": "Is the retained projected custom-agent transport evidence sufficient for v0.3 adapter release certification?",
+  "mustIdentify": [
+    "whether real Codex projected custom-agent host ids are retained",
+    "whether runtime prompt-build artifacts are used as the only expert prompts",
+    "whether raw wait batches are persisted before interpretation",
+    "whether transport collection, WAL finalization, trace, evidence, validate-host-step, validate-loop, and validate-discussion pass",
+    "any P0 blockers before release"
+  ],
+  "projectedExperts": [
+    {
+      "projectedName": "swarm-20260621-2359-certifier",
+      "persona": "certifier",
+      "projectedPath": ".codex/agents/swarm-20260621-2359-certifier.toml",
+      "projectedSha256": "dcaf3e5f0cf2ae017a0f667ac8f281ccdd726f6ecb1a0486cf306be5a259e0fd"
+    },
+    {
+      "projectedName": "swarm-20260621-2359-skeptic",
+      "persona": "skeptic",
+      "projectedPath": ".codex/agents/swarm-20260621-2359-skeptic.toml",
+      "projectedSha256": "8f767cb0b0a6c09094642740f6c1fcb11e2f290f7cab1cbcc2a59bad8e98ab37"
+    }
+  ]
+}

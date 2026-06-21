@@ -1,0 +1,26 @@
+[
+  {
+    "agentId": "019eeaed-0918-7e72-8ac6-53727263ea32",
+    "persona": "certifier",
+    "agentDescriptor": {
+      "projectedName": "swarm-20260621-2359-certifier",
+      "projectedPath": ".codex/agents/swarm-20260621-2359-certifier.toml",
+      "projectedSha256": "dcaf3e5f0cf2ae017a0f667ac8f281ccdd726f6ecb1a0486cf306be5a259e0fd",
+      "agentType": "swarm-20260621-2359-certifier",
+      "invocationForm": "explicit_spawn",
+      "promptRef": "prompts/r001/response/certifier/prompt.txt"
+    }
+  },
+  {
+    "agentId": "019eeaed-3fba-7fa0-9f5e-781a444eb448",
+    "persona": "skeptic",
+    "agentDescriptor": {
+      "projectedName": "swarm-20260621-2359-skeptic",
+      "projectedPath": ".codex/agents/swarm-20260621-2359-skeptic.toml",
+      "projectedSha256": "8f767cb0b0a6c09094642740f6c1fcb11e2f290f7cab1cbcc2a59bad8e98ab37",
+      "agentType": "swarm-20260621-2359-skeptic",
+      "invocationForm": "explicit_spawn",
+      "promptRef": "prompts/r001/response/skeptic/prompt.txt"
+    }
+  }
+]

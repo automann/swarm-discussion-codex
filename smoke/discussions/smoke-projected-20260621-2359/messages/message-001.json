@@ -1,0 +1,9 @@
+{
+  "from": "moderator",
+  "type": "moderator_opening",
+  "role": "fixed",
+  "content": {
+    "summary": "Release certification should be debated around retained v0.3 projected proof: exact projected custom-agent names and hashes, real Codex host ids, runtime prompt-build artifacts, preserved raw wait batches, normalized transport collection, finalized WAL, trace, evidence, validate-host-step, validate-loop, validate-discussion, and any P0 blockers before release."
+  },
+  "references": []
+}

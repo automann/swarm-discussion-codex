@@ -1,0 +1,126 @@
+{
+  "round": 1,
+  "roundId": 1,
+  "phase": "complete",
+  "mode": "release-smoke",
+  "topic": "Codex v0.3 adapter release-smoke certification",
+  "timestamp": "2026-06-21T16:06:25.914Z",
+  "messages": [
+    {
+      "id": "r1-msg-001",
+      "from": "moderator",
+      "type": "moderator_opening",
+      "role": "fixed",
+      "content": {
+        "summary": "Release certification should be debated around retained v0.3 projected proof: exact projected custom-agent names and hashes, real Codex host ids, runtime prompt-build artifacts, preserved raw wait batches, normalized transport collection, finalized WAL, trace, evidence, validate-host-step, validate-loop, validate-discussion, and any P0 blockers before release."
+      },
+      "references": []
+    },
+    {
+      "id": "r1-msg-002",
+      "from": "certifier",
+      "type": "response",
+      "content": {
+        "hostAgentId": "019eeaed-0918-7e72-8ac6-53727263ea32",
+        "agentDescriptor": {
+          "agentType": "swarm-20260621-2359-certifier",
+          "invocationForm": "explicit_spawn",
+          "projectedName": "swarm-20260621-2359-certifier",
+          "projectedPath": ".codex/agents/swarm-20260621-2359-certifier.toml",
+          "projectedSha256": "dcaf3e5f0cf2ae017a0f667ac8f281ccdd726f6ecb1a0486cf306be5a259e0fd",
+          "promptRef": "prompts/r001/response/certifier/prompt.txt"
+        },
+        "result": {
+          "position": "Do not certify yet on the visible record. Certification should be conditional on replayable retained projected Codex custom-agent transport proof, and the current slice only defines the evidence standard rather than demonstrating that the retained artifacts satisfy it.",
+          "confidence": 0.78,
+          "openQuestion": "Whether the retained artifact bundle actually contains the required projected names, hashes, raw waits, normalized collection, WAL, trace, evidence, and validator pass outputs."
+        },
+        "summary": "No P0 blocker is proven by the visible slice, but sufficiency is also not proven. Missing or non-replayable retained projected transport evidence would be a P0 blocker before v0.3 certification."
+      },
+      "references": [
+        {
+          "relation": "supports",
+          "targetId": "r1-msg-001"
+        }
+      ]
+    },
+    {
+      "id": "r1-msg-003",
+      "from": "skeptic",
+      "type": "response",
+      "content": {
+        "hostAgentId": "019eeaed-3fba-7fa0-9f5e-781a444eb448",
+        "agentDescriptor": {
+          "agentType": "swarm-20260621-2359-skeptic",
+          "invocationForm": "explicit_spawn",
+          "projectedName": "swarm-20260621-2359-skeptic",
+          "projectedPath": ".codex/agents/swarm-20260621-2359-skeptic.toml",
+          "projectedSha256": "8f767cb0b0a6c09094642740f6c1fcb11e2f290f7cab1cbcc2a59bad8e98ab37",
+          "promptRef": "prompts/r001/response/skeptic/prompt.txt"
+        },
+        "result": {
+          "position": "Conditional certification only: the retained evidence described is the right shape, but it is sufficient only if the artifacts form a continuous, hash-bound chain from runtime prompt-build to real Codex host execution, raw wait batches, normalized transport collection, finalized WAL, trace, evidence, and validators. If any link is retained only as derived summary or regenerated output, treat it as a P0 blocker because it can certify simulated transport.",
+          "confidence": "medium",
+          "openQuestion": "Whether the validators are provenance-checking the retained run itself or merely validating normalized artifacts remains the decisive release question."
+        },
+        "summary": "Certify only if retained raw host outputs, projection hashes, prompt-build artifacts, normalized collection, WAL, trace, evidence, and validators all bind to the same run. Missing raw wait provenance or validator substitution is P0."
+      },
+      "references": [
+        {
+          "relation": "questions",
+          "targetId": "r1-msg-001"
+        }
+      ]
+    }
+  ],
+  "argumentGraph": [
+    {
+      "from": "r1-msg-002",
+      "relation": "supports",
+      "to": "r1-msg-001"
+    },
+    {
+      "from": "r1-msg-003",
+      "relation": "questions",
+      "to": "r1-msg-001"
+    }
+  ],
+  "positionShifts": [],
+  "personaContextLog": {
+    "certifier": {
+      "r1-msg-001": "full"
+    },
+    "skeptic": {
+      "r1-msg-001": "full"
+    }
+  },
+  "synthesis": {
+    "recommendation": "Conditionally certify only if this retained artifact tree passes projection-aware gates and preserves the raw real-host transport chain.",
+    "recommendationRationale": "Both projected experts agree that the release claim depends on retained, replayable evidence binding projected agent names and hashes to real Codex host ids, prompt-build artifacts, raw wait batches, normalized collection, finalized WAL, trace, evidence, and validators. The skeptic highlights validator substitution and missing raw wait provenance as P0 blockers; the certifier withholds certification until the artifact bundle demonstrates that chain.",
+    "agreements": [
+      "Do not certify simulated, regenerated, or summary-only transport evidence.",
+      "Retained raw host ids, projected names and hashes, prompt-build artifacts, raw wait batches, normalized collection, finalized WAL, trace, evidence, validate-host-step, validate-loop, and validate-discussion must bind to the same run."
+    ],
+    "activeDisagreements": [
+      "The certifier frames the visible record as insufficient until gates enumerate the artifact bundle; the skeptic allows conditional certification if automated retained-run provenance checks pass."
+    ],
+    "qualityScore": 0.9
+  },
+  "metadata": {
+    "collectResultCount": 2,
+    "hostAgentIds": [
+      "019eeaed-0918-7e72-8ac6-53727263ea32",
+      "019eeaed-3fba-7fa0-9f5e-781a444eb448"
+    ],
+    "messageCount": 3,
+    "participants": [
+      "moderator",
+      "certifier",
+      "skeptic"
+    ],
+    "promptBuildCount": 2,
+    "referenceCount": 2,
+    "invocationForm": "explicit_spawn",
+    "projectionRequired": true
+  }
+}
