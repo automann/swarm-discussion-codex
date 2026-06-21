@@ -5,6 +5,7 @@
       "smoke/discussions/smoke-projected-20260621-2359/artifacts/synthesis.md",
       "smoke/discussions/smoke-projected-20260621-2359/artifacts/vendor-manifest.sha256",
       "smoke/discussions/smoke-projected-20260621-2359/brief.json",
+      "smoke/discussions/smoke-projected-20260621-2359/certification/adapter-certification.json",
       "smoke/discussions/smoke-projected-20260621-2359/context/summary.md",
       "smoke/discussions/smoke-projected-20260621-2359/events.jsonl",
       "smoke/discussions/smoke-projected-20260621-2359/manifest.json",
@@ -29,7 +30,7 @@
       "smoke/discussions/smoke-projected-20260621-2359/transport/r001/response/wait-result-001.json"
     ],
     "root": "smoke/discussions/smoke-projected-20260621-2359",
-    "totalBytes": 81724
+    "totalBytes": 82436
   },
   "capabilities": {
     "effective": {
@@ -49,7 +50,7 @@
     },
     "ok": true,
     "paths": [
-      "/Users/syfq/dev/harness/swarm-discussion-codex-wt-real-projected-codex-smoke-and-certification/vendor/swarm-runtime/profiles/expert-basic.json"
+      "/Users/syfq/dev/harness/swarm-discussion-codex/vendor/swarm-runtime/profiles/expert-basic.json"
     ],
     "profile": {
       "allowedTools": [],
@@ -64,7 +65,7 @@
         "requiresValidation": true
       }
     },
-    "profilePath": "/Users/syfq/dev/harness/swarm-discussion-codex-wt-real-projected-codex-smoke-and-certification/vendor/swarm-runtime/profiles/expert-basic.json",
+    "profilePath": "/Users/syfq/dev/harness/swarm-discussion-codex/vendor/swarm-runtime/profiles/expert-basic.json",
     "source": "default",
     "toolEvidence": {
       "accepted": [],
@@ -82,11 +83,11 @@
     "status": "completed",
     "title": "Codex projected adapter release-smoke certification"
   },
-  "generatedAt": "2026-06-21T16:09:17Z",
+  "generatedAt": "2026-06-21T17:10:25Z",
   "kind": "swarm.discussion_evidence",
   "metrics": {
-    "artifactCount": 26,
-    "artifactTotalBytes": 81724,
+    "artifactCount": 27,
+    "artifactTotalBytes": 82436,
     "citableToolEvidenceCount": 0,
     "collectResultCount": 1,
     "eventCount": 9,

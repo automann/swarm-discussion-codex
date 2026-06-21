@@ -4,7 +4,7 @@ set -euo pipefail
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 MARKETPLACE_NAME="swarm-discussion-codex-root-smoke"
 PLUGIN_NAME="swarm-discussion"
-PLUGIN_VERSION="0.2.2"
+PLUGIN_VERSION="0.3.0"
 SELF_TEST_DENYLIST=0
 
 for arg in "$@"; do

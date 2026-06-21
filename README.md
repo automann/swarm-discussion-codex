@@ -48,22 +48,25 @@ host capabilities, but they do not replace the runtime certification gates.
 
 ## Release Provenance
 
-Current certified adapter metadata:
+Current v0.3.0 release-candidate adapter metadata:
 
 | Field | Value |
 |---|---|
-| Plugin version | `0.2.2` |
-| Runtime sha | `fb7f869d82fe3ba69dc9bfec148f8d833d687e8a` |
+| Plugin version | `0.3.0` |
+| Runtime sha | `04f4974f26f5d3f8da55cc3b1c2f9068a83d4cf5` |
 | Runtime compatibility | `swarm-runtime-v2-alpha` |
-| Retained certification discussion | `smoke/discussions/smoke-retained-20260621-021426` |
+| Retained projected certification discussion | `smoke/discussions/smoke-projected-20260621-2359` |
+| Projection certification gate | `--require-projection` |
 | Certification verdict | `certified: true` |
-| Certification completed | `2026-06-20T18:20:19.857Z` |
-| Release tag | `v0.2.2` |
+| Target release tag | `v0.3.0` after sprint-level review |
 
 The top-level aggregator source pin is a separate repository follow-through
 step. This repository records the certified runtime pin, retained discussion
-evidence, and release tag so the aggregator can pin an auditable adapter
-release.
+evidence, and target release tag so the aggregator can later pin an auditable
+adapter release. The retained projected smoke proves parent-created
+discussion-scoped `.codex/agents/` projection, runtime-owned transport
+provenance, terminal cleanup, and zero residue for
+`swarm-20260621-2359-*.toml`.
 
 ## Verification
 
@@ -81,6 +84,16 @@ You can also run the wrapper doctor directly during local development:
 
 ```bash
 python3 bin/swarm_runtime_wrapper.py doctor --smoke-fixture
+```
+
+Release operators can replay the retained projected certification gate:
+
+```bash
+python3 /Users/syfq/dev/harness/swarm-discussion-runtime/conformance/certify_adapter.py \
+  --require-projection \
+  --discussion smoke/discussions/smoke-projected-20260621-2359 \
+  --vendored vendor/swarm-runtime \
+  --runtime vendor/swarm-runtime/runtime/swarm_rt.py
 ```
 
 The top-level aggregator update is intentionally separate from this adapter
