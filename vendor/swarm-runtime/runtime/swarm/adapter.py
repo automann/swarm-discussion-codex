@@ -236,6 +236,23 @@ def validate_host_transport_metadata(payload: Any) -> dict[str, Any]:
                     "raw host logs must remain optional secondary evidence",
                 )
             )
+        projection = transport.get("customAgentProjection")
+        if projection is not None:
+            base = "hostStep.transport.customAgentProjection"
+            if not isinstance(projection, dict):
+                errors.append(_issue("invalid_custom_agent_projection", base, "customAgentProjection must be an object"))
+            else:
+                if not isinstance(projection.get("projected"), bool):
+                    errors.append(_issue("invalid_custom_agent_projection", f"{base}.projected", "projected is required and must be a boolean"))
+                source_dir = projection.get("agentSourceDir")
+                if source_dir is not None and (not isinstance(source_dir, str) or not source_dir.strip()):
+                    errors.append(_issue("invalid_custom_agent_projection", f"{base}.agentSourceDir", "agentSourceDir must be a non-empty string"))
+                count = projection.get("count")
+                if count is not None and (isinstance(count, bool) or not isinstance(count, int) or count < 0):
+                    errors.append(_issue("invalid_custom_agent_projection", f"{base}.count", "count must be a non-negative integer", count))
+                extra = sorted(set(projection) - {"projected", "agentSourceDir", "count"})
+                if extra:
+                    errors.append(_issue("invalid_custom_agent_projection", base, "unexpected keys in customAgentProjection", extra))
 
     artifacts = _require_mapping(packet.get("artifacts"), "hostStep.artifacts", errors)
     if isinstance(packet.get("artifacts"), dict):

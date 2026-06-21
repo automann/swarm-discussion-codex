@@ -1,0 +1,55 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://automann.dev/swarm-discussion-runtime/schemas/collect-result.schema.json",
+  "title": "Swarm Discussion Collect Result",
+  "description": "Output of collect-merge / transport-collect (collect-result.json): completed persona payloads in spawn order, each optionally carrying the projected custom-agent descriptor (plan 007).",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "ok",
+    "complete",
+    "timedOut",
+    "requiredAgentIds",
+    "receivedAgentIds",
+    "missingAgentIds",
+    "missingPersonas",
+    "results",
+    "errors"
+  ],
+  "properties": {
+    "ok": { "type": "boolean" },
+    "complete": { "type": "boolean" },
+    "timedOut": { "type": "boolean" },
+    "requiredAgentIds": { "type": "array", "items": { "type": ["string", "null"] } },
+    "receivedAgentIds": { "type": "array", "items": { "type": "string" } },
+    "missingAgentIds": { "type": "array", "items": { "type": ["string", "null"] } },
+    "missingPersonas": { "type": "array", "items": { "type": ["string", "null"] } },
+    "results": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["persona", "agentId", "result"],
+        "properties": {
+          "persona": { "type": ["string", "null"] },
+          "agentId": { "type": ["string", "null"] },
+          "result": { "type": "object" },
+          "agentDescriptor": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["projectedName"],
+            "properties": {
+              "projectedName": { "type": "string", "minLength": 1 },
+              "projectedPath": { "type": "string", "minLength": 1 },
+              "projectedSha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+              "agentType": { "type": "string", "minLength": 1 },
+              "invocationForm": { "enum": ["explicit_spawn", "at_mention"] },
+              "promptRef": { "type": "string", "minLength": 1 }
+            }
+          }
+        }
+      }
+    },
+    "errors": { "type": "array" }
+  }
+}

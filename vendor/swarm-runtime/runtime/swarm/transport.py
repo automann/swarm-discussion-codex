@@ -15,6 +15,9 @@ from swarm.collect import collect_merge
 SCHEMA_VERSION = 1
 DEFAULT_COMMAND_PREFIX = "swarm-rt"
 PHASE_NAME = re.compile(r"^[A-Za-z0-9][A-Za-z0-9_-]*\Z")
+_SHA256 = re.compile(r"^[0-9a-f]{64}\Z")
+_INVOCATION_FORMS = {"explicit_spawn", "at_mention"}
+_DESCRIPTOR_OPTIONAL_STR = ("projectedPath", "agentType", "promptRef")
 
 
 def _issue(code: str, path: str, message: str, value: Any = None) -> dict[str, Any]:
@@ -66,6 +69,52 @@ def _agent_id(spec: dict[str, Any]) -> str | None:
     return str(value) if value is not None else None
 
 
+def _validate_agent_descriptor(descriptor: Any, path: str) -> tuple[dict[str, Any] | None, list[dict[str, Any]]]:
+    """Validate an optional host-agnostic projected custom-agent descriptor (plan 007)."""
+    if not isinstance(descriptor, dict):
+        return None, [_issue("invalid_agent_descriptor", path, "agentDescriptor must be an object")]
+
+    errors: list[dict[str, Any]] = []
+    normalized: dict[str, Any] = {}
+
+    projected_name = descriptor.get("projectedName")
+    if not isinstance(projected_name, str) or not projected_name.strip():
+        errors.append(
+            _issue("invalid_agent_descriptor", f"{path}.projectedName", "projectedName is required and must be a non-empty string")
+        )
+    else:
+        normalized["projectedName"] = projected_name
+
+    sha = descriptor.get("projectedSha256")
+    if sha is not None:
+        if not isinstance(sha, str) or not _SHA256.match(sha):
+            errors.append(
+                _issue("invalid_agent_descriptor", f"{path}.projectedSha256", "projectedSha256 must be 64 lowercase hex characters", sha)
+            )
+        else:
+            normalized["projectedSha256"] = sha
+
+    invocation = descriptor.get("invocationForm")
+    if invocation is not None:
+        if invocation not in _INVOCATION_FORMS:
+            errors.append(
+                _issue("invalid_agent_descriptor", f"{path}.invocationForm", "invocationForm must be explicit_spawn or at_mention", invocation)
+            )
+        else:
+            normalized["invocationForm"] = invocation
+
+    for field in _DESCRIPTOR_OPTIONAL_STR:
+        value = descriptor.get(field)
+        if value is None:
+            continue
+        if not isinstance(value, str) or not value.strip():
+            errors.append(_issue("invalid_agent_descriptor", f"{path}.{field}", f"{field} must be a non-empty string"))
+        else:
+            normalized[field] = value
+
+    return (normalized if not errors else None), errors
+
+
 def _validate_spawn_order(spawn_order: Any) -> tuple[list[dict[str, Any]], list[dict[str, Any]]]:
     errors: list[dict[str, Any]] = []
     if not isinstance(spawn_order, list) or not spawn_order:
@@ -93,6 +142,14 @@ def _validate_spawn_order(spawn_order: Any) -> tuple[list[dict[str, Any]], list[
         normalized_item = {"agentId": agent_id, "persona": persona}
         if item.get("token"):
             normalized_item["token"] = str(item["token"])
+        if "agentDescriptor" in item:
+            descriptor, descriptor_errors = _validate_agent_descriptor(
+                item["agentDescriptor"], f"{path}.agentDescriptor"
+            )
+            if descriptor_errors:
+                errors.extend(descriptor_errors)
+                continue
+            normalized_item["agentDescriptor"] = descriptor
         normalized.append(normalized_item)
     return normalized, errors
 
@@ -160,6 +217,7 @@ def write_transport_step(
     spawn_order: Any,
     brief_path: str = "context/summary.md",
     command_prefix: str = DEFAULT_COMMAND_PREFIX,
+    agent_source_dir: str | None = None,
 ) -> dict[str, Any]:
     normalized_spawn_order, errors = _validate_spawn_order(spawn_order)
     errors.extend(_validate_step_inputs(host, discussion_id, round_id, phase, brief_path, command_prefix))
@@ -171,6 +229,24 @@ def write_transport_step(
     rel_wait = _relative(paths["waitBatchesPath"], discussion_dir)
     rel_collect = _relative(paths["collectResultPath"], discussion_dir)
     rel_host = _relative(paths["hostStepPath"], discussion_dir)
+    transport_block: dict[str, Any] = {
+        "spawnPrimitive": "multi_agent_v1.spawn_agent" if host == "codex" else "Agent",
+        "waitPrimitive": "multi_agent_v1.wait_agent" if host == "codex" else "Agent result collection",
+        "resultKey": "agent_id" if host == "codex" else "name",
+        "partialBatches": True,
+        "rawHostLogs": {"required": False},
+    }
+    descriptor_entries = [item for item in normalized_spawn_order if item.get("agentDescriptor")]
+    if descriptor_entries:
+        source_dir = agent_source_dir
+        if not source_dir:
+            first_path = descriptor_entries[0]["agentDescriptor"].get("projectedPath")
+            source_dir = str(Path(first_path).parent) if first_path else ""
+        transport_block["customAgentProjection"] = {
+            "projected": True,
+            "agentSourceDir": source_dir,
+            "count": len(descriptor_entries),
+        }
     host_step = {
         "schemaVersion": SCHEMA_VERSION,
         "host": host,
@@ -186,13 +262,7 @@ def write_transport_step(
             ),
         },
         "runtimeCommands": _runtime_commands(command_prefix, round_id, phase),
-        "transport": {
-            "spawnPrimitive": "multi_agent_v1.spawn_agent" if host == "codex" else "Agent",
-            "waitPrimitive": "multi_agent_v1.wait_agent" if host == "codex" else "Agent result collection",
-            "resultKey": "agent_id" if host == "codex" else "name",
-            "partialBatches": True,
-            "rawHostLogs": {"required": False},
-        },
+        "transport": transport_block,
         "artifacts": {
             "spawnOrderPath": rel_spawn,
             "waitBatchesPath": rel_wait,

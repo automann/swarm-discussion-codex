@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://automann.dev/swarm-discussion-runtime/schemas/spawn-order.schema.json",
+  "title": "Swarm Discussion Normalized Spawn Order",
+  "description": "The runtime-normalized spawn-order.json written by transport-init: one entry per expert in stable spawn order, with an optional host-agnostic projected custom-agent descriptor (plan 007).",
+  "type": "array",
+  "minItems": 1,
+  "items": {
+    "type": "object",
+    "additionalProperties": false,
+    "required": ["agentId", "persona"],
+    "properties": {
+      "agentId": { "type": "string", "minLength": 1 },
+      "persona": { "type": "string", "minLength": 1 },
+      "token": { "type": "string", "minLength": 1 },
+      "agentDescriptor": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["projectedName"],
+        "properties": {
+          "projectedName": { "type": "string", "minLength": 1 },
+          "projectedPath": { "type": "string", "minLength": 1 },
+          "projectedSha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+          "agentType": { "type": "string", "minLength": 1 },
+          "invocationForm": { "enum": ["explicit_spawn", "at_mention"] },
+          "promptRef": { "type": "string", "minLength": 1 }
+        }
+      }
+    }
+  }
+}

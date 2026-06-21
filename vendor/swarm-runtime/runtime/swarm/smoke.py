@@ -73,6 +73,20 @@ def _resolve_artifact_path(discussion_dir: Path, artifact_path: Any) -> Path | N
     return discussion_dir / artifact_path
 
 
+def _result_core(item: dict[str, Any]) -> dict[str, Any]:
+    core = {
+        "persona": item.get("persona"),
+        "agentId": item.get("agentId"),
+        "result": item.get("result"),
+    }
+    # Provenance must survive the replay comparison: a stored collect-result that
+    # drops or mutates agentDescriptor must NOT match the rebuilt output, or the
+    # certification boundary would accept bogus projection provenance (plan 007).
+    if "agentDescriptor" in item:
+        core["agentDescriptor"] = item.get("agentDescriptor")
+    return core
+
+
 def _collect_core(payload: dict[str, Any]) -> dict[str, Any]:
     return {
         "ok": payload.get("ok"),
@@ -83,11 +97,7 @@ def _collect_core(payload: dict[str, Any]) -> dict[str, Any]:
         "missingAgentIds": payload.get("missingAgentIds") or [],
         "missingPersonas": payload.get("missingPersonas") or [],
         "results": [
-            {
-                "persona": item.get("persona"),
-                "agentId": item.get("agentId"),
-                "result": item.get("result"),
-            }
+            _result_core(item)
             for item in payload.get("results", []) or []
             if isinstance(item, dict)
         ],

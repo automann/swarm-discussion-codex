@@ -158,13 +158,15 @@ def collect_merge(
                 )
             continue
 
-        results.append(
-            {
-                "persona": persona,
-                "agentId": actual_agent_id,
-                "result": payload,
-            }
-        )
+        result_entry: dict[str, Any] = {
+            "persona": persona,
+            "agentId": actual_agent_id,
+            "result": payload,
+        }
+        descriptor = spec.get("agentDescriptor")
+        if isinstance(descriptor, dict):
+            result_entry["agentDescriptor"] = descriptor
+        results.append(result_entry)
 
     complete = not missing_agent_ids and not errors
     return {

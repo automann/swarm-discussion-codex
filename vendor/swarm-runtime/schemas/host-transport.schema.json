@@ -136,6 +136,16 @@
               "const": false
             }
           }
+        },
+        "customAgentProjection": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["projected"],
+          "properties": {
+            "projected": { "type": "boolean" },
+            "agentSourceDir": { "type": "string" },
+            "count": { "type": "integer", "minimum": 0 }
+          }
         }
       }
     },

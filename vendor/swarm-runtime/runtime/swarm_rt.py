@@ -297,6 +297,7 @@ def cmd_transport_init(args: argparse.Namespace) -> int:
         load_json(args.spawn_order),
         brief_path=args.brief_path,
         command_prefix=args.command_prefix,
+        agent_source_dir=args.agent_source_dir,
     )
     summary = {
         "ok": result["ok"],
@@ -363,7 +364,7 @@ def cmd_capability_doctor(args: argparse.Namespace) -> int:
 
 
 def cmd_validate_loop(args: argparse.Namespace) -> int:
-    result = validate_minimal_loop(args.discussion_dir)
+    result = validate_minimal_loop(args.discussion_dir, require_projection=args.require_projection)
     summary = {"ok": result["ok"], "summary": result.get("summary", {}), "errors": result.get("errors", [])}
     emit_summary(result, summary, args.full)
     return 0 if result["ok"] else 1
@@ -498,6 +499,11 @@ def build_parser() -> argparse.ArgumentParser:
     transport_init.add_argument("--spawn-order", type=Path, required=True, help="JSON spawn-order list")
     transport_init.add_argument("--brief-path", default="context/summary.md", help="Brief path recorded in parent context")
     transport_init.add_argument("--command-prefix", default="swarm-rt", help="Runtime command prefix for metadata")
+    transport_init.add_argument(
+        "--agent-source-dir",
+        default=None,
+        help="Host dir holding projected custom-agent files (e.g. .claude/agents); recorded in customAgentProjection when spawn-order carries agentDescriptors",
+    )
     transport_init.set_defaults(func=cmd_transport_init)
 
     transport_append = sub.add_parser(
@@ -532,6 +538,11 @@ def build_parser() -> argparse.ArgumentParser:
         help="Validate the smallest complete v2 discussion artifact loop",
     )
     validate_loop.add_argument("discussion_dir", type=Path)
+    validate_loop.add_argument(
+        "--require-projection",
+        action="store_true",
+        help="Fail unless the discussion declares projected custom agents with consistent provenance (v0.3.0 release mode; ADR 0001 D4)",
+    )
     validate_loop.set_defaults(func=cmd_validate_loop)
 
     smoke = sub.add_parser(

@@ -1,0 +1,27 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://automann.dev/swarm-discussion-runtime/schemas/projection-manifest.schema.json",
+  "title": "Swarm Discussion Projection Manifest",
+  "description": "Runtime-owned shape for projection-manifest.json (ADR 0001 D4/Q4). Written by the host adapter's parent when it projects dynamic custom-agent files; the runtime validates its shape and that names are run-scoped. The runtime cannot see the host agent directory, so actual deletion is proven by the adapter's zero-residue release gate, not here.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["runId", "createdPaths", "deletionStatus"],
+  "properties": {
+    "runId": { "type": "string", "minLength": 1 },
+    "createdPaths": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["path", "sha256"],
+        "properties": {
+          "path": { "type": "string", "minLength": 1 },
+          "sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" }
+        }
+      }
+    },
+    "deletionStatus": { "enum": ["pending", "clean", "partial", "skipped", "failed"] },
+    "removedPaths": { "type": "array", "items": { "type": "string" } },
+    "remainingPaths": { "type": "array", "items": { "type": "string" } }
+  }
+}
