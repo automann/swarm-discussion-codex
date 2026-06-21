@@ -210,6 +210,12 @@ assert artifact_paths["requiredCertificationGates"] == [
     "validate-discussion",
 ]
 assert artifact_paths["wrapperCreatesDiscussionDirs"] is False
+nested = host["nestedSubagentTopology"]
+assert nested["supported"] is None
+assert nested["usedByV1"] is True
+assert nested["projectionOwner"] == "parent-skill"
+assert nested["projectedAgentDir"] == ".codex/agents"
+assert nested["expertTemplate"] == "agents/swarm-expert.toml"
 PY
 
 echo "checking clean doctor smoke fixture"

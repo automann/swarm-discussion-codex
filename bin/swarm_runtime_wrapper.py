@@ -256,8 +256,14 @@ def host_diagnostics() -> dict[str, Any]:
         ),
         "nestedSubagentTopology": {
             "supported": None,
-            "usedByV1": False,
-            "reason": "doctor is non-mutating; v1 always uses a dedicated coordinator thread",
+            "usedByV1": True,
+            "reason": (
+                "doctor is non-mutating; v1 uses a dedicated coordinator thread whose "
+                "expert workers are parent-projected project custom agents"
+            ),
+            "projectionOwner": "parent-skill",
+            "projectedAgentDir": ".codex/agents",
+            "expertTemplate": "agents/swarm-expert.toml",
         },
     }
 
