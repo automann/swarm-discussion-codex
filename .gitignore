@@ -56,3 +56,6 @@ tasks/.current.md.tmp.*
 .claude/.active-plan
 .claude/.plan-state/
 # END: claude-runtime-temp
+
+# Maintainer-local smoke/check scripts — not part of the published plugin payload.
+scripts/
