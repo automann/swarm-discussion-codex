@@ -43,6 +43,49 @@ The aggregator entry points at
 `v0.3.0` ref. This adapter repo remains the root plugin payload; the aggregator
 is only the distribution catalog.
 
+## Usage
+
+Once installed through the [aggregator marketplace](https://github.com/automann/swarm-discussion), just ask
+in plain language in your Codex thread:
+
+```text
+Use swarm-discussion to decide: should the orders service adopt event sourcing?
+```
+
+Bring the questions where a lone model would just nod along — architecture & design trade-offs, one-way-door
+calls, adversarial reviews, open questions where easy consensus would be suspicious. **What comes back** is a
+compact index: a **recommendation**, the **strongest surviving counter-argument**, the **open questions**, and
+pointers to the traceable artifacts (cited argument graph, synthesis, trace/evidence). The debate runs in a
+dedicated coordinator thread, so the parent thread stays small.
+
+Set the depth by just saying so — *"a quick **lightweight** take on…"* or *"go **deep** on…"*. Defaults to
+**Standard** (see below).
+
+## Modes
+
+Pick a tier by stakes and budget (default **Standard**):
+
+| Mode | Panel | Rounds | Calls/round | Use when |
+|------|-------|--------|-------------|----------|
+| `lightweight` | 2 dynamic experts + Moderator & Contrarian | 1–2 | 3–5 | quick sanity check, idea validation |
+| `standard` *(default)* | 2–3 dynamic experts + 4 fixed roles | 2–3 | 5–8 | typical design decision, trade-off analysis |
+| `deep` | 3–4 dynamic experts + 4 fixed roles | 3–5 | 8–12 | unprecedented problems, high-stakes calls |
+
+> **Quality over quantity:** two rounds of *genuine* disagreement beat five rounds of polite agreement.
+
+Every panel runs **dynamic experts** generated per topic — each with explicit *stakes* and *blind spots* —
+plus **fixed roles** that keep the debate honest:
+
+| Role | Keeps the debate honest by… |
+|------|------------------------------|
+| 🧭 **Moderator** | framing the real fault lines and running the quality gate — *prevents premature consensus* |
+| 🥊 **Contrarian** | stress-testing the *strongest* point of agreement — *prevents echo chambers* |
+| 🔭 **Cross-Domain** *(standard / deep)* | bringing analogies from other fields — *prevents domain-locked thinking* |
+| 📜 **Historian** *(standard / deep)* | building the cited argument graph and synthesis — *keeps it traceable* |
+
+The full mode / role / round protocol lives in the runtime's
+[`protocol/PROTOCOL.md`](https://github.com/automann/swarm-discussion-runtime/blob/main/protocol/PROTOCOL.md).
+
 ## How It Runs
 
 1. The parent skill in `skills/swarm-discussion/SKILL.md` receives the user
