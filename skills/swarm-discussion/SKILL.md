@@ -22,6 +22,12 @@ project-scoped custom-agent projection for the expert workers.
    - Ask only for missing discussion-critical inputs.
    - Preserve the user's original wording when possible.
    - Do not expand the brief into expert prompts in the parent thread.
+   - Map user depth wording to a canonical runtime `Mode`:
+     `lightweight`, `standard`, or `deep`. Default to `standard`.
+   - Map user stress wording to an explicit `stressPolicy`: `off`, `auto`, or
+     `required`. Default by mode when the user does not specify one:
+     `lightweight -> off`, `standard -> auto`, `deep -> required`.
+   - Do not pass free-text modes such as `normal` to the coordinator.
 2. Resolve the current workspace root.
    - Use the current repository checkout as the execution context.
    - Treat normal discussion output as a coordinator-owned artifact tree under
@@ -53,8 +59,13 @@ project-scoped custom-agent projection for the expert workers.
    - Apply the coordinator contract by referencing or embedding
      `agents/swarm-coordinator.toml` in the coordinator's initial prompt.
    - Include the projected expert roster, projected `.codex/agents/` paths,
-     projection-manifest.json path, and cleanup policy in the coordinator
-     packet.
+     projection-manifest.json path, cleanup policy, canonical `Mode`, and
+     `stressPolicy` in the coordinator packet.
+   - State the runtime phase order explicitly:
+     `declaration -> argumentation -> stress-check -> contrarian -> response -> synthesis`.
+   - Require the coordinator to use runtime `stress-check` and later
+     `validate-loop --require-stress` when retained stress certification is in
+     scope; the parent must not re-derive the quality signal.
    - Do not create ordinary expert threads or run persona agents from the parent
      thread.
 5. Read or poll the coordinator until it returns a terminal result.
@@ -68,6 +79,10 @@ project-scoped custom-agent projection for the expert workers.
      this parent thread created for this discussion.
    - Update projection-manifest.json with terminal cleanup fields when a
      discussion artifact tree exists.
+   - After terminal cleanup is recorded as clean, wake or instruct the
+     coordinator to regenerate trace/evidence so runtime projection gates see
+     the final `projection-manifest.json` instead of stale pending cleanup
+     state.
    - Do not remove user-authored or plugin-installed custom agents.
    - If cleanup fails, report the exact paths that remain.
 7. Relay a compact result to the user.
@@ -85,7 +100,8 @@ fields:
 Task: run one swarm discussion as the dedicated coordinator.
 Workspace root: <absolute path to the current checkout>
 Brief: <user brief, including any constraints or acceptance criteria>
-Mode: normal discussion unless the user explicitly requests release smoke
+Mode: <lightweight|standard|deep>; default standard
+stressPolicy: <off|auto|required>; default by mode unless explicitly requested
 Artifact root: .swarm/discussions/<id> for normal discussions; smoke/discussions/<id> for explicitly requested release smoke
 discussionDir: <existing or requested discussion directory, or "allocate">
 Coordinator contract: agents/swarm-coordinator.toml
@@ -93,9 +109,15 @@ Projected experts: <list of .codex/agents/<expert-name>.toml files, exact names,
 template source agents/swarm-expert.toml, sha256 values, and cleanup owner parent>
 Projection manifest: projection-manifest.json with runId, createdPaths,
 deletionStatus, removedPaths, and remainingPaths
+Phase contract: declaration -> argumentation -> stress-check -> contrarian -> response -> synthesis
+Stress contract: coordinator calls runtime stress-check after argumentation,
+records quality.stressRequired and quality.argumentDigest, and uses
+validate-loop --require-stress when stress certification is required
 Preferred invocation: @<projected-agent-name> with invocationForm at_mention
 when it preserves agentDescriptor-compatible host evidence; fallback
 invocationForm explicit_spawn when @mention evidence is insufficient
+Cleanup freshness: after the parent finalizes projected-agent cleanup,
+regenerate trace/evidence before claiming --require-projection success
 Return shape: ok, discussionDir, synthesis or failure summary, trace path,
 evidence path, local gate summaries.
 ```
@@ -107,7 +129,9 @@ coordinator thread and the temporary `.codex/agents/` projection that makes the
 expert custom agents visible before the coordinator starts. The coordinator
 must record runtime `agentDescriptor` entries and
 `transport.customAgentProjection`; release smoke certification uses
-`--require-projection`.
+`--require-projection`. Runtime 009 retained stress certification also uses
+`--require-stress`; that gate proves structural disagreement only, while the
+retained artifact tree remains the host truth for substantive quality.
 
 ## Failure Handling
 

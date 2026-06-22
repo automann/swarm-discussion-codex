@@ -28,6 +28,13 @@ execution, projected expert invocation, runtime-owned `agentDescriptor` and
 `transport.customAgentProjection` provenance, terminal parent cleanup, and zero
 remaining run-scoped projected agent files.
 
+The current development line has re-vendored runtime 009 for the next adapter
+release. Runtime 009 adds the `mode` plus `stressPolicy` contract, the
+`stress-check` pre-synthesis decision, and the `--require-stress` gate. The
+retained stress-certified smoke is still pending until the runtime 009 retained
+smoke and certification run is complete; do not treat v0.3.0 as
+stress-certified.
+
 ## Install
 
 End users should install through the top-level `swarm-discussion` aggregator
@@ -86,6 +93,31 @@ plus **fixed roles** that keep the debate honest:
 The full mode / role / round protocol lives in the runtime's
 [`protocol/PROTOCOL.md`](https://github.com/automann/swarm-discussion-runtime/blob/main/protocol/PROTOCOL.md).
 
+## Stress Policy
+
+Runtime 009 treats depth and stress as two separate controls:
+
+| Field | Values | Purpose |
+|---|---|---|
+| `mode` | `lightweight`, `standard`, `deep` | Cost, panel size, and round depth. |
+| `stressPolicy` | `off`, `auto`, `required` | Whether an anti-consensus stress pass is skipped, data-triggered, or mandatory. |
+
+When the user does not specify a stress policy, defaults are derived from mode:
+`lightweight -> off`, `standard -> auto`, and `deep -> required`.
+
+The coordinator contract is intentionally bounded:
+`declaration -> argumentation -> stress-check -> contrarian -> response -> synthesis`.
+After argumentation, the coordinator calls runtime `stress-check`, records the
+runtime-owned `stressRequired` and `argumentDigest`, then runs the contrarian
+stress pass and cited expert response only when the runtime decision requires
+it. The adapter does not re-derive the quality signal or write a parallel
+quality store.
+
+The `--require-stress` gate proves structural disagreement: challenge edges, a
+real stress pass when required, and a cited response. It does not prove that
+the disagreement was substantively good; retained real-host smoke evidence and
+review still carry that host-truth burden.
+
 ## How It Runs
 
 1. The parent skill in `skills/swarm-discussion/SKILL.md` receives the user
@@ -94,11 +126,11 @@ The full mode / role / round protocol lives in the runtime's
    custom-agent file per expert from `agents/swarm-expert.toml` and writes those
    run-scoped files under the current workspace's `.codex/agents/`.
 3. The parent starts one independent Codex coordinator thread and gives it the
-   brief, projected expert roster, cleanup policy, and the coordinator contract
-   from `agents/swarm-coordinator.toml`.
+   brief, canonical `mode`, `stressPolicy`, projected expert roster, cleanup
+   policy, and the coordinator contract from `agents/swarm-coordinator.toml`.
 4. The coordinator uses `bin/swarm_runtime_wrapper.py` or the vendored runtime
    to run `context-build`, `prompt-build`, transport initialization, raw host
-   collection, fan-in, validation, trace, and evidence.
+   collection, fan-in, `stress-check`, validation, trace, and evidence.
 5. The coordinator invokes only the pre-created projected expert custom agents.
    It prefers `@<projected-agent-name>` when that route gives precise host
    evidence, and can fall back to explicit spawn with the projected custom-agent
@@ -107,7 +139,9 @@ The full mode / role / round protocol lives in the runtime's
    synthesis or failure summary, trace path, evidence path, and local gate
    summaries.
 7. The parent removes only the run-scoped `.codex/agents/<expert-name>.toml`
-   files it created for that discussion, then reports the final index.
+   files it created for that discussion, then requires the final workflow to
+   regenerate trace/evidence against the clean projection manifest before
+   reporting projection-certified success.
 
 The parent does not run experts directly, write discussion artifacts, merge
 transport batches, or validate the discussion. Those responsibilities belong to
@@ -196,7 +230,8 @@ For a new adapter release:
 2. Update `.codex-plugin/plugin.json` and `vendor/swarm-runtime/vendor-manifest.json`
    only when the version or runtime pin actually changes.
 3. Run wrapper doctor and projected adapter certification with
-   `--require-projection` (the local install smoke under `scripts/` is optional).
+   `--require-projection` and, for runtime 009 stress-certified releases,
+   `--require-stress` (the local install smoke under `scripts/` is optional).
 4. Retain the certification discussion under `smoke/discussions/<id>` when it is
    release evidence.
 5. Tag this repository.
