@@ -132,6 +132,9 @@
     "reason": "discussion completed"
   },
   "ok": true,
+  "projection": {
+    "present": false
+  },
   "prompts": {
     "count": 2,
     "errors": [],
@@ -155,8 +158,15 @@
     }
   },
   "quality": {
+    "counterEdgeCount": 1,
+    "genuineDisagreement": null,
+    "minorityReportPresent": null,
+    "positionShiftCount": 0,
     "qualityScore": 0.88,
     "recommendation": "Treat the artifact tree as the proof of the smallest complete v2 loop.",
+    "stressPolicy": "off",
+    "stressRequired": null,
+    "stressTriggered": false,
     "synthesisPresent": true
   },
   "resume": {

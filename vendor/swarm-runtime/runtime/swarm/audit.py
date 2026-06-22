@@ -13,6 +13,7 @@ from swarm.capabilities import (
     default_profile_path,
     load_jsonl as load_tool_evidence_jsonl,
 )
+from swarm.quality import quality_summary
 from swarm.validation import validate_discussion_dir, validate_round_file
 from swarm.wal import resume_plan
 
@@ -255,17 +256,41 @@ def _events_summary(discussion_dir: Path) -> dict[str, Any]:
 def _quality_summary(discussion_dir: Path) -> dict[str, Any]:
     round_files = sorted((discussion_dir / "rounds").glob("[0-9][0-9][0-9].json"))
     synthesis_present = (discussion_dir / "artifacts" / "synthesis.md").exists()
-    latest_synthesis: dict[str, Any] = {}
+    latest_round: dict[str, Any] = {}
     if round_files:
         payload, _error = _load_json(round_files[-1])
-        if isinstance(payload, dict) and isinstance(payload.get("synthesis"), dict):
-            latest_synthesis = payload["synthesis"]
-    quality_score = latest_synthesis.get("qualityScore")
-    recommendation = latest_synthesis.get("recommendation")
+        if isinstance(payload, dict):
+            latest_round = payload
+    latest_synthesis = latest_round.get("synthesis") if isinstance(latest_round.get("synthesis"), dict) else {}
+    manifest, _manifest_error = _load_json(discussion_dir / "manifest.json")
+    block = quality_summary(latest_round, manifest if isinstance(manifest, dict) else {})
+    block["synthesisPresent"] = synthesis_present or bool(latest_synthesis)
+    block["qualityScore"] = latest_synthesis.get("qualityScore")
+    block["recommendation"] = latest_synthesis.get("recommendation")
+    return block
+
+
+def _projection_summary(discussion_dir: Path) -> dict[str, Any]:
+    """Surface projection cleanup state for audit (plan 009 B-1).
+
+    projection-manifest.json is excluded from the byte total because the parent
+    finalizes it after evidence is built; surfacing deletionStatus / remainingCount
+    here keeps the cleanup state visible to trace/evidence, so excluding it from the
+    byte anchor does not hide a forged or partial cleanup.
+    """
+    manifest_path = discussion_dir / "projection-manifest.json"
+    if not manifest_path.exists():
+        return {"present": False}
+    manifest, error = _load_json(manifest_path)
+    if error or not isinstance(manifest, dict):
+        return {"present": True, "ok": False}
     return {
-        "synthesisPresent": synthesis_present or bool(latest_synthesis),
-        "qualityScore": quality_score,
-        "recommendation": recommendation,
+        "present": True,
+        "runId": manifest.get("runId"),
+        "deletionStatus": manifest.get("deletionStatus"),
+        "createdCount": len(manifest.get("createdPaths") or []),
+        "removedCount": len(manifest.get("removedPaths") or []),
+        "remainingCount": len(manifest.get("remainingPaths") or []),
     }
 
 
@@ -331,12 +356,18 @@ def _capability_summary(discussion_dir: Path) -> dict[str, Any]:
     }
 
 
-# Audit projections are derived FROM the discussion and rewritten by
-# build_trace / build_evidence. Excluding them from the artifact inventory keeps
-# build_trace/build_evidence idempotent and the byte total stable: otherwise the
-# summary would depend on the size of (and the prior existence of) trace.json /
-# evidence.json — a self-referential, generation-order-dependent total.
-_AUDIT_PROJECTIONS = frozenset({"artifacts/trace.json", "artifacts/evidence.json"})
+# Files excluded from the artifact inventory + byte total, for two reasons:
+#  - trace.json / evidence.json are audit projections rewritten by
+#    build_trace/build_evidence; counting them makes the total self-referential and
+#    generation-order dependent.
+#  - projection-manifest.json is finalized by the parent (deletionStatus
+#    pending -> clean, plus removedPaths/remainingPaths) AFTER the coordinator builds
+#    trace/evidence, so counting it makes the byte anchor go stale on a legitimate
+#    cleanup (ROADMAP-NEXT B-1). Its freshness is enforced by validate_projection's
+#    terminal-cleanup gate + the projection summary below, not by the byte total.
+_BYTE_TOTAL_EXCLUDED = frozenset(
+    {"artifacts/trace.json", "artifacts/evidence.json", "projection-manifest.json"}
+)
 
 
 def _artifact_paths(discussion_dir: Path) -> list[str]:
@@ -350,7 +381,7 @@ def _artifact_paths(discussion_dir: Path) -> list[str]:
         relative = path.relative_to(discussion_dir)
         if any(part in ignored_parts for part in relative.parts):
             continue
-        if relative.as_posix() in _AUDIT_PROJECTIONS:
+        if relative.as_posix() in _BYTE_TOTAL_EXCLUDED:
             continue
         paths.append(str(path))
     return paths
@@ -505,6 +536,7 @@ def build_trace(discussion_dir: Path) -> dict[str, Any]:
     events = _events_summary(discussion_dir)
     rounds = _round_summary(discussion_dir)
     quality = _quality_summary(discussion_dir)
+    projection = _projection_summary(discussion_dir)
     capabilities = _capability_summary(discussion_dir)
     next_action = _next_action(validation, transport, resume, manifest, capabilities)
     return {
@@ -526,6 +558,7 @@ def build_trace(discussion_dir: Path) -> dict[str, Any]:
         "transport": transport,
         "capabilities": capabilities,
         "quality": quality,
+        "projection": projection,
         "events": events,
         "artifacts": {
             "root": str(discussion_dir),
@@ -646,6 +679,7 @@ def build_evidence(discussion_dir: Path) -> dict[str, Any]:
             },
         },
         "quality": trace["quality"],
+        "projection": trace.get("projection", {}),
         "trace": {
             "health": trace["health"],
             "nextAction": trace["nextAction"],

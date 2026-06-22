@@ -60,6 +60,9 @@
     "quality": {
       "type": "object"
     },
+    "projection": {
+      "type": "object"
+    },
     "trace": {
       "type": "object"
     },

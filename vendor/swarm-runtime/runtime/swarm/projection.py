@@ -20,6 +20,7 @@ from pathlib import Path
 from typing import Any
 
 _SHA256 = re.compile(r"^[0-9a-f]{64}\Z")
+_DELETION_STATUS = frozenset({"pending", "clean", "partial", "skipped", "failed"})
 
 
 def _issue(code: str, path: str, message: str, value: Any = None) -> dict[str, Any]:
@@ -153,8 +154,25 @@ def validate_projection(discussion_dir: Path, require_projection: bool = False) 
                 if not (isinstance(run_id, str) and run_id.strip()):
                     errors.append(_issue("invalid_projection_manifest", f"{manifest_path}:runId", "runId is required"))
                     run_id = None
+                deletion_status = manifest.get("deletionStatus")
                 if "deletionStatus" not in manifest:
                     errors.append(_issue("invalid_projection_manifest", f"{manifest_path}:deletionStatus", "deletionStatus is required"))
+                elif deletion_status not in _DELETION_STATUS:
+                    errors.append(_issue("invalid_deletion_status", f"{manifest_path}:deletionStatus", "deletionStatus must be one of pending|clean|partial|skipped|failed", deletion_status))
+                # Terminal-cleanup gate (plan 009 B-1): the byte total no longer anchors
+                # this manifest, so under certification (require_projection = a retained,
+                # terminal discussion) require zero residue here instead.
+                if require_projection:
+                    if deletion_status != "clean":
+                        errors.append(_issue("projection_cleanup_incomplete", f"{manifest_path}:deletionStatus", "a certified projected discussion must record deletionStatus 'clean'", deletion_status))
+                    # remainingPaths is the field that replaces the removed byte-anchor
+                    # freshness check, so absence/wrong-type is NOT zero residue: it must
+                    # positively record [] (present + list + empty).
+                    remaining = manifest.get("remainingPaths")
+                    if not isinstance(remaining, list):
+                        errors.append(_issue("projection_residue_unrecorded", f"{manifest_path}:remainingPaths", "a certified projected discussion must record remainingPaths as a list (zero residue unverified)", remaining))
+                    elif remaining:
+                        errors.append(_issue("projection_residue_present", f"{manifest_path}:remainingPaths", "a certified projected discussion must have empty remainingPaths (zero residue)", remaining))
                 created = {
                     entry.get("path"): entry.get("sha256")
                     for entry in (manifest.get("createdPaths") or [])

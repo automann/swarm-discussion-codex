@@ -22,6 +22,14 @@ The orchestration body for a discussion. Follow this file and call runtime primi
 
 Parse the mode from the invocation (`--mode deep|standard|lightweight`); default **Standard**.
 
+**Stress policy (orthogonal to mode).** `stressPolicy` (`auto | required | off`; default
+derived from mode — lightweight→off, standard→auto, deep→required) controls whether an
+anti-consensus *stress pass* must run before synthesis. The runtime owns the structural
+disagreement signal (counter/questions edges, position shifts, whether a stress pass ran)
+and the pre-synthesis `stress-check` decision, records a `quality` block on each finalized
+round, and certifies it via `certify_adapter --require-stress` (ADR 0002; see
+`docs/ADAPTER-SPEC.md`).
+
 ## Roles
 
 **Fixed roles** (Lightweight uses only Moderator + Contrarian):

@@ -10,6 +10,7 @@ from pathlib import Path
 from typing import Any
 
 from swarm._shared import MESSAGE_ID, fsync_dir as _fsync_dir
+from swarm.quality import build_round_quality
 from swarm.validation import ALLOWED_RELATIONS, validate_round_record
 
 
@@ -342,8 +343,21 @@ def append_message(
     }
 
 
+_STRESS_POLICIES = frozenset({"auto", "required", "off"})
+_MODE_DEFAULT_STRESS = {"lightweight": "off", "standard": "auto", "deep": "required"}
+
+
+def _default_stress_policy(mode: str) -> str:
+    """Default stressPolicy for a mode tier; non-tier modes get 'off' (back-compat)."""
+    return _MODE_DEFAULT_STRESS.get(mode, "off")
+
+
 def init_discussion(
-    discussion_dir: Path, discussion_id: str, mode: str = "standard", title: str | None = None
+    discussion_dir: Path,
+    discussion_id: str,
+    mode: str = "standard",
+    title: str | None = None,
+    stress_policy: str | None = None,
 ) -> dict[str, Any]:
     """Scaffold a discussion directory and its manifest. Fail loud if it exists."""
     if not isinstance(discussion_id, str) or not re.match(r"^[A-Za-z0-9][A-Za-z0-9_-]*\Z", discussion_id):
@@ -352,6 +366,11 @@ def init_discussion(
             "errors": [
                 _issue("invalid_discussion_id", "discussionId", "must match ^[A-Za-z0-9][A-Za-z0-9_-]*$", discussion_id)
             ],
+        }
+    if isinstance(stress_policy, str) and stress_policy.strip() and stress_policy not in _STRESS_POLICIES:
+        return {
+            "ok": False,
+            "errors": [_issue("invalid_stress_policy", "stressPolicy", "must be one of auto|required|off", stress_policy)],
         }
     manifest_path = discussion_dir / "manifest.json"
     if manifest_path.exists():
@@ -362,10 +381,16 @@ def init_discussion(
     for sub in ("context", "rounds", "artifacts"):
         (discussion_dir / sub).mkdir(parents=True, exist_ok=True)
     resolved_mode = mode if isinstance(mode, str) and mode.strip() else "standard"
+    resolved_stress_policy = (
+        stress_policy
+        if isinstance(stress_policy, str) and stress_policy in _STRESS_POLICIES
+        else _default_stress_policy(resolved_mode)
+    )
     manifest = {
         "schemaVersion": 1,
         "id": discussion_id,
         "mode": resolved_mode,
+        "stressPolicy": resolved_stress_policy,
         "status": "active",
         "createdAt": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
     }
@@ -379,13 +404,18 @@ def init_discussion(
         os.fsync(handle.fileno())
     os.replace(tmp_path, manifest_path)
     _fsync_dir(discussion_dir)
-    event = append_event(discussion_dir, "discussion_initialized", {"discussionId": discussion_id, "mode": resolved_mode})
+    event = append_event(
+        discussion_dir,
+        "discussion_initialized",
+        {"discussionId": discussion_id, "mode": resolved_mode, "stressPolicy": resolved_stress_policy},
+    )
     return {
         "ok": True,
         "errors": [],
         "manifestPath": str(manifest_path),
         "discussionId": discussion_id,
         "mode": resolved_mode,
+        "stressPolicy": resolved_stress_policy,
         "nextHelperCommand": "swarm-rt context-build --brief <brief.json> --out context/summary.md",
         "event": event,
     }
@@ -419,12 +449,24 @@ def _derive_round_metadata(final_state: dict[str, Any]) -> dict[str, Any]:
     return derived
 
 
+def _load_manifest(discussion_dir: Path) -> dict[str, Any] | None:
+    try:
+        manifest = json.loads((discussion_dir / "manifest.json").read_text())
+    except (OSError, json.JSONDecodeError):
+        return None
+    return manifest if isinstance(manifest, dict) else None
+
+
 def finalize_round(discussion_dir: Path, round_id: int, final_state: dict[str, Any]) -> dict[str, Any]:
     guard_errors = _round_guard(discussion_dir, round_id, final_state)
     if guard_errors:
         return {"ok": False, "errors": guard_errors}
 
     final_state = _derive_round_metadata(final_state)
+    # Persist the runtime-owned quality block on the round (plan 009 step 3): the
+    # structural fields + stressRequired are authoritative, so the quality contract is
+    # committed, tamper-evident state rather than a transient trace/evidence rebuild.
+    final_state["quality"] = build_round_quality(final_state, _load_manifest(discussion_dir))
     validation = validate_round_record(final_state)
     if not validation["ok"]:
         return {"ok": False, "errors": validation["errors"], "warnings": validation["warnings"]}

@@ -12,6 +12,7 @@ from typing import Any
 from swarm import __version__, planned_commands
 from swarm.adapter import validate_host_transport_metadata
 from swarm.audit import build_evidence, build_trace
+from swarm.quality import stress_check
 from swarm.capabilities import (
     capability_doctor_report,
     default_profile_path,
@@ -230,7 +231,7 @@ def cmd_finalize_round(args: argparse.Namespace) -> int:
 
 
 def cmd_init(args: argparse.Namespace) -> int:
-    result = init_discussion(args.dir, args.discussion_id, mode=args.mode, title=args.title)
+    result = init_discussion(args.dir, args.discussion_id, mode=args.mode, title=args.title, stress_policy=args.stress_policy)
     summary = {
         "ok": result["ok"],
         "manifestPath": result.get("manifestPath"),
@@ -278,6 +279,12 @@ def cmd_evidence(args: argparse.Namespace) -> int:
         summary["outputPath"] = str(args.output)
     emit_summary(result, summary, args.full)
     return 0 if result["ok"] else 1
+
+
+def cmd_stress_check(args: argparse.Namespace) -> int:
+    result = stress_check(args.dir, args.round)
+    print(json.dumps(result, indent=2, sort_keys=True))
+    return 0 if result.get("ok") else 1
 
 
 def cmd_validate_host_step(args: argparse.Namespace) -> int:
@@ -364,7 +371,7 @@ def cmd_capability_doctor(args: argparse.Namespace) -> int:
 
 
 def cmd_validate_loop(args: argparse.Namespace) -> int:
-    result = validate_minimal_loop(args.discussion_dir, require_projection=args.require_projection)
+    result = validate_minimal_loop(args.discussion_dir, require_projection=args.require_projection, require_stress=args.require_stress)
     summary = {"ok": result["ok"], "summary": result.get("summary", {}), "errors": result.get("errors", [])}
     emit_summary(result, summary, args.full)
     return 0 if result["ok"] else 1
@@ -467,6 +474,12 @@ def build_parser() -> argparse.ArgumentParser:
     init_p.add_argument("--dir", type=Path, required=True, help="Discussion directory")
     init_p.add_argument("--discussion-id", required=True, help="Discussion id")
     init_p.add_argument("--mode", default="standard", help="Discussion mode")
+    init_p.add_argument(
+        "--stress-policy",
+        choices=["auto", "required", "off"],
+        default=None,
+        help="Stress policy (default derived from mode: lightweight=off, standard=auto, deep=required)",
+    )
     init_p.add_argument("--title", help="Optional discussion title")
     init_p.set_defaults(func=cmd_init)
 
@@ -474,6 +487,11 @@ def build_parser() -> argparse.ArgumentParser:
     trace.add_argument("--dir", type=Path, required=True, help="Discussion directory")
     trace.add_argument("--output", type=Path, help="Optional trace JSON output path")
     trace.set_defaults(func=cmd_trace)
+
+    stress_check_p = sub.add_parser("stress-check", help="Pre-synthesis decision: must a stress pass run for the current round?")
+    stress_check_p.add_argument("--dir", type=Path, required=True, help="Discussion directory")
+    stress_check_p.add_argument("--round", type=int, default=None, help="Round id (default: current/latest)")
+    stress_check_p.set_defaults(func=cmd_stress_check)
 
     evidence = sub.add_parser("evidence", help="Build portable discussion evidence")
     evidence.add_argument("--dir", type=Path, required=True, help="Discussion directory")
@@ -542,6 +560,11 @@ def build_parser() -> argparse.ArgumentParser:
         "--require-projection",
         action="store_true",
         help="Fail unless the discussion declares projected custom agents with consistent provenance (v0.3.0 release mode; ADR 0001 D4)",
+    )
+    validate_loop.add_argument(
+        "--require-stress",
+        action="store_true",
+        help="Fail unless the discussion satisfies its declared stressPolicy (engineered disagreement; ADR 0002 D2)",
     )
     validate_loop.set_defaults(func=cmd_validate_loop)
 

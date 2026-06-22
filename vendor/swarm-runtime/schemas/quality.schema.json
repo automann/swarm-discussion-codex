@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://automann.dev/swarm-discussion-runtime/schemas/quality.schema.json",
+  "title": "Swarm Discussion Quality Block",
+  "description": "Runtime-owned discussion-quality block (ADR 0002 / plan 009), surfaced on the round record and in trace/evidence. Structural fields (counterEdgeCount, positionShiftCount, stressTriggered) are computed by the runtime and are authoritative — a stored block that disagrees is rejected (quality_signal_mismatch). genuineDisagreement and minorityReportPresent are coordinator-produced and advisory.",
+  "type": "object",
+  "properties": {
+    "stressPolicy": { "enum": ["auto", "required", "off"] },
+    "stressRequired": { "type": ["boolean", "null"] },
+    "stressTriggered": { "type": "boolean" },
+    "counterEdgeCount": { "type": "integer", "minimum": 0 },
+    "positionShiftCount": { "type": "integer", "minimum": 0 },
+    "genuineDisagreement": { "type": ["integer", "null"], "minimum": 0, "maximum": 10 },
+    "minorityReportPresent": { "type": ["boolean", "null"] }
+  }
+}

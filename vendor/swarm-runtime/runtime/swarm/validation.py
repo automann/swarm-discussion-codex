@@ -7,6 +7,7 @@ from pathlib import Path
 from typing import Any
 
 from swarm._shared import MESSAGE_ID
+from swarm.quality import effective_stress_policy, validate_quality_block
 
 ALLOWED_RELATIONS = {"supports", "counters", "extends", "questions"}
 COMPLETED_STATUSES = {"completed", "complete", "done"}
@@ -53,7 +54,7 @@ def _load_json(path: Path, errors: list[dict[str, Any]], label: str) -> Any:
     return None
 
 
-def validate_round_record(round_record: dict[str, Any]) -> dict[str, Any]:
+def validate_round_record(round_record: dict[str, Any], effective_policy: str | None = None) -> dict[str, Any]:
     errors: list[dict[str, Any]] = []
     warnings: list[dict[str, Any]] = []
 
@@ -313,6 +314,8 @@ def validate_round_record(round_record: dict[str, Any]) -> dict[str, Any]:
             )
         )
 
+    errors.extend(validate_quality_block(round_record, effective_policy))
+
     return {
         "ok": not errors,
         "errors": errors,
@@ -326,7 +329,7 @@ def validate_round_record(round_record: dict[str, Any]) -> dict[str, Any]:
     }
 
 
-def validate_round_file(path: Path) -> dict[str, Any]:
+def validate_round_file(path: Path, effective_policy: str | None = None) -> dict[str, Any]:
     errors: list[dict[str, Any]] = []
     data = _load_json(path, errors, str(path))
     if errors:
@@ -338,7 +341,7 @@ def validate_round_file(path: Path) -> dict[str, Any]:
             "warnings": [],
             "summary": {},
         }
-    result = validate_round_record(data)
+    result = validate_round_record(data, effective_policy)
     result["path"] = str(path)
     return result
 
@@ -379,9 +382,10 @@ def validate_discussion_dir(path: Path) -> dict[str, Any]:
     if not round_files:
         errors.append(_issue("missing_rounds", "rounds", "at least one committed round is required"))
 
+    effective_policy = effective_stress_policy(manifest)
     round_results = []
     for round_file in round_files:
-        round_result = validate_round_file(round_file)
+        round_result = validate_round_file(round_file, effective_policy=effective_policy)
         round_results.append(round_result)
         for issue in round_result["errors"]:
             nested = dict(issue)
@@ -404,6 +408,15 @@ def validate_discussion_dir(path: Path) -> dict[str, Any]:
     if status is not None and not isinstance(status, str):
         errors.append(_issue("invalid_status", "manifest.json:status", "manifest status must be a string", status))
         status = None
+
+    # Validate the persisted stressPolicy enum (plan 009): absence is legacy/off, but a
+    # present value on an adapter-produced manifest must be a valid policy. init validates
+    # its own input, but validate-discussion is what certifies persisted manifests.
+    stress_policy = manifest.get("stressPolicy") if isinstance(manifest, dict) else None
+    if stress_policy is not None and (not isinstance(stress_policy, str) or stress_policy not in {"auto", "required", "off"}):
+        errors.append(
+            _issue("invalid_stress_policy", "manifest.json:stressPolicy", "manifest stressPolicy must be one of auto|required|off", stress_policy)
+        )
     if status in COMPLETED_STATUSES:
         if partial_files:
             errors.append(

@@ -140,6 +140,14 @@
       "responsibilities": ["evidence-projection"],
       "produces": ["artifacts/evidence.json"]
     },
+    "stress-check": {
+      "owner": "runtime",
+      "stability": "contract",
+      "adapterFacing": true,
+      "mutatesState": false,
+      "responsibilities": ["stress-decision"],
+      "produces": []
+    },
     "validate-host-step": {
       "owner": "runtime",
       "stability": "contract",
@@ -181,6 +189,7 @@
     "transport-collect",
     "trace",
     "evidence",
+    "stress-check",
     "validate-host-step",
     "capability-doctor",
     "validate-loop",

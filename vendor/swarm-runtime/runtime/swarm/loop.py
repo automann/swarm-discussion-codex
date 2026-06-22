@@ -8,6 +8,7 @@ from typing import Any
 from swarm.adapter import validate_host_transport_metadata
 from swarm.audit import EVIDENCE_KIND, build_evidence, build_trace
 from swarm.projection import validate_projection
+from swarm.quality import validate_stress
 from swarm.validation import validate_discussion_dir
 
 REQUIRED_EVIDENCE_KEYS = (
@@ -76,6 +77,9 @@ def _trace_stable(trace: dict[str, Any]) -> dict[str, Any]:
         "health": trace.get("health"),
         "nextAction": trace.get("nextAction"),
         "artifactTotalBytes": (trace.get("artifacts") or {}).get("totalBytes"),
+        # projection-manifest.json is off the byte total (plan 009 B-1), so freshness-check
+        # the cleanup state here instead: stale committed cleanup status -> stale_*_artifact.
+        "projection": trace.get("projection"),
     }
 
 
@@ -88,10 +92,11 @@ def _evidence_stable(evidence: dict[str, Any]) -> dict[str, Any]:
         "artifactTotalBytes": (evidence.get("metrics") or {}).get("artifactTotalBytes"),
         "health": trace.get("health"),
         "nextAction": trace.get("nextAction"),
+        "projection": evidence.get("projection"),
     }
 
 
-def validate_minimal_loop(discussion_dir: Path, require_projection: bool = False) -> dict[str, Any]:
+def validate_minimal_loop(discussion_dir: Path, require_projection: bool = False, require_stress: bool = False) -> dict[str, Any]:
     """Validate that a fixture proves the smallest complete v2 runtime loop."""
 
     errors: list[dict[str, Any]] = []
@@ -219,12 +224,16 @@ def validate_minimal_loop(discussion_dir: Path, require_projection: bool = False
     projection = validate_projection(discussion_dir, require_projection)
     errors.extend(projection["errors"])
 
+    stress = validate_stress(discussion_dir, require_stress)
+    errors.extend(stress["errors"])
+
     return {
         "ok": not errors,
         "errors": errors,
         "summary": {
             "discussionId": trace.get("discussion", {}).get("id"),
             "projectedPhases": projection["summary"]["projectedPhases"],
+            "stressPolicy": stress["summary"]["stressPolicy"],
             "health": trace.get("health"),
             "hostStepCount": len(host_steps),
             "promptBuildCount": prompt_count,
