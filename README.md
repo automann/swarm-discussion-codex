@@ -9,31 +9,42 @@ compact result index. The coordinator thread owns the runtime loop and uses the
 vendored `swarm-discussion-runtime` for prompts, transport capture, WAL updates,
 validation, trace, evidence, and retained artifacts.
 
-## Current Release
+## Current Release And Stress Readiness
 
 | Field | Value |
 |---|---|
-| Plugin version | `0.3.0` |
-| Release tag | `v0.3.0` |
-| Runtime sha | `04f4974f26f5d3f8da55cc3b1c2f9068a83d4cf5` |
+| Plugin manifest version | `0.3.0` |
+| Latest release tag | `v0.3.0` |
+| Tagged runtime sha | `04f4974f26f5d3f8da55cc3b1c2f9068a83d4cf5` |
+| Runtime 009 readiness sha | `c84393111158674e743e1dc082271f467043f496` |
 | Runtime compatibility | `swarm-runtime-v2-alpha` |
-| Runtime files | `58` vendored files |
+| Runtime 009 files | `60` vendored files |
 | Retained projected smoke | `smoke/discussions/smoke-projected-20260621-2359` |
-| Required certification mode | `--require-projection` |
+| Retained stress smoke | `smoke/discussions/smoke-stress-20260623-0404` |
+| Stress evidence profile | `stress-minimal-v2` |
+| Stress smoke mode | `mode=deep`, `stressPolicy=required` |
+| Required certification mode | `--require-projection --require-stress` |
 | Aggregator distribution | `automann/swarm-discussion` pins this repo at `v0.3.0` |
 
-The retained projected smoke proves the v0.3.0 topology: parent-created
-discussion-scoped `.codex/agents/` expert files, coordinator-owned runtime
-execution, projected expert invocation, runtime-owned `agentDescriptor` and
-`transport.customAgentProjection` provenance, terminal parent cleanup, and zero
-remaining run-scoped projected agent files.
+The latest published tag remains `v0.3.0`; the top-level aggregator still pins
+that tag until an explicit follow-up release updates the version and
+distribution entry. The mainline readiness evidence has moved forward to
+runtime 009. The retained projected smoke proves the v0.3.0 topology:
+parent-created discussion-scoped `.codex/agents/` expert files,
+coordinator-owned runtime execution, projected expert invocation,
+runtime-owned `agentDescriptor` and `transport.customAgentProjection`
+provenance, terminal parent cleanup, and zero remaining run-scoped projected
+agent files.
 
-The current development line has re-vendored runtime 009 for the next adapter
-release. Runtime 009 adds the `mode` plus `stressPolicy` contract, the
-`stress-check` pre-synthesis decision, and the `--require-stress` gate. The
-retained stress-certified smoke is still pending until the runtime 009 retained
-smoke and certification run is complete; do not treat v0.3.0 as
-stress-certified.
+The runtime 009 readiness line is stress-certified by the retained
+`stress-minimal-v2` Codex smoke at
+`smoke/discussions/smoke-stress-20260623-0404`. It uses `mode=deep` and
+`stressPolicy=required`, records the runtime-owned `stress-check` decision, and
+passes certification with both `--require-projection` and `--require-stress`.
+This proves structural disagreement: challenge edges, a real stress pass when
+required, and a cited response to the stress message. It does not claim that
+the disagreement was substantively good; retained real-host artifacts and
+review remain the evidence for that host-truth question.
 
 ## Install
 
@@ -48,7 +59,8 @@ codex plugin add swarm-discussion --marketplace swarm-discussion
 The aggregator entry points at
 `https://github.com/automann/swarm-discussion-codex.git` and pins the
 `v0.3.0` ref. This adapter repo remains the root plugin payload; the aggregator
-is only the distribution catalog.
+is only the distribution catalog. Runtime 009 stress readiness on `main` is not
+distributed by the aggregator until a later tag and aggregator pin update.
 
 ## Usage
 
@@ -158,6 +170,7 @@ the coordinator plus runtime.
 | `bin/swarm_runtime_wrapper.py` | Thin diagnostic and command wrapper around the vendored runtime. |
 | `vendor/swarm-runtime/` | Pinned runtime bundle used for prompt, transport, WAL, validation, trace, and evidence. |
 | `smoke/discussions/smoke-projected-20260621-2359/` | Retained v0.3.0 projected smoke evidence. |
+| `smoke/discussions/smoke-stress-20260623-0404/` | Retained runtime 009 `stress-minimal-v2` smoke evidence with `mode=deep` and `stressPolicy=required`. |
 | `docs/spec.md` | Stable product truth for this adapter. |
 | `docs/researches/` | Decision evidence for Codex plugin layout, agent namespacing, projection, and thread policy. |
 
@@ -209,16 +222,21 @@ Replay release certification with a checkout of
 RUNTIME_REPO=/path/to/swarm-discussion-runtime
 PYTHONDONTWRITEBYTECODE=1 python3 "$RUNTIME_REPO/conformance/certify_adapter.py" \
   --require-projection \
-  --discussion smoke/discussions/smoke-projected-20260621-2359 \
+  --require-stress \
+  --discussion smoke/discussions/smoke-stress-20260623-0404 \
   --vendored vendor/swarm-runtime \
   --runtime vendor/swarm-runtime/runtime/swarm_rt.py
 ```
 
-After the retained smoke, this zero-residue check should print no run-scoped
-projected expert files:
+For the older `v0.3.0` projection-only tag, replay
+`smoke/discussions/smoke-projected-20260621-2359` with
+`--require-projection` only.
+
+After the retained stress smoke, this zero-residue check should print no
+run-scoped projected expert files:
 
 ```bash
-test ! -d .codex/agents || find .codex/agents -maxdepth 1 -name 'swarm-20260621-2359-*.toml' -print
+test ! -d .codex/agents || find .codex/agents -maxdepth 1 -name 'swarm-smoke-stress-20260623-0404-*.toml' -print
 ```
 
 ## Release Maintenance
