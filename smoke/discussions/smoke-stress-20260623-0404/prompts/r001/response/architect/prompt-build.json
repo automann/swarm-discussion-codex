@@ -1,0 +1,59 @@
+{
+  "contextSummaryCharCount": 642,
+  "errors": [],
+  "injectedIds": [
+    "r1-msg-001",
+    "r1-msg-002",
+    "r1-msg-003"
+  ],
+  "inputs": {
+    "contextSummarySha256": "638480fed1ea7fc38ae5d9fc140b6e8fc24af36f3353e780380064fbd8c675c7",
+    "messageCount": 3,
+    "visibilityBudget": 4096
+  },
+  "ok": true,
+  "outputContract": {
+    "format": "json",
+    "requiredKeys": [
+      "position",
+      "reasoning",
+      "references",
+      "positionShift",
+      "currentPosition",
+      "previousPosition",
+      "shiftReason",
+      "shiftTriggerIds"
+    ],
+    "requiresReferences": true,
+    "requiresShiftTriggerIds": true
+  },
+  "persona": {
+    "bias": "favor runtime-owned evidence over coordinator prose",
+    "blindSpots": [
+      "may underweight host ergonomics"
+    ],
+    "expertise": [
+      "runtime architecture",
+      "adapter certification",
+      "artifact provenance"
+    ],
+    "id": "architect",
+    "name": "Architect",
+    "replyTendency": "structured JSON",
+    "stakes": "A certified adapter must prove projection cleanup and structural stress without overstating substantive quality.",
+    "thinkingStyle": "systems-oriented"
+  },
+  "phase": "response",
+  "prompt": "You are \"Architect\" (architect).\n- Expertise: runtime architecture, adapter certification, artifact provenance\n- Thinking style: systems-oriented\n- Natural bias: favor runtime-owned evidence over coordinator prose\n- Reply tendency: structured JSON\n- Stakes: A certified adapter must prove projection cleanup and structural stress without overstating substantive quality.\n- Blind spots: may underweight host ergonomics\n\nCurrent phase: response\nTopic: Codex runtime 009 projected stress certification smoke\n\nParent context summary:\n\n# Context Summary\n\n## Topic\n\nCodex runtime 009 projected stress certification smoke\n\n## Objective\n\nCertify that the Codex adapter can retain a projected custom-agent discussion with a mandatory structural stress pass and clean projection evidence.\n\n## Operating Mode\n\ndeep\n\n## Constraints\n\n- Use runtime artifacts as source of truth.\n- Preserve real Codex host ids and raw wait batches.\n- Run stress-check before synthesis and retain a citing response.\n- Regenerate trace and evidence after projection cleanup.\n\n## Alignment Rule\n\nKeep every contribution anchored to the topic, objective, constraints, known facts, and success criteria above.\n\nDiscussion so far (cite these IDs):\n\n[r1-msg-001] from architect (position_declaration): Runtime artifacts plus retained real-host transport must be the source of truth for Codex runtime 009 stress certification.\n[r1-msg-002] from contrarian (argument): A projected adapter can appear certified while hiding stale cleanup evidence or a missing stress response unless --require-projection and --require-stress both pass.\n[r1-msg-003] from contrarian (stress_test): Stress the consensus: if the trace was generated before parent cleanup, certification can observe stale pending projection state; disprove by regenerating trace/evidence after clean deletion and retaining raw host transport.\n\nTask: Return ONLY a JSON object with keys responseSummary, positionShift, previousPosition, currentPosition, shiftTriggerIds, references, confidence, openQuestion. The response must cite r1-msg-003 in references and shiftTriggerIds and concede the cleanup freshness risk while preserving the runtime-owned certification boundary.\n\nOutput JSON with: position, reasoning, proposals, references, counterpoints, questions, positionShift, currentPosition, previousPosition, shiftReason, shiftTriggerIds.\n\nshiftTriggerIds must name the actual full-visible message IDs that changed your position.",
+  "promptCharCount": 2454,
+  "promptSha256": "829f7765cc3717466c9fe39212599196c22e255f7644c41ef7795435012634a8",
+  "roundId": 1,
+  "schemaVersion": 1,
+  "topic": "Codex runtime 009 projected stress certification smoke",
+  "visibility": {
+    "r1-msg-001": "full",
+    "r1-msg-002": "full",
+    "r1-msg-003": "full"
+  },
+  "warnings": []
+}

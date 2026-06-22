@@ -1,0 +1,36 @@
+{
+  "certified": true,
+  "checks": [
+    {
+      "errors": [],
+      "name": "runtime-contract",
+      "passed": true
+    },
+    {
+      "errors": [],
+      "name": "vendor-manifest",
+      "passed": true,
+      "runtimeSha": "c84393111158674e743e1dc082271f467043f496"
+    },
+    {
+      "errors": [],
+      "name": "adapter-smoke",
+      "passed": true
+    },
+    {
+      "errors": [],
+      "name": "validate-loop",
+      "passed": true
+    },
+    {
+      "errors": [],
+      "name": "validate-discussion",
+      "passed": true
+    }
+  ],
+  "discussionDir": "smoke/discussions/smoke-stress-20260623-0404",
+  "ok": true,
+  "requireProjection": true,
+  "requireStress": true,
+  "runtime": "vendor/swarm-runtime/runtime/swarm_rt.py"
+}

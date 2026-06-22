@@ -1,0 +1,19 @@
+{
+  "createdPaths": [
+    {
+      "path": ".codex/agents/swarm-smoke-stress-20260623-0404-architect.toml",
+      "sha256": "08c09a508ffbb91fb0cf18252acdb0e0010d1c1cf962b9567d8aa1cbb14ddffb"
+    },
+    {
+      "path": ".codex/agents/swarm-smoke-stress-20260623-0404-contrarian.toml",
+      "sha256": "ed2b2157bac9ccd7444e2a6ff7dc355f1915273db8f23e09c67582e74510b1f5"
+    }
+  ],
+  "deletionStatus": "clean",
+  "remainingPaths": [],
+  "removedPaths": [
+    ".codex/agents/swarm-smoke-stress-20260623-0404-architect.toml",
+    ".codex/agents/swarm-smoke-stress-20260623-0404-contrarian.toml"
+  ],
+  "runId": "smoke-stress-20260623-0404"
+}

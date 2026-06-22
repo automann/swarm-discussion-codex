@@ -1,0 +1,1 @@
+{"agentId": "019ef12a-5fbc-7cf1-ad72-c429ec0ac72d", "artifactPath": "artifacts/read-001.json", "kind": "swarm.tool_evidence", "profileId": "expert-readonly", "schemaVersion": 1, "summary": "Read the retained stress smoke context summary.", "tool": "read", "validated": true, "validation": {"checkedAt": "2026-06-23T05:14:00Z", "ok": true, "validator": "swarm-rt capability-doctor"}}

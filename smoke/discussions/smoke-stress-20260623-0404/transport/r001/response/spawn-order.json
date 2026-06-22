@@ -1,0 +1,26 @@
+[
+  {
+    "agentDescriptor": {
+      "agentType": "swarm-smoke-stress-20260623-0404-architect",
+      "invocationForm": "explicit_spawn",
+      "projectedName": "swarm-smoke-stress-20260623-0404-architect",
+      "projectedPath": ".codex/agents/swarm-smoke-stress-20260623-0404-architect.toml",
+      "projectedSha256": "08c09a508ffbb91fb0cf18252acdb0e0010d1c1cf962b9567d8aa1cbb14ddffb",
+      "promptRef": "prompts/r001/response/architect/prompt.txt"
+    },
+    "agentId": "019ef12a-5fbc-7cf1-ad72-c429ec0ac72d",
+    "persona": "architect"
+  },
+  {
+    "agentDescriptor": {
+      "agentType": "swarm-smoke-stress-20260623-0404-contrarian",
+      "invocationForm": "explicit_spawn",
+      "projectedName": "swarm-smoke-stress-20260623-0404-contrarian",
+      "projectedPath": ".codex/agents/swarm-smoke-stress-20260623-0404-contrarian.toml",
+      "projectedSha256": "ed2b2157bac9ccd7444e2a6ff7dc355f1915273db8f23e09c67582e74510b1f5",
+      "promptRef": "prompts/r001/response/contrarian/prompt.txt"
+    },
+    "agentId": "019ef12a-6232-7ea2-ae8b-2bc171c9308c",
+    "persona": "contrarian"
+  }
+]

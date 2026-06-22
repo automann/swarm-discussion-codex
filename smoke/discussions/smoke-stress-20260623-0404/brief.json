@@ -1,0 +1,32 @@
+{
+  "constraints": [
+    "Use runtime artifacts as source of truth.",
+    "Preserve real Codex host ids and raw wait batches.",
+    "Run stress-check before synthesis and retain a citing response.",
+    "Regenerate trace and evidence after projection cleanup."
+  ],
+  "id": "smoke-stress-20260623-0404",
+  "mode": "deep",
+  "objective": "Certify that the Codex adapter can retain a projected custom-agent discussion with a mandatory structural stress pass and clean projection evidence.",
+  "personas": [
+    "architect",
+    "contrarian"
+  ],
+  "projectedAgents": [
+    {
+      "path": ".codex/agents/swarm-smoke-stress-20260623-0404-architect.toml",
+      "projectedName": "swarm-smoke-stress-20260623-0404-architect",
+      "role": "architect",
+      "sha256": "08c09a508ffbb91fb0cf18252acdb0e0010d1c1cf962b9567d8aa1cbb14ddffb"
+    },
+    {
+      "path": ".codex/agents/swarm-smoke-stress-20260623-0404-contrarian.toml",
+      "projectedName": "swarm-smoke-stress-20260623-0404-contrarian",
+      "role": "contrarian",
+      "sha256": "ed2b2157bac9ccd7444e2a6ff7dc355f1915273db8f23e09c67582e74510b1f5"
+    }
+  ],
+  "stressPolicy": "required",
+  "title": "Codex runtime 009 projected stress certification smoke",
+  "topic": "Codex runtime 009 projected stress certification smoke"
+}

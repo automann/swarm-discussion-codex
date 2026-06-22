@@ -1,0 +1,11 @@
+{
+  "argumentDigest": "82254a2b477c6fbb07a7e04653aa108ad6682d03b923b0f64bec71ff67bc845d",
+  "counterEdgeCount": 1,
+  "errors": [],
+  "ok": true,
+  "reason": "stressPolicy=required: stress pass mandatory",
+  "round": 1,
+  "roundSource": "partial",
+  "stressPolicy": "required",
+  "stressRequired": true
+}

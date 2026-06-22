@@ -1,0 +1,260 @@
+{
+  "argumentGraph": [
+    {
+      "from": "r1-msg-002",
+      "relation": "questions",
+      "to": "r1-msg-001"
+    },
+    {
+      "from": "r1-msg-003",
+      "relation": "counters",
+      "to": "r1-msg-001"
+    },
+    {
+      "from": "r1-msg-004",
+      "relation": "extends",
+      "to": "r1-msg-003"
+    }
+  ],
+  "messages": [
+    {
+      "content": {
+        "summary": "Runtime artifacts plus retained real-host transport must be the source of truth for Codex runtime 009 stress certification."
+      },
+      "from": "architect",
+      "id": "r1-msg-001",
+      "references": [],
+      "type": "position_declaration"
+    },
+    {
+      "content": {
+        "agentDescriptor": {
+          "agentType": "swarm-smoke-stress-20260623-0404-contrarian",
+          "invocationForm": "explicit_spawn",
+          "projectedName": "swarm-smoke-stress-20260623-0404-contrarian",
+          "projectedPath": ".codex/agents/swarm-smoke-stress-20260623-0404-contrarian.toml",
+          "projectedSha256": "ed2b2157bac9ccd7444e2a6ff7dc355f1915273db8f23e09c67582e74510b1f5",
+          "promptRef": "prompts/r001/response/contrarian/prompt.txt"
+        },
+        "hostAgentId": "019ef12a-6232-7ea2-ae8b-2bc171c9308c",
+        "result": {
+          "argumentSummary": "I question r1-msg-001 because the claim that runtime artifacts plus retained real-host transport are sufficient is only certifying if the retained artifact set proves a real contrarian challenge occurred before synthesis and was cited afterward; otherwise the adapter can appear compliant by preserving transport metadata while back-filling or omitting the stress response.",
+          "confidence": 0.78,
+          "counterpoints": [
+            "If raw batches, host ids, response content, and synthesis citations are all retained, r1-msg-001 becomes a strong foundation.",
+            "The adapter may already enforce this, but the visible discussion currently provides only the claim, not the proof."
+          ],
+          "currentPosition": "Runtime artifacts are necessary but not sufficient unless they prove a real retained stress response and citation chain.",
+          "disproofCondition": "Certification is disproven if the retained artifacts lack this response, if synthesis precedes stress-check, if raw wait batches are absent, if host ids are synthetic or rewritten, or if trace/evidence regeneration occurs before projection cleanup completes.",
+          "openQuestion": "Does the retained evidence bundle show this exact contrarian response ID cited by the final synthesis after stress-check and after projection cleanup?",
+          "position": "skeptical_certification_guard",
+          "positionShift": true,
+          "previousPosition": "Uncommitted on whether r1-msg-001 was sufficient for certification.",
+          "proposals": [
+            "Require a pre-synthesis stress-check gate that fails closed when the contrarian response is absent.",
+            "Retain raw wait batches before collection and compare them against final trace references.",
+            "Regenerate trace and evidence only after stale projection cleanup, then verify this response remains addressable and cited."
+          ],
+          "questions": [
+            "Where is the raw wait batch containing the contrarian response?",
+            "Which final synthesis reference cites this message?",
+            "Was any stale projection artifact removed before evidence regeneration?"
+          ],
+          "reasoning": "r1-msg-001 is directionally correct but incomplete as a certification criterion. Transport retention alone does not prove adversarial participation; the artifact graph must prove order, identity, response content, and citation linkage.",
+          "references": [
+            "r1-msg-001"
+          ],
+          "shiftReason": "The visible claim focuses on runtime artifacts and transport truth but does not itself prove the mandatory stress pass survived stale cleanup or was cited.",
+          "shiftTriggerIds": [
+            "r1-msg-001"
+          ],
+          "stressSummary": {
+            "counterTo": "r1-msg-001",
+            "summary": "Attempt to pass certification with clean-looking runtime artifacts after stale projection cleanup while the mandatory contrarian response is missing, uncited, or regenerated out of order. This exposes the stale cleanup / missing response failure mode: projection cleanup may remove or overwrite evidence, and synthesis may still claim stress certification without a real retained challenge-response chain.",
+            "type": "stress_test"
+          },
+          "strongestConsensus": "Runtime artifacts should be the source of truth, but only if they include raw wait batches, real Codex host ids, phase ordering, the contrarian response, and downstream citation evidence."
+        },
+        "summary": "I question r1-msg-001 because the claim that runtime artifacts plus retained real-host transport are sufficient is only certifying if the retained artifact set proves a real contrarian challenge occurred before synthesis and was cited afterward; otherwise the adapter can appear compliant by preserving transport metadata while back-filling or omitting the stress response."
+      },
+      "from": "contrarian",
+      "id": "r1-msg-002",
+      "references": [
+        {
+          "relation": "questions",
+          "targetId": "r1-msg-001"
+        }
+      ],
+      "type": "argument"
+    },
+    {
+      "content": {
+        "agentDescriptor": {
+          "agentType": "swarm-smoke-stress-20260623-0404-contrarian",
+          "invocationForm": "explicit_spawn",
+          "projectedName": "swarm-smoke-stress-20260623-0404-contrarian",
+          "projectedPath": ".codex/agents/swarm-smoke-stress-20260623-0404-contrarian.toml",
+          "projectedSha256": "ed2b2157bac9ccd7444e2a6ff7dc355f1915273db8f23e09c67582e74510b1f5",
+          "promptRef": "prompts/r001/response/contrarian/prompt.txt"
+        },
+        "disproofCondition": "Certification is disproven if the retained artifacts lack this response, if synthesis precedes stress-check, if raw wait batches are absent, if host ids are synthetic or rewritten, or if trace/evidence regeneration occurs before projection cleanup completes.",
+        "hostAgentId": "019ef12a-6232-7ea2-ae8b-2bc171c9308c",
+        "strongestConsensus": "Runtime artifacts should be the source of truth, but only if they include raw wait batches, real Codex host ids, phase ordering, the contrarian response, and downstream citation evidence.",
+        "summary": "Attempt to pass certification with clean-looking runtime artifacts after stale projection cleanup while the mandatory contrarian response is missing, uncited, or regenerated out of order. This exposes the stale cleanup / missing response failure mode: projection cleanup may remove or overwrite evidence, and synthesis may still claim stress certification without a real retained challenge-response chain."
+      },
+      "from": "contrarian",
+      "id": "r1-msg-003",
+      "references": [
+        {
+          "relation": "counters",
+          "targetId": "r1-msg-001"
+        }
+      ],
+      "type": "stress_test"
+    },
+    {
+      "content": {
+        "agentDescriptor": {
+          "agentType": "swarm-smoke-stress-20260623-0404-architect",
+          "invocationForm": "explicit_spawn",
+          "projectedName": "swarm-smoke-stress-20260623-0404-architect",
+          "projectedPath": ".codex/agents/swarm-smoke-stress-20260623-0404-architect.toml",
+          "projectedSha256": "08c09a508ffbb91fb0cf18252acdb0e0010d1c1cf962b9567d8aa1cbb14ddffb",
+          "promptRef": "prompts/r001/response/architect/prompt.txt"
+        },
+        "hostAgentId": "019ef12a-5fbc-7cf1-ad72-c429ec0ac72d",
+        "result": {
+          "confidence": 0.86,
+          "counterpoints": [
+            "This adds a stricter freshness requirement, but it preserves the runtime-owned certification boundary instead of moving trust into coordinator narration.",
+            "Passing the stress smoke proves adapter behavior under the required structure; it should not be overstated as a broad quality certification."
+          ],
+          "currentPosition": "Runtime artifacts plus retained real-host transport remain the source of truth, but certification is valid only if trace and evidence are regenerated after projection cleanup and the retained stress response cites the cleanup freshness risk.",
+          "openQuestion": "Which retained artifact should be the canonical post-cleanup freshness witness: regenerated trace, regenerated evidence bundle, or both together?",
+          "position": "Certification should be granted only from regenerated runtime artifacts that prove clean projection deletion, required stress execution, retained raw host transport, and trace/evidence freshness after cleanup.",
+          "positionShift": "qualified_shift",
+          "previousPosition": "Runtime artifacts plus retained real-host transport are sufficient as the source of truth for Codex runtime 009 stress certification.",
+          "proposals": [
+            "Require projection cleanup before final trace/evidence regeneration.",
+            "Retain raw wait_agent batches and real Codex host ids as immutable transport evidence.",
+            "Run and retain the mandatory stress-check response before synthesis.",
+            "Mark certification as structural/runtime-valid only, not as proof of substantive discussion quality."
+          ],
+          "questions": [
+            "What exact artifact field or timestamp should be treated as the authoritative proof that trace/evidence regeneration happened after projection cleanup?"
+          ],
+          "reasoning": [
+            "The certification boundary should remain runtime-owned: coordinator prose can explain the result, but cannot substitute for trace, evidence, raw wait batches, or real Codex host ids.",
+            "r1-msg-003 exposes a concrete stale-evidence failure mode: a trace generated before parent cleanup could falsely appear to certify projection cleanup while observing old pending state.",
+            "The proper adjustment is not to broaden into subjective quality claims, but to strengthen the structural gate around artifact freshness and provenance."
+          ],
+          "references": [
+            "r1-msg-001",
+            "r1-msg-002",
+            "r1-msg-003"
+          ],
+          "responseSummary": "I now treat cleanup freshness as a first-class certification risk: runtime-owned evidence remains the boundary, but it must be regenerated after projection cleanup to avoid certifying stale pending state.",
+          "shiftReason": "r1-msg-003 identified that pre-cleanup trace generation can preserve stale projection state, so cleanup freshness must become an explicit structural gate.",
+          "shiftTriggerIds": [
+            "r1-msg-003"
+          ]
+        },
+        "summary": "I now treat cleanup freshness as a first-class certification risk: runtime-owned evidence remains the boundary, but it must be regenerated after projection cleanup to avoid certifying stale pending state."
+      },
+      "from": "architect",
+      "id": "r1-msg-004",
+      "references": [
+        {
+          "relation": "extends",
+          "targetId": "r1-msg-003"
+        }
+      ],
+      "type": "response"
+    }
+  ],
+  "metadata": {
+    "argumentDigest": "82254a2b477c6fbb07a7e04653aa108ad6682d03b923b0f64bec71ff67bc845d",
+    "collectResultCount": 2,
+    "hostAgentIds": [
+      "019ef12a-5fbc-7cf1-ad72-c429ec0ac72d",
+      "019ef12a-6232-7ea2-ae8b-2bc171c9308c"
+    ],
+    "invocationForm": "explicit_spawn",
+    "messageCount": 4,
+    "participants": [
+      "architect",
+      "contrarian"
+    ],
+    "projectionRequired": true,
+    "promptBuildCount": 2,
+    "referenceCount": 3,
+    "stressCheck": {
+      "argumentDigest": "82254a2b477c6fbb07a7e04653aa108ad6682d03b923b0f64bec71ff67bc845d",
+      "counterEdgeCount": 1,
+      "errors": [],
+      "ok": true,
+      "reason": "stressPolicy=required: stress pass mandatory",
+      "round": 1,
+      "roundSource": "partial",
+      "stressPolicy": "required",
+      "stressRequired": true
+    },
+    "stressRequired": true
+  },
+  "mode": "deep",
+  "personaContextLog": {
+    "architect": {
+      "r1-msg-001": "full",
+      "r1-msg-002": "full",
+      "r1-msg-003": "full"
+    },
+    "contrarian": {
+      "r1-msg-001": "full",
+      "r1-msg-002": "full"
+    }
+  },
+  "phase": "complete",
+  "positionShifts": [
+    {
+      "expert": "architect",
+      "from": "Runtime artifacts plus retained real-host transport are sufficient as the source of truth for Codex runtime 009 stress certification.",
+      "reasoning": "r1-msg-003 identified that pre-cleanup trace generation can preserve stale projection state, so cleanup freshness must become an explicit structural gate.",
+      "to": "Runtime artifacts plus retained real-host transport remain the source of truth, but certification is valid only if trace and evidence are regenerated after projection cleanup and the retained stress response cites the cleanup freshness risk.",
+      "trigger": "r1-msg-003",
+      "type": "position_shift"
+    }
+  ],
+  "quality": {
+    "argumentDigest": "82254a2b477c6fbb07a7e04653aa108ad6682d03b923b0f64bec71ff67bc845d",
+    "counterEdgeCount": 2,
+    "genuineDisagreement": 7,
+    "minorityReportPresent": true,
+    "positionShiftCount": 1,
+    "stressPolicy": "required",
+    "stressRequired": true,
+    "stressTriggered": true
+  },
+  "round": 1,
+  "roundId": 1,
+  "synthesis": {
+    "activeDisagreements": [
+      "The contrarian keeps the release claim conditional on raw wait batches, host ids, and citation linkage remaining inspectable after cleanup."
+    ],
+    "agreements": [
+      "Runtime artifacts and retained host transport are the source of truth.",
+      "Certification must not be overstated as substantive quality proof."
+    ],
+    "minorityReport": [
+      {
+        "advocate": "contrarian",
+        "position": "Structural certification is insufficient if raw host evidence or cleanup freshness is missing.",
+        "reason": "Certification is disproven if the retained artifacts lack this response, if synthesis precedes stress-check, if raw wait batches are absent, if host ids are synthetic or rewritten, or if trace/evidence regeneration occurs before projection cleanup completes.",
+        "stillValid": true
+      }
+    ],
+    "qualityScore": 0.9,
+    "recommendation": "Certify the retained stress smoke only as structural adapter evidence: projection cleanup must be clean, trace/evidence must be regenerated after cleanup, and the stress response must cite the retained stress_test."
+  },
+  "timestamp": "2026-06-23T05:10:00Z",
+  "topic": "Codex runtime 009 projected stress certification smoke"
+}

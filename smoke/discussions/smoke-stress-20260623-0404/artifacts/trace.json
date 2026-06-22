@@ -1,0 +1,243 @@
+{
+  "artifacts": {
+    "paths": [
+      "smoke/discussions/smoke-stress-20260623-0404/artifacts/stress-check.json",
+      "smoke/discussions/smoke-stress-20260623-0404/artifacts/synthesis.md",
+      "smoke/discussions/smoke-stress-20260623-0404/brief.json",
+      "smoke/discussions/smoke-stress-20260623-0404/capabilities/artifacts/read-001.json",
+      "smoke/discussions/smoke-stress-20260623-0404/capabilities/profile.json",
+      "smoke/discussions/smoke-stress-20260623-0404/capabilities/tool-evidence.jsonl",
+      "smoke/discussions/smoke-stress-20260623-0404/certification/adapter-certification.json",
+      "smoke/discussions/smoke-stress-20260623-0404/context/summary.md",
+      "smoke/discussions/smoke-stress-20260623-0404/events.jsonl",
+      "smoke/discussions/smoke-stress-20260623-0404/manifest.json",
+      "smoke/discussions/smoke-stress-20260623-0404/progress.md",
+      "smoke/discussions/smoke-stress-20260623-0404/prompts/r001/response/architect/prompt-build.json",
+      "smoke/discussions/smoke-stress-20260623-0404/prompts/r001/response/architect/prompt.txt",
+      "smoke/discussions/smoke-stress-20260623-0404/prompts/r001/response/architect/request.json",
+      "smoke/discussions/smoke-stress-20260623-0404/prompts/r001/response/contrarian/prompt-build.json",
+      "smoke/discussions/smoke-stress-20260623-0404/prompts/r001/response/contrarian/prompt.txt",
+      "smoke/discussions/smoke-stress-20260623-0404/prompts/r001/response/contrarian/request.json",
+      "smoke/discussions/smoke-stress-20260623-0404/rounds/001.final-input.json",
+      "smoke/discussions/smoke-stress-20260623-0404/rounds/001.json",
+      "smoke/discussions/smoke-stress-20260623-0404/rounds/001.pre-stress.json",
+      "smoke/discussions/smoke-stress-20260623-0404/transport/r001/response/collect-result.json",
+      "smoke/discussions/smoke-stress-20260623-0404/transport/r001/response/host-step.json",
+      "smoke/discussions/smoke-stress-20260623-0404/transport/r001/response/spawn-order.input.json",
+      "smoke/discussions/smoke-stress-20260623-0404/transport/r001/response/spawn-order.json",
+      "smoke/discussions/smoke-stress-20260623-0404/transport/r001/response/wait-batches.jsonl",
+      "smoke/discussions/smoke-stress-20260623-0404/transport/r001/response/wait-result-001.json"
+    ],
+    "root": "smoke/discussions/smoke-stress-20260623-0404",
+    "totalBytes": 82169
+  },
+  "capabilities": {
+    "effective": {
+      "allowedTools": [
+        "read",
+        "glob",
+        "grep"
+      ],
+      "broadTools": [],
+      "canCiteToolDerivedEvidence": true,
+      "citationRule": "tool evidence must be logged, validated, and allowed by the active profile",
+      "default": false,
+      "id": "expert-readonly",
+      "ordinaryExpert": true,
+      "readonlyTools": [
+        "glob",
+        "grep",
+        "read"
+      ],
+      "role": "ordinary-expert",
+      "toolEvidencePolicy": {
+        "requiresLoggedToolCall": true,
+        "requiresValidation": true
+      }
+    },
+    "errors": [],
+    "ok": true,
+    "paths": [
+      "smoke/discussions/smoke-stress-20260623-0404/capabilities/artifacts/read-001.json",
+      "smoke/discussions/smoke-stress-20260623-0404/capabilities/profile.json",
+      "smoke/discussions/smoke-stress-20260623-0404/capabilities/tool-evidence.jsonl"
+    ],
+    "profile": {
+      "allowedTools": [
+        "read",
+        "glob",
+        "grep"
+      ],
+      "broadTools": [],
+      "default": false,
+      "id": "expert-readonly",
+      "ordinaryExpert": true,
+      "readonlyTools": [
+        "glob",
+        "grep",
+        "read"
+      ],
+      "role": "ordinary-expert",
+      "toolEvidencePolicy": {
+        "requiresLoggedToolCall": true,
+        "requiresValidation": true
+      }
+    },
+    "profilePath": "smoke/discussions/smoke-stress-20260623-0404/capabilities/profile.json",
+    "source": "discussion",
+    "toolEvidence": {
+      "accepted": [
+        {
+          "agentId": "019ef12a-5fbc-7cf1-ad72-c429ec0ac72d",
+          "artifactPath": "artifacts/read-001.json",
+          "summary": "Read the retained stress smoke context summary.",
+          "tool": "read"
+        }
+      ],
+      "acceptedCount": 1,
+      "citable": true,
+      "errors": [],
+      "ok": true,
+      "recordCount": 1
+    },
+    "toolEvidencePath": "smoke/discussions/smoke-stress-20260623-0404/capabilities/tool-evidence.jsonl"
+  },
+  "discussion": {
+    "id": "smoke-stress-20260623-0404",
+    "mode": "deep",
+    "schemaVersion": 2,
+    "status": "completed",
+    "title": "Codex runtime 009 projected stress certification smoke"
+  },
+  "discussionDir": "smoke/discussions/smoke-stress-20260623-0404",
+  "events": {
+    "count": 4,
+    "counts": {
+      "checkpoint_written": 2,
+      "discussion_initialized": 1,
+      "round_finalized": 1
+    },
+    "errors": [],
+    "firstTs": "2026-06-22T21:08:36Z",
+    "last": {
+      "data": {
+        "messageCount": 4,
+        "path": "/Users/syfq/dev/harness/swarm-discussion-codex-wt-run-retained-projected-deep-required-stress-smoke-and-certification/smoke/discussions/smoke-stress-20260623-0404/rounds/001.json",
+        "round": 1
+      },
+      "seq": 4,
+      "ts": "2026-06-22T21:11:04Z",
+      "type": "round_finalized"
+    },
+    "lastTs": "2026-06-22T21:11:04Z",
+    "spanSeconds": 148
+  },
+  "health": "on-track",
+  "kind": "swarm.discussion_trace",
+  "nextAction": {
+    "command": null,
+    "kind": "none",
+    "reason": "discussion completed"
+  },
+  "ok": true,
+  "projection": {
+    "createdCount": 2,
+    "deletionStatus": "clean",
+    "present": true,
+    "remainingCount": 0,
+    "removedCount": 2,
+    "runId": "smoke-stress-20260623-0404"
+  },
+  "prompts": {
+    "count": 2,
+    "errors": [],
+    "paths": [
+      "smoke/discussions/smoke-stress-20260623-0404/prompts/r001/response/architect/prompt-build.json",
+      "smoke/discussions/smoke-stress-20260623-0404/prompts/r001/response/contrarian/prompt-build.json"
+    ],
+    "personas": {
+      "architect": 1,
+      "contrarian": 1
+    },
+    "phases": {
+      "response": 2
+    },
+    "promptBuildCount": 2,
+    "promptCharCounted": 2,
+    "promptCharMax": 2454,
+    "promptCharTotal": 4449,
+    "visibility": {
+      "full": 4
+    }
+  },
+  "quality": {
+    "counterEdgeCount": 2,
+    "genuineDisagreement": 7,
+    "minorityReportPresent": true,
+    "positionShiftCount": 1,
+    "qualityScore": 0.9,
+    "recommendation": "Certify the retained stress smoke only as structural adapter evidence: projection cleanup must be clean, trace/evidence must be regenerated after cleanup, and the stress response must cite the retained stress_test.",
+    "stressPolicy": "required",
+    "stressRequired": true,
+    "stressTriggered": true,
+    "synthesisPresent": true
+  },
+  "resume": {
+    "maxId": "r1-msg-004",
+    "messageCount": 4,
+    "nextAction": "start_next_round",
+    "nextMessageId": "r1-msg-005",
+    "ok": true,
+    "phase": "complete",
+    "round": 1,
+    "source": "final",
+    "statePath": "smoke/discussions/smoke-stress-20260623-0404/rounds/001.json"
+  },
+  "rounds": {
+    "finalCount": 1,
+    "partialCount": 0,
+    "rounds": [
+      {
+        "messageCount": 4,
+        "path": "smoke/discussions/smoke-stress-20260623-0404/rounds/001.json",
+        "round": 1,
+        "source": "final",
+        "validationOk": true
+      }
+    ]
+  },
+  "transport": {
+    "collectResultCount": 1,
+    "collectResults": [
+      {
+        "complete": true,
+        "errorCount": 0,
+        "missingAgentIds": [],
+        "ok": true,
+        "path": "smoke/discussions/smoke-stress-20260623-0404/transport/r001/response/collect-result.json",
+        "resultCount": 2,
+        "timedOut": false
+      }
+    ],
+    "complete": true,
+    "errors": [],
+    "paths": [
+      "smoke/discussions/smoke-stress-20260623-0404/transport/r001/response/spawn-order.json",
+      "smoke/discussions/smoke-stress-20260623-0404/transport/r001/response/wait-batches.jsonl",
+      "smoke/discussions/smoke-stress-20260623-0404/transport/r001/response/collect-result.json"
+    ],
+    "spawnOrderCount": 1,
+    "waitBatchCount": 1
+  },
+  "validation": {
+    "errors": [],
+    "ok": true,
+    "summary": {
+      "discussionId": "smoke-stress-20260623-0404",
+      "roundCount": 1,
+      "status": "completed",
+      "validatedRounds": 1
+    },
+    "warnings": []
+  }
+}

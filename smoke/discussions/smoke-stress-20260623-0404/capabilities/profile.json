@@ -1,0 +1,22 @@
+{
+  "allowedTools": [
+    "read",
+    "glob",
+    "grep"
+  ],
+  "default": false,
+  "id": "expert-readonly",
+  "kind": "swarm.capability_profile",
+  "notes": [
+    "Retained Codex stress smoke local copy."
+  ],
+  "role": "ordinary-expert",
+  "schemaVersion": 1,
+  "status": "experimental",
+  "title": "Ordinary expert, readonly tools",
+  "toolEvidencePolicy": {
+    "citation": "allowed only when a tool-evidence JSONL record is validated",
+    "requiresLoggedToolCall": true,
+    "requiresValidation": true
+  }
+}

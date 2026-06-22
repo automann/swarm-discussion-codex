@@ -1,0 +1,55 @@
+{
+  "contextSummaryCharCount": 642,
+  "errors": [],
+  "injectedIds": [
+    "r1-msg-001"
+  ],
+  "inputs": {
+    "contextSummarySha256": "638480fed1ea7fc38ae5d9fc140b6e8fc24af36f3353e780380064fbd8c675c7",
+    "messageCount": 1,
+    "visibilityBudget": 4096
+  },
+  "ok": true,
+  "outputContract": {
+    "format": "json",
+    "requiredKeys": [
+      "position",
+      "reasoning",
+      "references",
+      "positionShift",
+      "currentPosition",
+      "previousPosition",
+      "shiftReason",
+      "shiftTriggerIds"
+    ],
+    "requiresReferences": true,
+    "requiresShiftTriggerIds": true
+  },
+  "persona": {
+    "bias": "challenge consensus claims until retained artifacts prove them",
+    "blindSpots": [
+      "may overweight adversarial edge cases"
+    ],
+    "expertise": [
+      "release risk",
+      "stress testing",
+      "provenance attacks"
+    ],
+    "id": "contrarian",
+    "name": "Contrarian",
+    "replyTendency": "concise JSON",
+    "stakes": "A release can falsely claim stress certification if the adapter back-fills artifacts without a real challenge and citing response.",
+    "thinkingStyle": "adversarial and evidence-bound"
+  },
+  "phase": "response",
+  "prompt": "You are \"Contrarian\" (contrarian).\n- Expertise: release risk, stress testing, provenance attacks\n- Thinking style: adversarial and evidence-bound\n- Natural bias: challenge consensus claims until retained artifacts prove them\n- Reply tendency: concise JSON\n- Stakes: A release can falsely claim stress certification if the adapter back-fills artifacts without a real challenge and citing response.\n- Blind spots: may overweight adversarial edge cases\n\nCurrent phase: response\nTopic: Codex runtime 009 projected stress certification smoke\n\nParent context summary:\n\n# Context Summary\n\n## Topic\n\nCodex runtime 009 projected stress certification smoke\n\n## Objective\n\nCertify that the Codex adapter can retain a projected custom-agent discussion with a mandatory structural stress pass and clean projection evidence.\n\n## Operating Mode\n\ndeep\n\n## Constraints\n\n- Use runtime artifacts as source of truth.\n- Preserve real Codex host ids and raw wait batches.\n- Run stress-check before synthesis and retain a citing response.\n- Regenerate trace and evidence after projection cleanup.\n\n## Alignment Rule\n\nKeep every contribution anchored to the topic, objective, constraints, known facts, and success criteria above.\n\nDiscussion so far (cite these IDs):\n\n[r1-msg-001] from architect (position_declaration): Runtime artifacts plus retained real-host transport must be the source of truth for Codex runtime 009 stress certification.\n\nTask: Return ONLY a JSON object with keys argumentSummary, stressSummary, strongestConsensus, disproofCondition, references, confidence, openQuestion. argumentSummary must question r1-msg-001. stressSummary must be a stress_test that counters r1-msg-001 and names the stale cleanup / missing response failure mode.\n\nOutput JSON with: position, reasoning, proposals, references, counterpoints, questions, positionShift, currentPosition, previousPosition, shiftReason, shiftTriggerIds.\n\nshiftTriggerIds must name the actual full-visible message IDs that changed your position.",
+  "promptCharCount": 1995,
+  "promptSha256": "67616fed66a38008237d0e6d3e97d21c18142fc2d05616652ab99c9b50a65f5a",
+  "roundId": 1,
+  "schemaVersion": 1,
+  "topic": "Codex runtime 009 projected stress certification smoke",
+  "visibility": {
+    "r1-msg-001": "full"
+  },
+  "warnings": []
+}

@@ -1,0 +1,14 @@
+{
+  "createdAt": "2026-06-22T21:08:36Z",
+  "currentRound": 1,
+  "id": "smoke-stress-20260623-0404",
+  "mode": "deep",
+  "personas": [
+    "architect",
+    "contrarian"
+  ],
+  "schemaVersion": 2,
+  "status": "completed",
+  "stressPolicy": "required",
+  "title": "Codex runtime 009 projected stress certification smoke"
+}

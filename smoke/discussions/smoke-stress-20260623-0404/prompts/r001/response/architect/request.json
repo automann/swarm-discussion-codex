@@ -1,0 +1,63 @@
+{
+  "contextSummaryPath": "../../../../context/summary.md",
+  "instruction": "Return ONLY a JSON object with keys responseSummary, positionShift, previousPosition, currentPosition, shiftTriggerIds, references, confidence, openQuestion. The response must cite r1-msg-003 in references and shiftTriggerIds and concede the cleanup freshness risk while preserving the runtime-owned certification boundary.",
+  "messages": [
+    {
+      "content": {
+        "summary": "Runtime artifacts plus retained real-host transport must be the source of truth for Codex runtime 009 stress certification."
+      },
+      "from": "architect",
+      "id": "r1-msg-001",
+      "references": [],
+      "type": "position_declaration"
+    },
+    {
+      "content": {
+        "summary": "A projected adapter can appear certified while hiding stale cleanup evidence or a missing stress response unless --require-projection and --require-stress both pass."
+      },
+      "from": "contrarian",
+      "id": "r1-msg-002",
+      "references": [
+        {
+          "relation": "questions",
+          "targetId": "r1-msg-001"
+        }
+      ],
+      "type": "argument"
+    },
+    {
+      "content": {
+        "summary": "Stress the consensus: if the trace was generated before parent cleanup, certification can observe stale pending projection state; disprove by regenerating trace/evidence after clean deletion and retaining raw host transport."
+      },
+      "from": "contrarian",
+      "id": "r1-msg-003",
+      "references": [
+        {
+          "relation": "counters",
+          "targetId": "r1-msg-001"
+        }
+      ],
+      "type": "stress_test"
+    }
+  ],
+  "persona": {
+    "bias": "favor runtime-owned evidence over coordinator prose",
+    "blindSpots": [
+      "may underweight host ergonomics"
+    ],
+    "expertise": [
+      "runtime architecture",
+      "adapter certification",
+      "artifact provenance"
+    ],
+    "id": "architect",
+    "name": "Architect",
+    "replyTendency": "structured JSON",
+    "stakes": "A certified adapter must prove projection cleanup and structural stress without overstating substantive quality.",
+    "thinkingStyle": "systems-oriented"
+  },
+  "phase": "response",
+  "roundId": 1,
+  "topic": "Codex runtime 009 projected stress certification smoke",
+  "visibilityBudget": 4096
+}
