@@ -28,6 +28,8 @@ project-scoped custom-agent projection for the expert workers.
      `required`. Default by mode when the user does not specify one:
      `lightweight -> off`, `standard -> auto`, `deep -> required`.
    - Do not pass free-text modes such as `normal` to the coordinator.
+   - Honor explicit `--mode <tier>` / `--stressPolicy <policy>` flags from the
+     invocation over the wording mapping (validate against the enums).
 2. Resolve the current workspace root.
    - Use the current repository checkout as the execution context.
    - Treat normal discussion output as a coordinator-owned artifact tree under

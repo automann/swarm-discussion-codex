@@ -76,8 +76,27 @@ compact index: a **recommendation**, the **strongest surviving counter-argument*
 pointers to the traceable artifacts (cited argument graph, synthesis, trace/evidence). The debate runs in a
 dedicated coordinator thread, so the parent thread stays small.
 
-Set the depth by just saying so — *"a quick **lightweight** take on…"* or *"go **deep** on…"*. Defaults to
-**Standard** (see below).
+**Two knobs, set together.** `mode` controls *breadth & cost* (how many experts, how many rounds);
+`stressPolicy` controls *how hard they must disagree* (whether a mandatory anti-consensus stress pass
+runs before synthesis). They're orthogonal — combine them freely:
+
+```text
+/swarm-discussion [--mode lightweight|standard|deep] [--stressPolicy auto|required|off] <your question>
+```
+
+`stressPolicy` **defaults from `mode`** (`lightweight → off`, `standard → auto`, `deep → required`), so
+usually you set neither — pick a mode by stakes, or just describe the problem (*"go **deep** and don't let
+them agree too fast"* ≈ `--mode deep --stressPolicy required`). Pass `--stressPolicy` only to override that
+default:
+
+| Invocation | What runs |
+|---|---|
+| `/swarm-discussion Should we adopt event sourcing?` | inferred mode + its default stress policy |
+| `/swarm-discussion --mode standard --stressPolicy auto <topic>` | 2–3 experts; stress pass *only if* they converge with no real disagreement |
+| `/swarm-discussion --mode deep <topic>` | full panel + a `required` stress pass (deep's default) |
+| `/swarm-discussion --mode lightweight --stressPolicy required <topic>` | cheap 2-expert panel, but still force one stress pass |
+
+Both knobs are detailed below; it defaults to **standard** when you say nothing.
 
 ## Modes
 
