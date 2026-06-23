@@ -91,6 +91,23 @@ Pick a tier by stakes and budget (default **Standard**):
 
 > **Quality over quantity:** two rounds of *genuine* disagreement beat five rounds of polite agreement.
 
+### Stress policy — engineering the disagreement
+
+Orthogonal to `mode`, **`stressPolicy`** controls whether the panel must run an anti-consensus
+**stress pass** (the Contrarian attacks the *strongest* agreement; the challenged experts answer
+and may shift position) before it synthesizes:
+
+| `stressPolicy` | Behavior | Default for |
+|---|---|---|
+| `required` | always run the stress pass, however smooth the round looks | `deep` |
+| `auto` | run it only if the round reached consensus with no real disagreement | `standard` |
+| `off` | no stress pass — fast convergence | `lightweight` |
+
+You rarely set it (it defaults from the `mode`), but you can ask in plain language:
+*"stress-test this"* / *"don't converge too fast"* → `required`. The runtime **certifies** that a
+`required`/`auto` discussion actually engineered disagreement (a stress pass answered by a cited
+response, or a recorded decision that none was needed) — a checked contract, not a suggestion.
+
 Every panel runs **dynamic experts** generated per topic — each with explicit *stakes* and *blind spots* —
 plus **fixed roles** that keep the debate honest:
 
