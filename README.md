@@ -13,9 +13,9 @@ validation, trace, evidence, and retained artifacts.
 
 | Field | Value |
 |---|---|
-| Plugin manifest version | `0.3.0` |
-| Latest release tag | `v0.3.0` |
-| Tagged runtime sha | `04f4974f26f5d3f8da55cc3b1c2f9068a83d4cf5` |
+| Plugin manifest version | `0.4.0` |
+| Latest release tag | `v0.4.0` |
+| Tagged runtime sha | `c84393111158674e743e1dc082271f467043f496` |
 | Runtime 009 readiness sha | `c84393111158674e743e1dc082271f467043f496` |
 | Runtime compatibility | `swarm-runtime-v2-alpha` |
 | Runtime 009 files | `60` vendored files |
@@ -24,12 +24,11 @@ validation, trace, evidence, and retained artifacts.
 | Stress evidence profile | `stress-minimal-v2` |
 | Stress smoke mode | `mode=deep`, `stressPolicy=required` |
 | Required certification mode | `--require-projection --require-stress` |
-| Aggregator distribution | `automann/swarm-discussion` pins this repo at `v0.3.0` |
+| Aggregator distribution | `automann/swarm-discussion` pins this repo at `v0.4.0` |
 
-The latest published tag remains `v0.3.0`; the top-level aggregator still pins
-that tag until an explicit follow-up release updates the version and
-distribution entry. The mainline readiness evidence has moved forward to
-runtime 009. The retained projected smoke proves the v0.3.0 topology:
+The published tag is `v0.4.0`; the top-level aggregator pins this repo at `v0.4.0`,
+vendoring runtime `c843931` and certifying both the projected and the retained
+stress smoke with `--require-projection --require-stress`. The retained projected smoke proves the v0.3.0 topology:
 parent-created discussion-scoped `.codex/agents/` expert files,
 coordinator-owned runtime execution, projected expert invocation,
 runtime-owned `agentDescriptor` and `transport.customAgentProjection`
