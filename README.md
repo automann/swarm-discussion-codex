@@ -13,8 +13,8 @@ validation, trace, evidence, and retained artifacts.
 
 | Field | Value |
 |---|---|
-| Plugin manifest version | `0.4.0` |
-| Latest release tag | `v0.4.0` |
+| Plugin manifest version | `0.4.1` |
+| Latest release tag | `v0.4.1` |
 | Tagged runtime sha | `c84393111158674e743e1dc082271f467043f496` |
 | Runtime 009 readiness sha | `c84393111158674e743e1dc082271f467043f496` |
 | Runtime compatibility | `swarm-runtime-v2-alpha` |
@@ -24,9 +24,9 @@ validation, trace, evidence, and retained artifacts.
 | Stress evidence profile | `stress-minimal-v2` |
 | Stress smoke mode | `mode=deep`, `stressPolicy=required` |
 | Required certification mode | `--require-projection --require-stress` |
-| Aggregator distribution | `automann/swarm-discussion` pins this repo at `v0.4.0` |
+| Aggregator distribution | `automann/swarm-discussion` pins this repo at `v0.4.1` |
 
-The published tag is `v0.4.0`; the top-level aggregator pins this repo at `v0.4.0`,
+The published tag is `v0.4.1`; the top-level aggregator pins this repo at `v0.4.1`,
 vendoring runtime `c843931` and certifying both the projected and the retained
 stress smoke with `--require-projection --require-stress`. The retained projected smoke proves the v0.3.0 topology:
 parent-created discussion-scoped `.codex/agents/` expert files,
